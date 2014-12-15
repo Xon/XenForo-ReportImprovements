@@ -10,8 +10,11 @@
     <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Conversation" description=""/>
     <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Forum" description=""/>
     <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_Model_User" description=""/>
+    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_Model_ProfilePost" description=""/>
+    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Report" description=""/>
     <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_Post" description=""/>
     <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_ProfilePost" description=""/>
+    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_User" description=""/>
   </code_event_listeners>
   <cron/>
   <email_templates/>
@@ -21,7 +24,8 @@
     <permission_groups/>
     <permissions>
       <permission permission_group_id="conversation" permission_id="viewReportConversation" permission_type="flag" default_value="unset" interface_group_id="conversationModeratorPermissions" display_order="400"/>
-      <permission permission_group_id="forum" permission_id="viewReportPost" permission_type="flag" default_value="unset" interface_group_id="forumModeratorPermissions" display_order="400"/>
+      <permission permission_group_id="forum" permission_id="viewReportPost" permission_type="flag" default_value="unset" interface_group_id="forumModeratorPermissions" display_order="400"/>      
+      <permission permission_group_id="profilePost" permission_id="viewReportProfilePost" permission_type="flag" default_value="unset" interface_group_id="generalModeratorPermissions" display_order="400"/>
       <permission permission_group_id="general" permission_id="viewReportUser" permission_type="flag" default_value="unset" interface_group_id="generalModeratorPermissions" display_order="400"/>
     </permissions>
     <interface_groups/>
@@ -30,6 +34,7 @@
     <phrase title="permission_conversation_viewReportConversation" version_id="1" version_string="0.0.1"><![CDATA[View Conversation Report]]></phrase>
     <phrase title="permission_forum_viewReportPost" version_id="1" version_string="0.0.1"><![CDATA[View Post Report]]></phrase>
     <phrase title="permission_general_viewReportUser" version_id="1" version_string="0.0.1"><![CDATA[View User Report]]></phrase>
+    <phrase title="permission_profilePost_viewReportProfilePost" version_id="1" version_string="0.0.1"><![CDATA[View ProfilePost Report]]></phrase>
   </phrases>
   <route_prefixes/>
   <style_properties/>

@@ -7,8 +7,13 @@ class SV_IntegratedReports_XenForo_Model_Conversation extends XFCP_SV_Integrated
 	{
 		$this->standardizeViewingUserReference($viewingUser);
 
-		if ($viewingUser['is_moderator'] && XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'warn')
-            || XenForo_Permission::hasContentPermission($forum['permissions'], 'viewReportConversation'))
+		if ($viewingUser['is_moderator'] &&
+            (
+             XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'warn') ||
+             XenForo_Permission::hasPermission($viewingUser['permissions'], 'conversation', 'viewReportConversation')
+             )
+           )
+             
 		{
 			return true;
 		}

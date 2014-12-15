@@ -3,7 +3,7 @@
 class SV_IntegratedReports_XenForo_ReportHandler_Post extends XFCP_SV_IntegratedReports_XenForo_ReportHandler_Post
 {
 	public function getVisibleReportsForUser(array $reports, array $viewingUser)
-	{
+	{ 
 		$reportsByForum = array();
 		foreach ($reports AS $reportId => $report)
 		{
@@ -13,6 +13,7 @@ class SV_IntegratedReports_XenForo_ReportHandler_Post extends XFCP_SV_Integrated
 
 		/* @var $forumModel XenForo_Model_Forum */
 		$forumModel = XenForo_Model::create('XenForo_Model_Forum');
+        $forumModel = XenForo_Model::create('XenForo_Model_Forum');
 		$forums = $forumModel->getForumsByIds(array_keys($reportsByForum), array(
 			'permissionCombinationId' => $viewingUser['permission_combination_id']
 		));

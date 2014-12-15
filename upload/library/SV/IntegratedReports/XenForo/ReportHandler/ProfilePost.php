@@ -4,6 +4,7 @@ class SV_IntegratedReports_XenForo_ReportHandler_ProfilePost extends XFCP_SV_Int
 {
 	public function getVisibleReportsForUser(array $reports, array $viewingUser)
 	{
+throw new Exception("ProfilePost2");       
 		$reportsByUser = array();
 		foreach ($reports AS $reportId => $report)
 		{

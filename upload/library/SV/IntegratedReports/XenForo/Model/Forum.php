@@ -6,12 +6,11 @@ class SV_IntegratedReports_XenForo_Model_Forum extends XFCP_SV_IntegratedReports
 	public function canManageReportedMessage(array $forum, &$errorPhraseKey = '', array $viewingUser = null)
 	{
 		$this->standardizeViewingUserReference($viewingUser);
-
-		if ($viewingUser['is_moderator'] && 
+        if ($viewingUser['is_moderator'] && 
             (XenForo_Permission::hasContentPermission($forum['permissions'], 'editAnyPost') || 
-             XenForo_Permission::hasContentPermission($forum['permissions'], 'deleteAnyPost')
+             XenForo_Permission::hasContentPermission($forum['permissions'], 'deleteAnyPost') ||
+             XenForo_Permission::hasContentPermission($forum['permissions'], 'viewReportPost')
             )
-            || XenForo_Permission::hasContentPermission($forum['permissions'], 'viewReportPost')
            )
 		{
 			return true;
