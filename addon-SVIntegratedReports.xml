@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SVIntegratedReports" title="SV: Integrated Reports" version_string="0.0.1" version_id="1" url="" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
+<addon addon_id="SVIntegratedReports" title="SV: Integrated Reports" version_string="0.0.1" version_id="1" url="" install_callback_class="SV_IntegratedReports_Listener" install_callback_method="install" uninstall_callback_class="SV_IntegratedReports_Listener" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -24,9 +24,9 @@
     <permission_groups/>
     <permissions>
       <permission permission_group_id="conversation" permission_id="viewReportConversation" permission_type="flag" default_value="unset" interface_group_id="conversationModeratorPermissions" display_order="400"/>
-      <permission permission_group_id="forum" permission_id="viewReportPost" permission_type="flag" default_value="unset" interface_group_id="forumModeratorPermissions" display_order="400"/>      
-      <permission permission_group_id="profilePost" permission_id="viewReportProfilePost" permission_type="flag" default_value="unset" interface_group_id="generalModeratorPermissions" display_order="400"/>
+      <permission permission_group_id="forum" permission_id="viewReportPost" permission_type="flag" default_value="unset" interface_group_id="forumModeratorPermissions" display_order="400"/>
       <permission permission_group_id="general" permission_id="viewReportUser" permission_type="flag" default_value="unset" interface_group_id="generalModeratorPermissions" display_order="400"/>
+      <permission permission_group_id="profilePost" permission_id="viewReportProfilePost" permission_type="flag" default_value="unset" interface_group_id="profilePostModeratorPermissions" display_order="400"/>
     </permissions>
     <interface_groups/>
   </permissions>

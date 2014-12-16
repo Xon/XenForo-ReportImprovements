@@ -6,7 +6,7 @@ class SV_IntegratedReports_XenForo_Model_ProfilePost extends XFCP_SV_IntegratedR
 	public function canManageReportedMessage(array $user, &$errorPhraseKey = '', array $viewingUser = null)
 	{
 		$this->standardizeViewingUserReference($viewingUser);
-throw new Exception("ProfilePost");
+
 		if ($viewingUser['is_moderator'] && isset($user) &&
             (
                 $this->canViewFullUserProfile($user, $null, $viewingUser) ||
