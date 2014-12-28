@@ -7,14 +7,7 @@
   <admin_template_modifications/>
   <code_events/>
   <code_event_listeners>
-    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Conversation" description=""/>
-    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Forum" description=""/>
-    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_Model_User" description=""/>
-    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_Model_ProfilePost" description=""/>
-    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Report" description=""/>
-    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_Post" description=""/>
-    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_ProfilePost" description=""/>
-    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_User" description=""/>
+    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="" description=""/>
   </code_event_listeners>
   <cron/>
   <email_templates/>
@@ -35,11 +28,34 @@
     <phrase title="permission_forum_viewReportPost" version_id="1" version_string="0.0.1"><![CDATA[View Post Report]]></phrase>
     <phrase title="permission_general_viewReportUser" version_id="1" version_string="0.0.1"><![CDATA[View User Report]]></phrase>
     <phrase title="permission_profilePost_viewReportProfilePost" version_id="1" version_string="0.0.1"><![CDATA[View ProfilePost Report]]></phrase>
+    <phrase title="warning_log_operation_type" version_id="1" version_string="0.0.1"><![CDATA[Operation Type]]></phrase>
   </phrases>
   <route_prefixes/>
   <style_properties/>
-  <templates/>
-  <public_template_modifications/>
+  <templates>
+    <template title="sv_report_view_warning" version_id="1" version_string="0.0.1"><![CDATA[<xen:if is="{$comment.operation_type}">
+<p class="warningLog">
+<div class="pairsJustified">
+<dl><dt>{xen:phrase warning_log_operation_type}</dt><dd>{$comment.operation_type}</dd></dl>
+<dl><dt>{xen:phrase warning}</dt><dd>{$comment.title}</dd></dl>
+<dl><dt>{xen:phrase points}</dt><dd>{xen:number $comment.points}</dd></dl>
+<dl><dt>{xen:phrase expiry}</dt><dd><xen:if is="{$comment.expiry_date}"><xen:datetime time="{$comment.expiry_date}" /><xen:else />{xen:phrase n_a}</xen:if></dd></dl>
+<dl><dt>{xen:phrase notes}</dt><dd class="warningName">{$comment.notes}</dd></dl>
+<xen:if is="{$comment.warning_id}">
+<dl><dt>{xen:phrase warning}</dt><dd><a href="{xen:link warnings, $comment}" class="OverlayTrigger secondaryContent">{xen:phrase view}</a></dd></dl>
+</xen:if>
+</div>
+</p>
+</xen:if>
+]]></template>
+  </templates>
+  <public_template_modifications>
+    <modification template="report_view" modification_key="sv_integrated_report_report_view" description="Insert extra state tracking into the report comments." execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[<div class="content">]]></find>
+      <replace><![CDATA[$0
+<xen:include template="sv_report_view_warning" />]]></replace>
+    </modification>
+  </public_template_modifications>
   <bb_code_media_sites/>
   <bb_codes/>
 </addon>

@@ -6,7 +6,39 @@ class SV_IntegratedReports_Listener
 	{
     
 		$db = XenForo_Application::getDb();
-
+        
+        
+        $db->query("alter table xf_report_comment add column warning_log_id int unsigned default 0");
+        
+        $db->query("
+CREATE TABLE `xf_sv_warning_log` (
+  `warning_log_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `warning_edit_date` int(10) unsigned NOT NULL,
+  `operation_type` enum('new','edit','expire','delete') NOT NULL,
+  `warning_id` int(10) unsigned NOT NULL,
+  `content_type` varbinary(25) NOT NULL,
+  `content_id` int(10) unsigned NOT NULL,
+  `content_title` varchar(255) NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `warning_date` int(10) unsigned NOT NULL,
+  `warning_user_id` int(10) unsigned NOT NULL,
+  `warning_definition_id` int(10) unsigned NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `notes` text NOT NULL,
+  `points` smallint(5) unsigned NOT NULL,
+  `expiry_date` int(10) unsigned NOT NULL,
+  `is_expired` tinyint(3) unsigned NOT NULL,
+  `extra_user_group_ids` varbinary(255) NOT NULL,
+  PRIMARY KEY (`warning_log_id`),
+  KEY (`warning_id`),
+  KEY `content_type_id` (`content_type`,`content_id`),
+  KEY `user_id_date` (`user_id`,`warning_date`),
+  KEY `expiry` (`expiry_date`),
+  KEY `operation_type` (`operation_type`),
+  KEY `warning_edit_date` (`warning_edit_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8");
+        
+/*
 		XenForo_Db::beginTransaction($db);
 
 		$db->query("insert into xf_permission_entry_content (content_type, content_id, user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int) 
@@ -39,10 +71,13 @@ where permission_group_id = 'general' and  permission_id in ('warn','editBasicPr
 		XenForo_Db::commit($db); 
 
         XenForo_Application::defer('Permission', array(), 'Permission', true);
+        */
 	}
 
 	public static function uninstall()
 	{
+        $db->query("alter table xf_report_comment drop column warning_log_id;");
+        $db->query("drop table xf_sv_warning_log;");
         /*
 		$db = XenForo_Application::getDb();
 
@@ -64,8 +99,16 @@ where permission_group_id = 'general' and  permission_id in ('warn','editBasicPr
         */
 	}
     
+    static $init = false;
+    
     public static function load_class($class, array &$extend)
     {
+        if (!self::$init)
+        {
+            self::$init = true;
+            
+        }
+
         switch ($class)
         {
             case 'XenForo_Model_Conversation':
@@ -83,6 +126,7 @@ where permission_group_id = 'general' and  permission_id in ('warn','editBasicPr
             case 'XenForo_Model_Report':
                 if (XenForo_Application::$versionId <= 1040370)
                     $extend[] = 'SV_IntegratedReports_XenForo_Model_ReportPatch';
+                $extend[] = 'SV_IntegratedReports_XenForo_Model_Report';
                 break;                
             case 'XenForo_ReportHandler_ProfilePost':
                 $extend[] = 'SV_IntegratedReports_XenForo_ReportHandler_ProfilePost';
@@ -92,7 +136,13 @@ where permission_group_id = 'general' and  permission_id in ('warn','editBasicPr
                 break;
             case 'XenForo_ReportHandler_User':
                 $extend[] = 'SV_IntegratedReports_XenForo_ReportHandler_User';
-                break;                 
+                break;
+            case 'XenForo_DataWriter_Warning':
+                $extend[] = 'SV_IntegratedReports_XenForo_DataWriter_Warning';
+                break;
+            case 'XenForo_DataWriter_ReportComment':
+                $extend[] = 'SV_IntegratedReports_XenForo_DataWriter_ReportComment';
+                break;
         }
     }
 

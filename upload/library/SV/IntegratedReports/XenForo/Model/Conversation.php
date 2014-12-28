@@ -9,8 +9,7 @@ class SV_IntegratedReports_XenForo_Model_Conversation extends XFCP_SV_Integrated
 
 		if ($viewingUser['is_moderator'] &&
             (
-             XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'warn') ||
-             XenForo_Permission::hasPermission($viewingUser['permissions'], 'conversation', 'viewReportConversation')
+              XenForo_Permission::hasPermission($viewingUser['permissions'], 'conversation', 'viewReportConversation')
              )
            )
              

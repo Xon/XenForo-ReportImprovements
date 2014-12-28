@@ -9,10 +9,7 @@ class SV_IntegratedReports_XenForo_Model_User extends XFCP_SV_IntegratedReports_
 
         if ($viewingUser['is_moderator'] &&
             (
-             $this->canWarnUser($user, $null, $viewingUser) ||
-             $this->canEditUser($user, $null, $viewingUser) ||
              XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'viewReportUser')
-             
             )
            )
 		{

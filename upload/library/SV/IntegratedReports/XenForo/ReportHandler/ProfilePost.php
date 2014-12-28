@@ -3,8 +3,7 @@
 class SV_IntegratedReports_XenForo_ReportHandler_ProfilePost extends XFCP_SV_IntegratedReports_XenForo_ReportHandler_ProfilePost
 {
 	public function getVisibleReportsForUser(array $reports, array $viewingUser)
-	{
-throw new Exception("ProfilePost2");       
+	{    
 		$reportsByUser = array();
 		foreach ($reports AS $reportId => $report)
 		{
@@ -17,7 +16,7 @@ throw new Exception("ProfilePost2");
 			'followingUserId' => $viewingUser['user_id']
 		));
 
-		$userProfileModel = XenForo_Model::create('XenForo_Model_UserProfile');
+		$userProfileModel = XenForo_Model::create('XenForo_Model_ProfilePost');
 
 		foreach ($reportsByUser AS $userId => $userReports)
 		{
