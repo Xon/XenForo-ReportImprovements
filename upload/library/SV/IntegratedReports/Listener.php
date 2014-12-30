@@ -6,8 +6,11 @@ class SV_IntegratedReports_Listener
 	{
     
 		$db = XenForo_Application::getDb();
-        
-        
+     
+
+// migration code.     
+/*        
+        XenForo_Db::beginTransaction($db);
         $db->query("alter table xf_report_comment add column warning_log_id int unsigned default 0");
         
         $db->query("
@@ -37,9 +40,24 @@ CREATE TABLE `xf_sv_warning_log` (
   KEY `operation_type` (`operation_type`),
   KEY `warning_edit_date` (`warning_edit_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
-        
+     
+        $db->query("     
+insert into xf_sv_warning_log (warning_edit_date,operation_type,warning_id,content_type,content_id,content_title,user_id,warning_date,warning_user_id,warning_definition_id,title,notes,points,expiry_date,is_expired,extra_user_group_ids)
+SELECT xf_warning.warning_date,'new',xf_warning.*
+FROM xf_warning");
+
+        $db->query("
+insert into xf_report_comment (report_id,comment_date,user_id,username,message,state_change,is_report,warning_log_id)
+select (select report_id from xf_report where xf_report.content_type = xf_sv_warning_log.content_type and xf_report.content_id = xf_sv_warning_log.content_id) as report_id,
+    xf_sv_warning_log. warning_date,xf_user.user_id, xf_user.username,'','',0,warning_log_id
+from xf_sv_warning_log
+join xf_user on xf_user.user_id = xf_sv_warning_log.warning_user_id
+where exists(select * from xf_report where xf_report.content_type = xf_sv_warning_log.content_type and xf_report.content_id = xf_sv_warning_log.content_id)
+");
+*/
+
 /*
-		XenForo_Db::beginTransaction($db);
+		
 
 		$db->query("insert into xf_permission_entry_content (content_type, content_id, user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int) 
 select distinct content_type, content_id, user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportPost', permission_value, permission_value_int 
@@ -67,11 +85,11 @@ select distinct user_group_id, user_id, convert(permission_group_id using utf8),
 from xf_permission_entry
 where permission_group_id = 'general' and  permission_id in ('warn','editBasicProfile')        
 ");
-
-		XenForo_Db::commit($db); 
-
-        XenForo_Application::defer('Permission', array(), 'Permission', true);
         */
+        
+        XenForo_Db::commit($db); 
+        
+        //XenForo_Application::defer('Permission', array(), 'Permission', true);
 	}
 
 	public static function uninstall()
