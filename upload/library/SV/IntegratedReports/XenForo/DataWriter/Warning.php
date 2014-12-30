@@ -22,7 +22,7 @@ class SV_IntegratedReports_XenForo_DataWriter_Warning extends XFCP_SV_Integrated
         else if ($this->isUpdate())
         {
             $operationType = SV_IntegratedReports_Model_WarningLog::Operation_EditWarning;
-            if ($this->get('is_expired') == 0 && $this->getExisting('is_expired') == 1)
+            if (!$this->isChanged('expiry_date') && ($this->get('is_expired') == 1 && $this->getExisting('is_expired') == 0))
             {
                 $operationType = SV_IntegratedReports_Model_WarningLog::Operation_ExpireWarning;
             }

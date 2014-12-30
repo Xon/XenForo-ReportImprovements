@@ -127,7 +127,10 @@ where permission_group_id = 'general' and  permission_id in ('warn','editBasicPr
                 if (XenForo_Application::$versionId <= 1040370)
                     $extend[] = 'SV_IntegratedReports_XenForo_Model_ReportPatch';
                 $extend[] = 'SV_IntegratedReports_XenForo_Model_Report';
-                break;                
+                break;
+            case 'XenForo_Model_Warning':
+                $extend[] = 'SV_IntegratedReports_XenForo_Model_Warning';
+                break;
             case 'XenForo_ReportHandler_ProfilePost':
                 $extend[] = 'SV_IntegratedReports_XenForo_ReportHandler_ProfilePost';
                 break;
@@ -143,6 +146,7 @@ where permission_group_id = 'general' and  permission_id in ('warn','editBasicPr
             case 'XenForo_DataWriter_ReportComment':
                 $extend[] = 'SV_IntegratedReports_XenForo_DataWriter_ReportComment';
                 break;
+
         }
     }
 

@@ -12,7 +12,15 @@
   <cron/>
   <email_templates/>
   <email_template_modifications/>
-  <optiongroups/>
+  <optiongroups>
+    <group group_id="sv_integrated_reports" display_order="1" debug_only="0"/>
+    <option option_id="sv_ir_user_id" edit_format="textbox" data_type="unsigned_integer" can_backup="1">
+      <default_value>1</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="sv_integrated_reports" display_order="1"/>
+    </option>
+  </optiongroups>
   <permissions>
     <permission_groups/>
     <permissions>
@@ -24,6 +32,10 @@
     <interface_groups/>
   </permissions>
   <phrases>
+    <phrase title="option_group_sv_integrated_reports" version_id="1" version_string="0.0.1"><![CDATA[SV: Integrated Reports]]></phrase>
+    <phrase title="option_group_sv_integrated_reports_description" version_id="1" version_string="0.0.1"><![CDATA[]]></phrase>
+    <phrase title="option_sv_ir_user_id" version_id="1" version_string="0.0.1"><![CDATA[Reporter]]></phrase>
+    <phrase title="option_sv_ir_user_id_explain" version_id="1" version_string="0.0.1"><![CDATA[Enter the user id of the person reporting Alter Ego's]]></phrase>
     <phrase title="permission_conversation_viewReportConversation" version_id="1" version_string="0.0.1"><![CDATA[View Conversation Report]]></phrase>
     <phrase title="permission_forum_viewReportPost" version_id="1" version_string="0.0.1"><![CDATA[View Post Report]]></phrase>
     <phrase title="permission_general_viewReportUser" version_id="1" version_string="0.0.1"><![CDATA[View User Report]]></phrase>
