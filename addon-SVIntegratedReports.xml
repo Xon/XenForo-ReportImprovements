@@ -93,8 +93,7 @@
   <public_template_modifications>
     <modification template="report_view" modification_key="sv_integrated_report_report_view" description="Insert extra state tracking into the report comments." execution_order="10" enabled="1" action="preg_replace">
       <find><![CDATA[#(<div class="content">.*?)(</div>)#s]]></find>
-      <replace><![CDATA[$0
-$1
+      <replace><![CDATA[$1
 <xen:include template="sv_report_view_warning" />
 $2]]></replace>
     </modification>
