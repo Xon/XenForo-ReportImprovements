@@ -6,7 +6,7 @@ class SV_IntegratedReports_XenForo_Model_Warning extends XFCP_SV_IntegratedRepor
     {
         SV_IntegratedReports_Model_WarningLog::$UseSystemUsernameForComments = true;
         $options = XenForo_Application::getOptions();
-        if ($options->sv_ir_log_to_report_natural_warning_expire)
+        if (!$options->sv_ir_log_to_report_natural_warning_expire)
         {
             SV_IntegratedReports_Model_WarningLog::$SupressLoggingWarningToReport = true;
         }
