@@ -23,6 +23,7 @@ class SV_IntegratedReports_Model_WarningLog extends XenForo_Model
 		', $warningLogId);
 	}
     
+    public static $SupressLoggingWarningToReport = false;
     public static $UseSystemUsernameForComments = false;
     public static $SystemUserId;
     public static $SystemUsername;
@@ -50,6 +51,9 @@ class SV_IntegratedReports_Model_WarningLog extends XenForo_Model
         $warningLogDw->save();
         $warningLogId = $warningLogDw->get('warning_log_id');
 
+        if (self::$SupressLoggingWarningToReport)
+            return $warningLogId;
+        
         $contentType = $warning['content_type'];
         $contentId = $warning['content_id'];
         $reportModel = $this->_getReportModel();

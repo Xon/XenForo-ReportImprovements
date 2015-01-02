@@ -46,6 +46,7 @@ insert into xf_sv_warning_log (warning_edit_date,operation_type,warning_id,conte
 SELECT xf_warning.warning_date,'new',xf_warning.*
 FROM xf_warning");
 
+
         $db->query("
 insert into xf_report_comment (report_id,comment_date,user_id,username,message,state_change,is_report,warning_log_id)
 select (select report_id from xf_report where xf_report.content_type = xf_sv_warning_log.content_type and xf_report.content_id = xf_sv_warning_log.content_id) as report_id,
@@ -54,6 +55,9 @@ from xf_sv_warning_log
 join xf_user on xf_user.user_id = xf_sv_warning_log.warning_user_id
 where exists(select * from xf_report where xf_report.content_type = xf_sv_warning_log.content_type and xf_report.content_id = xf_sv_warning_log.content_id)
 ");
+
+// adding this makes it a slow query:
+// and not exists(select * from xf_report_comment where xf_report_comment.warning_log_id = xf_sv_warning_log.warning_log_id)
 */
 
 /*
