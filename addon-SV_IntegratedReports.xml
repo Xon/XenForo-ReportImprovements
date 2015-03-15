@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SVIntegratedReports" title="SV: Integrated Reports" version_string="0.0.3b" version_id="3" url="" install_callback_class="SV_IntegratedReports_Listener" install_callback_method="install" uninstall_callback_class="SV_IntegratedReports_Listener" uninstall_callback_method="uninstall">
+<addon addon_id="SV_IntegratedReports" title="Integrated Reports" version_string="0.0.4" version_id="4" url="" install_callback_class="SV_IntegratedReports_Listener" install_callback_method="install" uninstall_callback_class="SV_IntegratedReports_Listener" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -7,8 +7,6 @@
   <admin_template_modifications/>
   <code_events/>
   <code_event_listeners>
-<!--    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="" description=""/> --> 
-
     <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Conversation" description=""/>
     <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Forum" description=""/>
     <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_Model_User" description=""/>
@@ -20,7 +18,6 @@
     <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_User" description=""/>
     <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_DataWriter_Warning" description=""/>
     <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_DataWriter_ReportComment" description=""/>
-   
   </code_event_listeners>
   <cron/>
   <email_templates/>
@@ -39,6 +36,12 @@
       <sub_options></sub_options>
       <relation group_id="sv_integrated_reports" display_order="1"/>
     </option>
+    <option option_id="sv_report_new_warnings" edit_format="onoff" data_type="boolean" can_backup="1">
+      <default_value>0</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="sv_integrated_reports" display_order="100"/>
+    </option>
   </optiongroups>
   <permissions>
     <permission_groups/>
@@ -51,12 +54,14 @@
     <interface_groups/>
   </permissions>
   <phrases>
-    <phrase title="option_group_sv_integrated_reports" version_id="1" version_string="0.0.1"><![CDATA[SV: Integrated Reports]]></phrase>
+    <phrase title="option_group_sv_integrated_reports" version_id="3" version_string="0.0.3b"><![CDATA[Integrated Reports]]></phrase>
     <phrase title="option_group_sv_integrated_reports_description" version_id="1" version_string="0.0.1"><![CDATA[]]></phrase>
     <phrase title="option_sv_ir_log_to_report_natural_warning_expire" version_id="2" version_string="0.0.2"><![CDATA[Log Automatically Expiring Warning to Report]]></phrase>
     <phrase title="option_sv_ir_log_to_report_natural_warning_expire_explain" version_id="2" version_string="0.0.2"><![CDATA[]]></phrase>
     <phrase title="option_sv_ir_user_id" version_id="1" version_string="0.0.1"><![CDATA[Reporter]]></phrase>
     <phrase title="option_sv_ir_user_id_explain" version_id="1" version_string="0.0.1"><![CDATA[Enter the user id of the person reporting Alter Ego's]]></phrase>
+    <phrase title="option_sv_report_new_warnings" version_id="3" version_string="0.0.3b"><![CDATA[Report New Warnings]]></phrase>
+    <phrase title="option_sv_report_new_warnings_explain" version_id="3" version_string="0.0.3b"><![CDATA[Automatically create Reports for Warnings on content without an associated report]]></phrase>
     <phrase title="permission_conversation_viewReportConversation" version_id="1" version_string="0.0.1"><![CDATA[View Conversation Report]]></phrase>
     <phrase title="permission_forum_viewReportPost" version_id="1" version_string="0.0.1"><![CDATA[View Post Report]]></phrase>
     <phrase title="permission_general_viewReportUser" version_id="1" version_string="0.0.1"><![CDATA[View User Report]]></phrase>
