@@ -75,10 +75,11 @@
   <route_prefixes/>
   <style_properties/>
   <templates>
-    <template title="sv_report_view_warning" version_id="1" version_string="0.0.1"><![CDATA[<xen:if is="{$comment.operation_type}">
+    <template title="sv_report_view_warning" version_id="4" version_string="0.0.4"><![CDATA[<xen:if is="{$comment.operation_type}">
 <p class="warningLog">
 <div class="pairsJustified">
-<dl><dt>{xen:phrase warning_log_operation_type}</dt><dd>
+<dl><dt>{xen:phrase warning_log_operation_type}</dt>
+<dd class="warning_{$comment.operation_type}">
 <xen:if is="{$comment.operation_type} == 'new'" >
 	{xen:phrase sv_ir_operation_type_new}
 <xen:elseif  is="{$comment.operation_type} == 'delete'" />

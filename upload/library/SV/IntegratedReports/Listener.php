@@ -103,9 +103,10 @@ where permission_group_id = 'general' and  permission_id in ('warn','editBasicPr
 
 	public static function uninstall()
 	{
+        /*
         $db->query("alter table xf_report_comment drop column warning_log_id;");
         $db->query("drop table xf_sv_warning_log;");
-        /*
+
 		$db = XenForo_Application::getDb();
 
 		XenForo_Db::beginTransaction($db);
