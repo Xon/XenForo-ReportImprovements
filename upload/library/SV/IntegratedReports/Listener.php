@@ -2,6 +2,8 @@
 
 class SV_IntegratedReports_Listener
 {
+    const AddonNameSpace = 'SV_IntegratedReports';
+
 	public static function install($installedAddon, array $addonData, SimpleXMLElement $xml)
 	{
     
@@ -133,40 +135,20 @@ where permission_group_id = 'general' and  permission_id in ('warn','editBasicPr
 
         switch ($class)
         {
-            case 'XenForo_Model_Conversation':
-                $extend[] = 'SV_IntegratedReports_XenForo_Model_Conversation';
-                break;
-            case 'XenForo_Model_Forum':
-                $extend[] = 'SV_IntegratedReports_XenForo_Model_Forum';
-                break;
-            case 'XenForo_Model_ProfilePost':
-                $extend[] = 'SV_IntegratedReports_XenForo_Model_ProfilePost';
-                break;                
-            case 'XenForo_Model_User':
-                $extend[] = 'SV_IntegratedReports_XenForo_Model_User';
-                break;
             case 'XenForo_Model_Report':
                 if (XenForo_Application::$versionId <= 1040370)
-                    $extend[] = 'SV_IntegratedReports_XenForo_Model_ReportPatch';
-                $extend[] = 'SV_IntegratedReports_XenForo_Model_Report';
-                break;
+                    $extend[] = self::AddonNameSpace.'_'.$class.'Patch';
+            case 'XenForo_Model_Conversation':
+            case 'XenForo_Model_Forum':
+            case 'XenForo_Model_ProfilePost':
+            case 'XenForo_Model_User':
             case 'XenForo_Model_Warning':
-                $extend[] = 'SV_IntegratedReports_XenForo_Model_Warning';
-                break;
             case 'XenForo_ReportHandler_ProfilePost':
-                $extend[] = 'SV_IntegratedReports_XenForo_ReportHandler_ProfilePost';
-                break;
             case 'XenForo_ReportHandler_Post':
-                $extend[] = 'SV_IntegratedReports_XenForo_ReportHandler_Post';
-                break;
             case 'XenForo_ReportHandler_User':
-                $extend[] = 'SV_IntegratedReports_XenForo_ReportHandler_User';
-                break;
             case 'XenForo_DataWriter_Warning':
-                $extend[] = 'SV_IntegratedReports_XenForo_DataWriter_Warning';
-                break;
             case 'XenForo_DataWriter_ReportComment':
-                $extend[] = 'SV_IntegratedReports_XenForo_DataWriter_ReportComment';
+                $extend[] = self::AddonNameSpace.'_'.$class;
                 break;
 
         }
