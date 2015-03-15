@@ -41,12 +41,15 @@ CREATE TABLE `xf_sv_warning_log` (
   KEY `expiry` (`expiry_date`),
   KEY `operation_type` (`operation_type`),
   KEY `warning_edit_date` (`warning_edit_date`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8");
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+");
      
         $db->query("     
 insert into xf_sv_warning_log (warning_edit_date,operation_type,warning_id,content_type,content_id,content_title,user_id,warning_date,warning_user_id,warning_definition_id,title,notes,points,expiry_date,is_expired,extra_user_group_ids)
-SELECT xf_warning.warning_date,'new',xf_warning.*
-FROM xf_warning");
+SELECT xf_warning.warning_date,'new',warning_id,content_type,content_id,content_title,user_id,warning_date,warning_user_id,warning_definition_id,title,notes,points,expiry_date,is_expired,extra_user_group_ids
+FROM xf_warning
+where warning_id not in (select warning_id from xf_sv_warning_log)
+");
 
 
         $db->query("
@@ -55,7 +58,7 @@ select (select report_id from xf_report where xf_report.content_type = xf_sv_war
     xf_sv_warning_log. warning_date,xf_user.user_id, xf_user.username,'','',0,warning_log_id
 from xf_sv_warning_log
 join xf_user on xf_user.user_id = xf_sv_warning_log.warning_user_id
-where exists(select * from xf_report where xf_report.content_type = xf_sv_warning_log.content_type and xf_report.content_id = xf_sv_warning_log.content_id)
+where not exists(select * from xf_report where xf_report.content_type = xf_sv_warning_log.content_type and xf_report.content_id = xf_sv_warning_log.content_id)
 ");
 
 // adding this makes it a slow query:
@@ -65,28 +68,28 @@ where exists(select * from xf_report where xf_report.content_type = xf_sv_warnin
 /*
 		
 
-		$db->query("insert into xf_permission_entry_content (content_type, content_id, user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int) 
+		$db->query("insert ignore into xf_permission_entry_content (content_type, content_id, user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int) 
 select distinct content_type, content_id, user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportPost', permission_value, permission_value_int 
 from xf_permission_entry_content 
 where permission_group_id = 'forum' and permission_id in ('warn','editAnyPost','deleteAnyPost')
 ");
 
-		$db->query("insert into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int) 
+		$db->query("insert ignore into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int) 
 select distinct user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportPost', permission_value, permission_value_int 
 from xf_permission_entry
 where permission_group_id = 'forum' and permission_id in ('warn','editAnyPost','deleteAnyPost')
 ");
-        $db->query("insert into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
+        $db->query("insert ignore into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
 select distinct user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportConversation', permission_value, permission_value_int 
 from xf_permission_entry
 where permission_group_id = 'conversation' and permission_id in ('alwaysInvite','editAnyPost','viewAny')        
 ");
-        $db->query("insert into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
+        $db->query("insert ignore into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
 select distinct user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportProfilePost', permission_value, permission_value_int 
 from xf_permission_entry
 where permission_group_id = 'profilePost' and permission_id in ('warn','editAny','deleteAny')        
 ");
-        $db->query("insert into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
+        $db->query("insert ignore into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
 select distinct user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportUser', permission_value, permission_value_int 
 from xf_permission_entry
 where permission_group_id = 'general' and  permission_id in ('warn','editBasicProfile')        
