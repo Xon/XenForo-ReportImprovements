@@ -126,36 +126,16 @@ where permission_group_id = 'general' and  permission_id in ('warn','editBasicPr
         */
 	}
     
-    static $init = false;
-    
     public static function load_class($class, array &$extend)
     {
-        if (!self::$init)
-        {
-            self::$init = true;
-            
-        }
-
         switch ($class)
         {
             case 'XenForo_Model_Report':
                 if (XenForo_Application::$versionId <= 1040370)
                     $extend[] = self::AddonNameSpace.'_'.$class.'Patch';
-            case 'XenForo_Model_Conversation':
-            case 'XenForo_Model_Forum':
-            case 'XenForo_Model_ProfilePost':
-            case 'XenForo_Model_User':
-            case 'XenForo_Model_Warning':
-            case 'XenForo_ReportHandler_ProfilePost':
-            case 'XenForo_ReportHandler_Post':
-            case 'XenForo_ReportHandler_User':
-            case 'XenForo_DataWriter_Warning':
-            case 'XenForo_DataWriter_ReportComment':
-                $extend[] = self::AddonNameSpace.'_'.$class;
                 break;
 
         }
+        $extend[] = self::AddonNameSpace.'_'.$class;
     }
-
-
 }
