@@ -23,4 +23,13 @@ class SV_IntegratedReports_XenForo_Model_Report extends XFCP_SV_IntegratedReport
 			ORDER BY report_comment.comment_date
 		', 'report_comment_id', $reportId);
 	} 
+
+    public function getReportCommentById($id)
+	{
+		return $this->_getDb()->fetchRow('
+			SELECT *
+			FROM xf_report_comment
+			WHERE report_comment_id = ?
+		', $id);
+	}
 }
