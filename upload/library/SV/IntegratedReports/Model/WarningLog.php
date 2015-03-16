@@ -98,7 +98,8 @@ class SV_IntegratedReports_Model_WarningLog extends XenForo_Model
 
         $commentToUpdate = null;
         $newReportState = '';
-        
+        $assigned_user_id = 0;
+
         $report = $reportModel->getReportByContent($contentType, $contentId);
         if (empty($report))
         {
@@ -115,6 +116,11 @@ class SV_IntegratedReports_Model_WarningLog extends XenForo_Model
                         $report = $reportModel->getReportById($reportId);
                         $reportComments = $reportModel->getReportComments($reportId);
                         $commentToUpdate = reset($reportComments);
+
+                        if ($reportUser['user_id'] == $viewingUser['user_id'])
+                        {
+                            $assigned_user_id = $reportUser['user_id'];
+                        }
                     }
                 }
             }
@@ -133,11 +139,18 @@ class SV_IntegratedReports_Model_WarningLog extends XenForo_Model
                 }
             }
 
-            if (!empty($newReportState))
+            if (!empty($newReportState) || !empty($assigned_user_id))
             {
                 $reportDw = XenForo_DataWriter::create('XenForo_DataWriter_Report');
                 $reportDw->setExistingData($report, true);
-                $reportDw->set('report_state',  $newReportState);
+                if(!empty($newReportState))
+                {
+                    $reportDw->set('report_state',  $newReportState);
+                }
+                if(!empty($assigned_user_id))
+                {
+                    $reportDw->set('assigned_user_id',  $assigned_user_id);
+                }
                 $reportDw->save();
             }
 
