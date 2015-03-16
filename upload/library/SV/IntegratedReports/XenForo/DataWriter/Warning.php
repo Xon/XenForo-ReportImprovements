@@ -1,20 +1,20 @@
 <?php
 
 class SV_IntegratedReports_XenForo_DataWriter_Warning extends XFCP_SV_IntegratedReports_XenForo_DataWriter_Warning
-{       
+{
 	protected function _postDelete()
 	{
         parent::_postDelete();
         $operationType = SV_IntegratedReports_Model_WarningLog::Operation_DeleteWarning;
         $this->_logOperation($operationType);
 	}
-    
+
 	protected function _postSave()
 	{
         parent::_postSave();
-        
+
         $operationType = '';
-        
+
         if ($this->isInsert())
         {
             $operationType = SV_IntegratedReports_Model_WarningLog::Operation_NewWarning;
@@ -27,13 +27,13 @@ class SV_IntegratedReports_XenForo_DataWriter_Warning extends XFCP_SV_Integrated
                 $operationType = SV_IntegratedReports_Model_WarningLog::Operation_ExpireWarning;
             }
         }
-        
+
         $this->_logOperation($operationType);
     }
-    
-    protected function _logOperation($operationType)
+
+    protected function _getLogData()
     {
-        $warningLogId = $this->_getWarningLogModel()->LogOperation($operationType, array(        
+        return array(
             'warning_id'            => $this->get('warning_id'),
             'content_type'          => $this->get('content_type'),
             'content_id'            => $this->get('content_id'),
@@ -48,11 +48,16 @@ class SV_IntegratedReports_XenForo_DataWriter_Warning extends XFCP_SV_Integrated
             'expiry_date'           => $this->get('expiry_date'),
             'is_expired'            => $this->get('is_expired'),
             'extra_user_group_ids'  => $this->get('extra_user_group_ids'),
-        ));
+        );
+    }
+
+    protected function _logOperation($operationType)
+    {
+        $warningLogId = $this->_getWarningLogModel()->LogOperation($operationType, $this->_getLogData());
     }
 
 	protected function _getWarningLogModel()
 	{
 		return $this->getModelFromCache('SV_IntegratedReports_Model_WarningLog');
-	}  
+	}
 }
