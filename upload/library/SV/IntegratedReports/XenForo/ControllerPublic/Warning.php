@@ -1,23 +1,18 @@
 <?php
 
-class SV_IntegratedReports_XenForo_ControllerPublic_Member extends XFCP_SV_IntegratedReports_XenForo_ControllerPublic_Member
+class SV_IntegratedReports_XenForo_ControllerPublic_Warning extends XFCP_SV_IntegratedReports_XenForo_ControllerPublic_Warning
 {
-    public function actionWarn()
+    public function actionIndex()
     {
-		if ($this->_request->isPost())
-		{
-            SV_IntegratedReports_Model_WarningLog::$resolve_report = $this->_input->filterSingle('resolve_linked_report', XenForo_Input::BOOLEAN);
-        }
+        $response = parent::actionIndex();
 
-        $response = parent::actionWarn();
-
-        if ($response instanceof XenForo_ControllerResponse_View && $response->templateName == 'member_warn')
+        if ($response instanceof XenForo_ControllerResponse_View && $response->templateName == 'warning_info')
         {
             $visitor = XenForo_Visitor::getInstance()->toArray();
-            if ($visitor['is_moderator'])
+            if ($visitor['is_moderator'] && isset($response->params['warning']['content_type']) && isset($response->params['warning']['content_id']))
             {
-                $content_type = $response->params['contentType'];
-                $content_id = $response->params['contentId'];
+                $content_type = $response->params['warning']['content_type'];
+                $content_id = $response->params['warning']['content_id'];
                 $reportModel = $this->_getReportModel();
 
                 $report = $reportModel->getReportByContent($content_type, $content_id);
