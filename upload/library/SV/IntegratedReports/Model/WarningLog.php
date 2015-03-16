@@ -48,6 +48,8 @@ class SV_IntegratedReports_Model_WarningLog extends XenForo_Model
         return null;
     }
 
+    public static $resolve_report = false;
+    
 	/**
 	 * Gets the specified Warning Log if it exists.
 	 *
@@ -99,6 +101,11 @@ class SV_IntegratedReports_Model_WarningLog extends XenForo_Model
         $commentToUpdate = null;
         $newReportState = '';
         $assigned_user_id = 0;
+        if(self::$resolve_report && ($reportUser['user_id'] == $viewingUser['user_id']))
+        {
+            $newReportState = 'resolved';
+            $assigned_user_id = $reportUser['user_id'];
+        }
 
         $report = $reportModel->getReportByContent($contentType, $contentId);
         if (empty($report))
@@ -112,15 +119,9 @@ class SV_IntegratedReports_Model_WarningLog extends XenForo_Model
                     $reportId = $reportModel->reportContent($contentType, $content, '.', $reportUser);
                     if($reportId)
                     {
-                        $newReportState = 'resolved';
                         $report = $reportModel->getReportById($reportId);
                         $reportComments = $reportModel->getReportComments($reportId);
                         $commentToUpdate = reset($reportComments);
-
-                        if ($reportUser['user_id'] == $viewingUser['user_id'])
-                        {
-                            $assigned_user_id = $reportUser['user_id'];
-                        }
                     }
                 }
             }
@@ -132,7 +133,7 @@ class SV_IntegratedReports_Model_WarningLog extends XenForo_Model
             // don't re-open the report when a warning expires naturally.
             if ($operationType != SV_IntegratedReports_Model_WarningLog::Operation_ExpireWarning)
             {
-                if ($report['report_state'] == 'resolved' || $report['report_state'] == 'rejected')
+                if ($newReportState == '' && ($report['report_state'] == 'resolved' || $report['report_state'] == 'rejected'))
                 {
                     // re-open an existing report
                     $newReportState = 'open';
