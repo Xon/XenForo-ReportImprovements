@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_IntegratedReports" title="Integrated Reports" version_string="0.0.5" version_id="5" url="" install_callback_class="SV_IntegratedReports_Listener" install_callback_method="install" uninstall_callback_class="SV_IntegratedReports_Listener" uninstall_callback_method="uninstall">
+<addon addon_id="SV_IntegratedReports" title="Integrated Reports" version_string="0.0.6" version_id="6" url="" install_callback_class="SV_IntegratedReports_Listener" install_callback_method="install" uninstall_callback_class="SV_IntegratedReports_Listener" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
   <admin_templates/>
-  <admin_template_modifications/>
+  <admin_template_modifications>
+    <modification template="user_edit" modification_key="sv_integrated_report_user_edit" description="Add Spam Cleaner" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[<li><a href="{xen:adminlink banning/users/add, $user}" class="OverlayTrigger">{xen:phrase ban_user}</a></li>]]></find>
+      <replace><![CDATA[$0
+<li><a href="{xen:link spam-cleaner, $user}" class="OverlayTrigger">{xen:phrase spam_cleaner}</a></li>]]></replace>
+    </modification>
+  </admin_template_modifications>
   <code_events/>
   <code_event_listeners>
     <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Member" description="XenForo_ControllerPublic_Member"/>
@@ -156,6 +162,10 @@
       <find><![CDATA[#(<fieldset>.*?{xen:phrase notes}.*?</fieldset>)#s]]></find>
       <replace><![CDATA[$1
 <xen:include template="member_warn_ir_options" />]]></replace>
+    </modification>
+    <modification template="moderation_queue_list" modification_key="sv_integrated_report_moderation_queue_list" description="Add Spam Cleaner to moderation queue" execution_order="100" enabled="1" action="str_replace">
+      <find><![CDATA[{$entry.content.user.username}</a>]]></find>
+      <replace><![CDATA[$0<a style="margin-left:30px" target="_blank" href="spam-cleaner/{$entry.content.user.user_id}/?noredirect=1">Spam Cleaner</a>]]></replace>
     </modification>
     <modification template="report_view" modification_key="sv_integrated_report_report_view" description="Insert extra state tracking into the report comments." execution_order="10" enabled="1" action="preg_replace">
       <find><![CDATA[#(<div class="content">.*?)(</div>)#s]]></find>
