@@ -23,12 +23,6 @@ class SV_IntegratedReports_Model_WarningLog extends XenForo_Model
 		', $warningLogId);
 	}
 
-    public static $SupressLoggingWarningToReport = false;
-    public static $UseSystemUsernameForComments = false;
-    public static $SystemUserId;
-    public static $SystemUsername;
-
-
     public function getContentForReportFromWarning(array $warning)
     {
         $contentType = $warning['content_type'];
@@ -72,7 +66,7 @@ class SV_IntegratedReports_Model_WarningLog extends XenForo_Model
         $warningLogDw->save();
         $warningLogId = $warningLogDw->get('warning_log_id');
 
-        if (self::$SupressLoggingWarningToReport)
+        if (SV_IntegratedReports_Globals::$SupressLoggingWarningToReport)
         {
             return $warningLogId;
         }
@@ -87,21 +81,21 @@ class SV_IntegratedReports_Model_WarningLog extends XenForo_Model
         $reportUser = $viewingUser = XenForo_Visitor::getInstance()->toArray();
         $updating_user_id = $viewingUser['user_id'];
         $updating_username = $viewingUser['username'];
-        if (self::$UseSystemUsernameForComments || $viewingUser['user_id'] == 0 || $viewingUser['username'] == '')
+        if (SV_IntegratedReports_Globals::$UseSystemUsernameForComments || $viewingUser['user_id'] == 0 || $viewingUser['username'] == '')
         {
-            if (!isset(self::$SystemUserId) || $SystemUserId != $reporterId )
+            if (!empty(SV_IntegratedReports_Globals::$SystemUserId) || $SystemUserId != $reporterId )
             {
                 $userModel = $this->_getUserModel();
                 $reportUser = $userModel->getUserById($reporterId);
-                $updating_user_id = self::$SystemUserId = $reporterId;
-                $updating_username = self::$SystemUsername = $reportUser['username'];
+                $updating_user_id = SV_IntegratedReports_Globals::$SystemUserId = $reporterId;
+                $updating_username = SV_IntegratedReports_Globals::$SystemUsername = $reportUser['username'];
             }
         }
 
         $commentToUpdate = null;
         $newReportState = '';
         $assigned_user_id = 0;
-        if(self::$resolve_report && ($reportUser['user_id'] == $viewingUser['user_id']))
+        if(SV_IntegratedReports_Globals::$resolve_report && ($reportUser['user_id'] == $viewingUser['user_id']))
         {
             $newReportState = 'resolved';
             $assigned_user_id = $reportUser['user_id'];

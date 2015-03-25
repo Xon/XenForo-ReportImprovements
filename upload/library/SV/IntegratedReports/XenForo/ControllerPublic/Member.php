@@ -6,7 +6,7 @@ class SV_IntegratedReports_XenForo_ControllerPublic_Member extends XFCP_SV_Integ
     {
 		if ($this->_request->isPost())
 		{
-            SV_IntegratedReports_Model_WarningLog::$resolve_report = $this->_input->filterSingle('resolve_linked_report', XenForo_Input::BOOLEAN);
+            SV_IntegratedReports_Globals::$resolve_report = $this->_input->filterSingle('resolve_linked_report', XenForo_Input::BOOLEAN);
         }
 
         $response = parent::actionWarn();

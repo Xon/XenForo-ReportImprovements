@@ -4,11 +4,11 @@ class SV_IntegratedReports_XenForo_Model_Warning extends XFCP_SV_IntegratedRepor
 {
     public function processExpiredWarnings()
     {
-        SV_IntegratedReports_Model_WarningLog::$UseSystemUsernameForComments = true;
+        SV_IntegratedReports_Globals::$UseSystemUsernameForComments = true;
         $options = XenForo_Application::getOptions();
         if (!$options->sv_ir_log_to_report_natural_warning_expire)
         {
-            SV_IntegratedReports_Model_WarningLog::$SupressLoggingWarningToReport = true;
+            SV_IntegratedReports_Globals::$SupressLoggingWarningToReport = true;
         }
         try
         {
@@ -16,8 +16,8 @@ class SV_IntegratedReports_XenForo_Model_Warning extends XFCP_SV_IntegratedRepor
         }
         finally
         {
-            SV_IntegratedReports_Model_WarningLog::$UseSystemUsernameForComments = false;
-            SV_IntegratedReports_Model_WarningLog::$SupressLoggingWarningToReport = false;
+            SV_IntegratedReports_Globals::$UseSystemUsernameForComments = false;
+            SV_IntegratedReports_Globals::$SupressLoggingWarningToReport = false;
         }
     }
 }
