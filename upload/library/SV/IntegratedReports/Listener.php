@@ -96,20 +96,45 @@ where permission_group_id = 'general' and  permission_id in ('warn','editBasicPr
 ");
         */
         
+        $db->query("
+            INSERT IGNORE INTO xf_content_type
+                (content_type, addon_id, fields)
+            VALUES
+                ('".SV_IntegratedReports_AlertHandler_Report::ContentType."', '".self::AddonNameSpace."', '')
+        ");
+
+        $db->query("
+            INSERT IGNORE INTO xf_content_type_field
+                (content_type, field_name, field_value)
+            VALUES
+                ('".SV_IntegratedReports_AlertHandler_Report::ContentType."', 'alert_handler_class', 'SV_IntegratedReports_AlertHandler_Report')
+        ");
+
         XenForo_Db::commit($db); 
         
+        XenForo_Model::create('XenForo_Model_ContentType')->rebuildContentTypeCache();
         //XenForo_Application::defer('Permission', array(), 'Permission', true);
 	}
 
 	public static function uninstall()
 	{
-        /*
-        $db->query("alter table xf_report_comment drop column warning_log_id;");
-        $db->query("drop table xf_sv_warning_log;");
-
 		$db = XenForo_Application::getDb();
 
 		XenForo_Db::beginTransaction($db);
+
+        $db->query("
+            DELETE FROM xf_content_type_field
+            WHERE xf_content_type_field.field_value = 'SV_IntegratedReports_AlertHandler_Report'
+        ");
+
+        $db->query("
+            DELETE FROM xf_content_type
+            WHERE xf_content_type.addon_id = '".self::AddonNameSpace."'
+        ");
+        
+        /*
+        $db->query("alter table xf_report_comment drop column warning_log_id;");
+        $db->query("drop table xf_sv_warning_log;");
 
 		$db->delete('xf_permission_entry', "permission_id = 'viewReportConversation'");
 		$db->delete('xf_permission_entry', "permission_id = 'viewReportPost'");
@@ -120,11 +145,11 @@ where permission_group_id = 'general' and  permission_id in ('warn','editBasicPr
         $db->delete('xf_permission_entry_content', "permission_id = 'viewReportPost'");		
 		$db->delete('xf_permission_entry_content', "permission_id = 'viewReportProfilePost'");
 		$db->delete('xf_permission_entry_content', "permission_id = 'viewReportUser'");
-
+*/
 		XenForo_Db::commit($db);
         
-        XenForo_Application::defer('Permission', array(), 'Permission', true);
-        */
+        XenForo_Model::create('XenForo_Model_ContentType')->rebuildContentTypeCache();
+        //XenForo_Application::defer('Permission', array(), 'Permission', true);        
 	}
     
     public static function load_class($class, array &$extend)
