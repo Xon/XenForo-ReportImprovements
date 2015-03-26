@@ -29,11 +29,10 @@ class SV_IntegratedReports_AlertHandler_Report extends XenForo_AlertHandler_Abst
             {
                 $this->_reportModel = XenForo_Model::create("XenForo_Model_Report");
             }
-            $item['content']['content_info'] = unserialize($item['content']['content_info']);
             $handler = $this->_reportModel->getReportHandler($item['content']['content_type']);
-            if (!empty($handler) && !empty($item['content']['content_info']))    
+            if (!empty($handler))
             {
-                $item['content']['title'] = $handler->getContentTitle($item['content'], $item['content']['content_info']);
+                $item['content'] = $handler->prepareReport($item['content']);
             }
         }
         if (!empty($item['extra_data']))
