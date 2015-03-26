@@ -6,13 +6,12 @@ class SV_IntegratedReports_Listener
 
 	public static function install($installedAddon, array $addonData, SimpleXMLElement $xml)
 	{
-    
 		$db = XenForo_Application::getDb();
-     
+
+        XenForo_Db::beginTransaction($db);
 
 // migration code.     
 /*        
-        XenForo_Db::beginTransaction($db);
         $db->query("alter table xf_report_comment add column warning_log_id int unsigned default 0");
         
         $db->query("
