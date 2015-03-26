@@ -101,7 +101,7 @@
 
 {xen:phrase sv_ir_x_commented_on_report,
 	'name={xen:helper username, $user, 'subject'}',
-	'report=<a href="{xen:link reports, $content}{$extra}" class="PopupItemLink">{$content.title}</a>'
+	'report=<a href="{xen:link reports, $content}{$extra}" class="PopupItemLink">{$content.contentTitle}</a>'
 }]]></template>
     <template title="ir_report_display" version_id="4" version_string="0.0.4"><![CDATA[<xen:if is="{$report}">
 	<div class="discussionList section">
