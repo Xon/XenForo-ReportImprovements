@@ -8,6 +8,7 @@ class SV_IntegratedReports_Globals
     public static $UseSystemUsernameForComments = false;
     public static $SystemUserId = null;
     public static $SystemUsername = null;
+    public static $resolve_report = false;
 
-    private function__construct() {}
+    private function __construct() {}
 }

@@ -27,7 +27,7 @@ class SV_IntegratedReports_AlertHandler_Report extends XenForo_AlertHandler_Abst
         if (!empty($item['content']['content_info']))
         {
             $content_type = $item['content']['content_type'];
-            if (isset($this->_handlerCache[$content_type])
+            if (isset($this->_handlerCache[$content_type]))
             {
                 $handler = $this->_handlerCache[$content_type];
             }
