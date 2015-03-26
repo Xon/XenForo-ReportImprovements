@@ -53,7 +53,7 @@ class SV_IntegratedReports_XenForo_DataWriter_ReportComment extends XFCP_SV_Inte
             if ($otherCommenter['is_moderator'])
             {
                 $hasUnviewedReport = $db->fetchRow("select alert_id from xf_user_alert
-                    where user_id = ? and content_type = ? and content_id = ? and view_date = 0;",
+                    where alerted_user_id = ? and content_type = ? and content_id = ? and view_date = 0",
                     array($otherCommenter['user_id'], SV_IntegratedReports_AlertHandler_Report::ContentType, $this->get('report_id'))
                 );
 
