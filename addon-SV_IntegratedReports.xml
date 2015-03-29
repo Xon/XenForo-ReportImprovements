@@ -135,6 +135,9 @@
 			</fieldset>
 <xen:include template="ir_report_display" />
 	]]></template>
+    <template title="report_list_item_report_node" version_id="8" version_string="0.0.8"><![CDATA[<xen:if is="{$report.extraContent.node_title} AND {$report.extraContent.node_id}">
+, <a href="{xen:link forums, $report.extraContent}" class="forumLink">{$report.extraContent.node_title}</a>
+</xen:if>]]></template>
     <template title="sv_report_view_warning" version_id="4" version_string="0.0.4"><![CDATA[<xen:if is="{$comment.operation_type}">
 <p class="warningLog">
 <div class="pairsJustified">
@@ -179,6 +182,12 @@
     <modification template="report_view" modification_key="sv_integrated_report_report_list_item" description="Add anchor tags" execution_order="10" enabled="1" action="str_replace">
       <find><![CDATA[<li class="primaryContent reportComment {xen:if '!{$comment.is_report}', staffComment}"]]></find>
       <replace><![CDATA[$0 id="reportComment-{$comment.report_comment_id}"]]></replace>
+    </modification>
+    <modification template="report_list_item" modification_key="sv_integrated_report_report_list_item2" description="Add node where relevent to the report list" execution_order="10" enabled="1" action="preg_replace">
+      <find><![CDATA[#(<div class="posterDate muted">.*)(\s*)(</div>)#Usi]]></find>
+      <replace><![CDATA[$1
+<xen:include template="report_list_item_report_node" />
+$2$3]]></replace>
     </modification>
     <modification template="report_view" modification_key="sv_integrated_report_report_view" description="Insert extra state tracking into the report comments." execution_order="10" enabled="1" action="preg_replace">
       <find><![CDATA[#(<div class="content">.*?)(</div>)#s]]></find>
