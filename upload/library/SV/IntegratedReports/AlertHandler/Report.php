@@ -8,16 +8,12 @@ class SV_IntegratedReports_AlertHandler_Report extends XenForo_AlertHandler_Abst
 
     public function getContentByIds(array $contentIds, $model, $userId, array $viewingUser)
     {
-        if (empty($this->_reportModel))
-        {
-            $this->_reportModel = $model->getModelFromCache('XenForo_Model_Report');
-        }
-        return $this->_reportModel->getReportsByIds($contentIds);
+        return $this->$this->_getReportModel()->getReportsByIds($contentIds);
     }
 
     public function canViewAlert(array $alert, $content, array $viewingUser)
     {
-        return ($viewingUser['is_moderator'] || $viewingUser['is_admin']);
+        return ($viewingUser['is_moderator']);
     }
     
     public function prepareAlert(array $item, array $viewingUser)
@@ -33,11 +29,7 @@ class SV_IntegratedReports_AlertHandler_Report extends XenForo_AlertHandler_Abst
             }
             else
             {
-                if (empty($this->_reportModel))
-                {
-                    $this->_reportModel = XenForo_Model::create("XenForo_Model_Report");
-                }
-                $handler = $this->_handlerCache[$content_type] = $this->_reportModel->getReportHandler($content_type);
+                $handler = $this->_handlerCache[$content_type] = $this->_getReportModel()->getReportHandler($content_type);
             }
             if (!empty($handler))
             {
@@ -50,5 +42,15 @@ class SV_IntegratedReports_AlertHandler_Report extends XenForo_AlertHandler_Abst
             unset($item['extra_data']);
         }
     	return $item;
+    }
+
+    protected function _getReportModel()
+    {
+        if (!$this->_reportModel)
+        {
+            $this->_reportModel = XenForo_Model::create('XenForo_Model_Report');
+        }
+
+        return $this->_reportModel;
     }
 }
