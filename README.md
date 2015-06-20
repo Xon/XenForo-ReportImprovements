@@ -3,6 +3,7 @@ XenForo-WarningImprovements
 
 A Collection of improvements to XF's reporting system.
 
+- Only view Alerts/Reports for forums the moderator can see.
 - Adds Spam Cleaner links in AdminCP (under actions) and to the Moderation Queue front-end
 - Sents an Alert to moderators who have commented/reported on a report.
 -- Report Alerts link to the actual comments for longer reports
