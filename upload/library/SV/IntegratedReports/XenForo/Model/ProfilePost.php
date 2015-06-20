@@ -14,7 +14,7 @@ class SV_IntegratedReports_XenForo_Model_ProfilePost extends XFCP_SV_IntegratedR
            )
 		{
 			return true;
-		}   
+		}
 
 		$errorPhraseKey = 'you_may_not_manage_this_reported_content';
 		return false;

@@ -12,7 +12,7 @@ class SV_IntegratedReports_XenForo_Model_Conversation extends XFCP_SV_Integrated
               XenForo_Permission::hasPermission($viewingUser['permissions'], 'conversation', 'viewReportConversation')
              )
            )
-             
+
 		{
 			return true;
 		}

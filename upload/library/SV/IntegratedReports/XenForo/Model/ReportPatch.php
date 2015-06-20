@@ -17,5 +17,5 @@ class SV_IntegratedReports_XenForo_Model_ReportPatch extends XFCP_SV_IntegratedR
 			$handlers[$contentType] = new $class();
 		}
 		return $handlers;
-	}   
+	}
 }

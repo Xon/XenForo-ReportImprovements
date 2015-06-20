@@ -41,7 +41,7 @@ class SV_IntegratedReports_Model_WarningLog extends XenForo_Model
         }
         return null;
     }
-    
+
 	/**
 	 * Gets the specified Warning Log if it exists.
 	 *

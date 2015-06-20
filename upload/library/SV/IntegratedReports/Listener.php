@@ -10,10 +10,10 @@ class SV_IntegratedReports_Listener
 
         XenForo_Db::beginTransaction($db);
 
-// migration code.     
-/*        
+// migration code.
+/*
         $db->query("alter table xf_report_comment add column warning_log_id int unsigned default 0");
-        
+
         $db->query("
 CREATE TABLE `xf_sv_warning_log` (
   `warning_log_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -42,8 +42,8 @@ CREATE TABLE `xf_sv_warning_log` (
   KEY `warning_edit_date` (`warning_edit_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 ");
-     
-        $db->query("     
+
+        $db->query("
 insert into xf_sv_warning_log (warning_edit_date,operation_type,warning_id,content_type,content_id,content_title,user_id,warning_date,warning_user_id,warning_definition_id,title,notes,points,expiry_date,is_expired,extra_user_group_ids)
 SELECT xf_warning.warning_date,'new',warning_id,content_type,content_id,content_title,user_id,warning_date,warning_user_id,warning_definition_id,title,notes,points,expiry_date,is_expired,extra_user_group_ids
 FROM xf_warning
@@ -65,36 +65,36 @@ where not exists(select * from xf_report where xf_report.content_type = xf_sv_wa
 */
 
 /*
-		
 
-		$db->query("insert ignore into xf_permission_entry_content (content_type, content_id, user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int) 
-select distinct content_type, content_id, user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportPost', permission_value, permission_value_int 
-from xf_permission_entry_content 
+
+		$db->query("insert ignore into xf_permission_entry_content (content_type, content_id, user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
+select distinct content_type, content_id, user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportPost', permission_value, permission_value_int
+from xf_permission_entry_content
 where permission_group_id = 'forum' and permission_id in ('warn','editAnyPost','deleteAnyPost')
 ");
 
-		$db->query("insert ignore into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int) 
-select distinct user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportPost', permission_value, permission_value_int 
+		$db->query("insert ignore into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
+select distinct user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportPost', permission_value, permission_value_int
 from xf_permission_entry
 where permission_group_id = 'forum' and permission_id in ('warn','editAnyPost','deleteAnyPost')
 ");
         $db->query("insert ignore into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
-select distinct user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportConversation', permission_value, permission_value_int 
+select distinct user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportConversation', permission_value, permission_value_int
 from xf_permission_entry
-where permission_group_id = 'conversation' and permission_id in ('alwaysInvite','editAnyPost','viewAny')        
+where permission_group_id = 'conversation' and permission_id in ('alwaysInvite','editAnyPost','viewAny')
 ");
         $db->query("insert ignore into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
-select distinct user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportProfilePost', permission_value, permission_value_int 
+select distinct user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportProfilePost', permission_value, permission_value_int
 from xf_permission_entry
-where permission_group_id = 'profilePost' and permission_id in ('warn','editAny','deleteAny')        
+where permission_group_id = 'profilePost' and permission_id in ('warn','editAny','deleteAny')
 ");
         $db->query("insert ignore into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
-select distinct user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportUser', permission_value, permission_value_int 
+select distinct user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportUser', permission_value, permission_value_int
 from xf_permission_entry
-where permission_group_id = 'general' and  permission_id in ('warn','editBasicProfile')        
+where permission_group_id = 'general' and  permission_id in ('warn','editBasicProfile')
 ");
         */
-        
+
         $db->query("
             INSERT IGNORE INTO xf_content_type
                 (content_type, addon_id, fields)
@@ -109,8 +109,8 @@ where permission_group_id = 'general' and  permission_id in ('warn','editBasicPr
                 ('".SV_IntegratedReports_AlertHandler_Report::ContentType."', 'alert_handler_class', 'SV_IntegratedReports_AlertHandler_Report')
         ");
 
-        XenForo_Db::commit($db); 
-        
+        XenForo_Db::commit($db);
+
         XenForo_Model::create('XenForo_Model_ContentType')->rebuildContentTypeCache();
         //XenForo_Application::defer('Permission', array(), 'Permission', true);
 	}
@@ -130,7 +130,7 @@ where permission_group_id = 'general' and  permission_id in ('warn','editBasicPr
             DELETE FROM xf_content_type
             WHERE xf_content_type.addon_id = '".self::AddonNameSpace."'
         ");
-        
+
         /*
         $db->query("alter table xf_report_comment drop column warning_log_id;");
         $db->query("drop table xf_sv_warning_log;");
@@ -141,16 +141,16 @@ where permission_group_id = 'general' and  permission_id in ('warn','editBasicPr
 		$db->delete('xf_permission_entry', "permission_id = 'viewReportUser'");
 
 		$db->delete('xf_permission_entry_content', "permission_id = 'viewReportConversation'");
-        $db->delete('xf_permission_entry_content', "permission_id = 'viewReportPost'");		
+        $db->delete('xf_permission_entry_content', "permission_id = 'viewReportPost'");
 		$db->delete('xf_permission_entry_content', "permission_id = 'viewReportProfilePost'");
 		$db->delete('xf_permission_entry_content', "permission_id = 'viewReportUser'");
 */
 		XenForo_Db::commit($db);
-        
+
         XenForo_Model::create('XenForo_Model_ContentType')->rebuildContentTypeCache();
-        //XenForo_Application::defer('Permission', array(), 'Permission', true);        
+        //XenForo_Application::defer('Permission', array(), 'Permission', true);
 	}
-    
+
     public static function load_class($class, array &$extend)
     {
         switch ($class)

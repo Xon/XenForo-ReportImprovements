@@ -18,7 +18,7 @@ class SV_IntegratedReports_DataWriter_WarningLog extends XenForo_DataWriter
                 'operation_type'        => array('type' => self::TYPE_STRING,  'default' => 'new',
 						'allowedValues' => array('new', 'edit', 'delete', 'expire')
 				),
-                
+
                 'warning_edit_date'     => array('type' => self::TYPE_UINT,    'default' => XenForo_Application::$time),
                 'warning_id'            => array('type' => self::TYPE_UINT,    'required' => true),
                 'content_type'          => array('type' => self::TYPE_STRING,  'required' => true, 'maxLength' => 25),
@@ -80,7 +80,7 @@ class SV_IntegratedReports_DataWriter_WarningLog extends XenForo_DataWriter
 	protected function _postDelete()
 	{
 	}
-    
+
 	/**
 	 * @return XenForo_Model_Warning
 	 */
