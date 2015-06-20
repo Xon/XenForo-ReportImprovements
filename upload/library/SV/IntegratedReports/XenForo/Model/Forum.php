@@ -7,8 +7,9 @@ class SV_IntegratedReports_XenForo_Model_Forum extends XFCP_SV_IntegratedReports
 	{
 		$this->standardizeViewingUserReference($viewingUser);
 
-        if ($viewingUser['is_moderator'] && 
-            (XenForo_Permission::hasContentPermission($forum['permissions'], 'editAnyPost') || 
+        if ($viewingUser['is_moderator'] &&
+            ($this->canViewForum($forum, $errorPhraseKey, $forum['permissions'], $viewingUser)) &&
+            (XenForo_Permission::hasContentPermission($forum['permissions'], 'editAnyPost') ||
              XenForo_Permission::hasContentPermission($forum['permissions'], 'deleteAnyPost') ||
              XenForo_Permission::hasContentPermission($forum['permissions'], 'viewReportPost')
             )

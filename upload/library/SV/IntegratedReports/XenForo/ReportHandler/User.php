@@ -3,10 +3,9 @@
 class SV_IntegratedReports_XenForo_ReportHandler_User extends XFCP_SV_IntegratedReports_XenForo_ReportHandler_User
 {
 	public function getVisibleReportsForUser(array $reports, array $viewingUser)
-	{    
-		/* @var $userModel XenForo_Model_User */
-		$userModel = XenForo_Model::create('XenForo_Model_User');
-        
+	{
+		$userModel = $this->_getUserModel();
+
 		foreach ($reports AS $reportId => $report)
 		{
 			$info = unserialize($report['content_info']);
@@ -21,4 +20,15 @@ class SV_IntegratedReports_XenForo_ReportHandler_User extends XFCP_SV_Integrated
 
 		return $reports;
 	}
+
+    var $_userModel = null;
+    protected function _getUserModel()
+    {
+        if (empty($this->_userModel))
+        {
+            $this->_userModel = XenForo_Model::create('XenForo_Model_User');
+        }
+
+        return $this->_userModel;
+    }
 }

@@ -8,29 +8,28 @@ class SV_IntegratedReports_AlertHandler_Report extends XenForo_AlertHandler_Abst
 
     public function getContentByIds(array $contentIds, $model, $userId, array $viewingUser)
     {
-        return $this->$this->_getReportModel()->getReportsByIds($contentIds);
+        return $this->_getReportModel()->getReportsByIds($contentIds);
     }
 
     public function canViewAlert(array $alert, $content, array $viewingUser)
     {
-        return ($viewingUser['is_moderator']);
+        return true;
+        $handler = $this->_getReportHandler($item['content']['content_type']);
+        if (empty($handler))
+        {
+            return false;
+        }
+        $reports = $handler->getVisibleReportsForUser(array($item['content']), $viewingUser);
+        return !empty($reports);
     }
-    
+
     public function prepareAlert(array $item, array $viewingUser)
     {
     	parent::prepareAlert($item, $viewingUser);
 
         if (!empty($item['content']['content_info']))
         {
-            $content_type = $item['content']['content_type'];
-            if (isset($this->_handlerCache[$content_type]))
-            {
-                $handler = $this->_handlerCache[$content_type];
-            }
-            else
-            {
-                $handler = $this->_handlerCache[$content_type] = $this->_getReportModel()->getReportHandler($content_type);
-            }
+            $handler = $this->_getReportHandler($item['content']['content_type']);
             if (!empty($handler))
             {
                 $item['content'] = $handler->prepareReport($item['content']);
@@ -44,9 +43,22 @@ class SV_IntegratedReports_AlertHandler_Report extends XenForo_AlertHandler_Abst
     	return $item;
     }
 
+    protected function _getReportHandler($content_type)
+    {
+        if (isset($this->_handlerCache[$content_type]))
+        {
+            $handler = $this->_handlerCache[$content_type];
+        }
+        else
+        {
+            $handler = $this->_handlerCache[$content_type] = $this->_getReportModel()->getReportHandler($content_type);
+        }
+        return $handler;
+    }
+
     protected function _getReportModel()
     {
-        if (!$this->_reportModel)
+        if (empty($this->_reportModel))
         {
             $this->_reportModel = XenForo_Model::create('XenForo_Model_Report');
         }

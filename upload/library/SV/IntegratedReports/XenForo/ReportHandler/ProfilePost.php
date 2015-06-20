@@ -3,7 +3,7 @@
 class SV_IntegratedReports_XenForo_ReportHandler_ProfilePost extends XFCP_SV_IntegratedReports_XenForo_ReportHandler_ProfilePost
 {
 	public function getVisibleReportsForUser(array $reports, array $viewingUser)
-	{    
+	{
 		$reportsByUser = array();
 		foreach ($reports AS $reportId => $report)
 		{
@@ -11,12 +11,12 @@ class SV_IntegratedReports_XenForo_ReportHandler_ProfilePost extends XFCP_SV_Int
 			$reportsByUser[$info['profile_user_id']][] = $reportId;
 		}
 
-		$users = XenForo_Model::create('XenForo_Model_User')->getUsersByIds(array_keys($reportsByUser), array(
+		$users = $this->_getUserModel()->getUsersByIds(array_keys($reportsByUser), array(
 			'join' => XenForo_Model_User::FETCH_USER_PRIVACY,
 			'followingUserId' => $viewingUser['user_id']
 		));
 
-		$userProfileModel = XenForo_Model::create('XenForo_Model_ProfilePost');
+		$userProfileModel = $this->_getProfilePostModel();
 
 		foreach ($reportsByUser AS $userId => $userReports)
 		{
@@ -32,4 +32,26 @@ class SV_IntegratedReports_XenForo_ReportHandler_ProfilePost extends XFCP_SV_Int
 
 		return $reports;
 	}
+
+    var $_userModel = null;
+    protected function _getUserModel()
+    {
+        if (empty($this->_userModel))
+        {
+            $this->_userModel = XenForo_Model::create('XenForo_Model_User');
+        }
+
+        return $this->_userModel;
+    }
+
+    var $_ProfilePostModel = null;
+    protected function _getProfilePostModel()
+    {
+        if (empty($this->_ProfilePostModel))
+        {
+            $this->_ProfilePostModel = XenForo_Model::create('XenForo_Model_ProfilePost');
+        }
+
+        return $this->_ProfilePostModel;
+    }
 }
