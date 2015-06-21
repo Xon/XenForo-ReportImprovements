@@ -213,6 +213,10 @@ $2$3]]></replace>
 <xen:include template="sv_report_view_warning" />
 $2]]></replace>
     </modification>
+    <modification template="report_view" modification_key="sv_integrated_report_report_view1" description="Add User Tagging support" execution_order="10" enabled="1" action="preg_replace">
+      <find><![CDATA[#(<textarea name="comment" .*? class=".*?)(")#si]]></find>
+      <replace><![CDATA[$1 UserTagger$2]]></replace>
+    </modification>
     <modification template="warning_info" modification_key="sv_integrated_report_warning_info" description="Show Report info on warning" execution_order="5" enabled="1" action="str_replace">
       <find><![CDATA[<xen:if is="{$canDeleteWarning} AND {$canExpireWarning}">]]></find>
       <replace><![CDATA[<xen:include template="ir_report_display" />
