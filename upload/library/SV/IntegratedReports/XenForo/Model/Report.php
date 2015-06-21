@@ -54,4 +54,60 @@ class SV_IntegratedReports_XenForo_Model_Report extends XFCP_SV_IntegratedReport
             WHERE report_id = ?
         ', $reportId);
     }
+
+    public function alertTaggedMembers(array $report, array $reportComment, array $tagged, array $alreadyAlerted, array $taggingUser)
+    {
+        $userIds = XenForo_Application::arrayColumn($tagged, 'user_id');
+        $userIds = array_diff($userIds, $alreadyAlerted);
+        $alertedUserIds = array();
+
+        $report = $this->getReportById($report['report_id']);
+        if (empty($report))
+        {
+            return;
+        }
+        $handler = $this->getReportHandler($report['content_type']);
+        if (empty($handler))
+        {
+            return;
+        }
+
+        if ($userIds)
+        {
+            $userModel = $this->_getUserModel();
+            $users = $userModel->getUsersByIds($userIds, array(
+                'join' =>  XenForo_Model_User::FETCH_USER_PERMISSIONS
+            ));
+            foreach ($users AS $user)
+            {
+                if (isset($alertedUserIds[$user['user_id']]) || $user['user_id'] == $taggingUser['user_id'])
+                {
+                    continue;
+                }
+
+                $user['permissions'] = XenForo_Permission::unserializePermissions($user['global_permission_cache']);
+
+                $reports = $handler->getVisibleReportsForUser(array($report['report_id'] => $report), $user);
+
+                if (!empty($reports))
+                {
+                    $alertedUserIds[$user['user_id']] = true;
+
+                    XenForo_Model_Alert::alert($user['user_id'],
+                        $taggingUser['user_id'], $taggingUser['username'],
+                        SV_IntegratedReports_Globals::$Report_ContentType, $report['report_id'],
+                        SV_IntegratedReports_Globals::$Report_Tag,
+                        array('report_comment_id' => $reportComment['report_comment_id'])
+                    );
+                }
+            }
+        }
+
+        return array_keys($alertedUserIds);
+    }
+
+    protected function _getUserModel()
+    {
+        return $this->getModelFromCache('XenForo_Model_User');
+    }
 }

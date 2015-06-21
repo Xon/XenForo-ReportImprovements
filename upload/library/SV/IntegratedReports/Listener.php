@@ -99,14 +99,14 @@ where permission_group_id = 'general' and  permission_id in ('warn','editBasicPr
             INSERT IGNORE INTO xf_content_type
                 (content_type, addon_id, fields)
             VALUES
-                ('".SV_IntegratedReports_AlertHandler_Report::ContentType."', '".self::AddonNameSpace."', '')
+                ('".SV_IntegratedReports_Globals::$Report_ContentType."', '".self::AddonNameSpace."', '')
         ");
 
         $db->query("
             INSERT IGNORE INTO xf_content_type_field
                 (content_type, field_name, field_value)
             VALUES
-                ('".SV_IntegratedReports_AlertHandler_Report::ContentType."', 'alert_handler_class', 'SV_IntegratedReports_AlertHandler_Report')
+                ('".SV_IntegratedReports_Globals::$Report_ContentType."', 'alert_handler_class', 'SV_IntegratedReports_AlertHandler_Report')
         ");
 
         XenForo_Db::commit($db);

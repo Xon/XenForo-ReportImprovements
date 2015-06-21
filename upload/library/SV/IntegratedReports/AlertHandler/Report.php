@@ -2,7 +2,6 @@
 
 class SV_IntegratedReports_AlertHandler_Report extends XenForo_AlertHandler_Abstract
 {
-    const ContentType = 'report';
     var $_reportModel = null;
     var $_handlerCache = array();
 

@@ -26,6 +26,7 @@
     <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_User" description=""/>
     <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_DataWriter_Warning" description=""/>
     <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_DataWriter_ReportComment" description=""/>
+    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Report" description="XenForo_ControllerPublic_Report"/>
   </code_event_listeners>
   <cron/>
   <email_templates/>
@@ -98,6 +99,7 @@
     <phrase title="sv_ir_operation_type_expire" version_id="2" version_string="0.0.2"><![CDATA[Expired Warning]]></phrase>
     <phrase title="sv_ir_operation_type_new" version_id="2" version_string="0.0.2"><![CDATA[New Warning]]></phrase>
     <phrase title="sv_ir_x_commented_on_report" version_id="7" version_string="0.0.7"><![CDATA[{name} commented on the report {report}.]]></phrase>
+    <phrase title="sv_ir_x_tagged_on_report" version_id="10" version_string="0.0.10"><![CDATA[{name} tagged you in the report {report}.]]></phrase>
     <phrase title="warning_log_operation_type" version_id="1" version_string="0.0.1"><![CDATA[Operation Type]]></phrase>
   </phrases>
   <route_prefixes/>
@@ -108,6 +110,14 @@
 </xen:if>
 
 {xen:phrase sv_ir_x_commented_on_report,
+	'name={xen:helper username, $user, 'subject'}',
+	'report=<a href="{xen:link reports, $content}{$extra}" class="PopupItemLink">{$content.contentTitle}</a>'
+}]]></template>
+    <template title="alert_report_tag" version_id="10" version_string="0.0.10"><![CDATA[<xen:if is='{$content.extra.report_comment_id}'>
+<xen:set var="$extra">#reportComment-{$content.extra.report_comment_id}</xen:set>
+</xen:if>
+
+{xen:phrase sv_ir_x_tagged_on_report,
 	'name={xen:helper username, $user, 'subject'}',
 	'report=<a href="{xen:link reports, $content}{$extra}" class="PopupItemLink">{$content.contentTitle}</a>'
 }]]></template>
