@@ -24,7 +24,7 @@ class SV_IntegratedReports_AlertHandler_Report extends XenForo_AlertHandler_Abst
 
     public function prepareAlert(array $item, array $viewingUser)
     {
-    	parent::prepareAlert($item, $viewingUser);
+        parent::prepareAlert($item, $viewingUser);
 
         if (!empty($item['content']['content_info']))
         {
@@ -39,7 +39,7 @@ class SV_IntegratedReports_AlertHandler_Report extends XenForo_AlertHandler_Abst
             $item['content']['extra'] = unserialize($item['extra_data']);
             unset($item['extra_data']);
         }
-    	return $item;
+        return $item;
     }
 
     protected function _getReportHandler($content_type)

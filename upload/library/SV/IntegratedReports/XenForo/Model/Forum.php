@@ -3,9 +3,9 @@
 class SV_IntegratedReports_XenForo_Model_Forum extends XFCP_SV_IntegratedReports_XenForo_Model_Forum
 {
     var $sv_moderators_respect_view_node = null;
-	public function canManageReportedMessage(array $forum, &$errorPhraseKey = '', array $viewingUser = null)
-	{
-		$this->standardizeViewingUserReference($viewingUser);
+    public function canManageReportedMessage(array $forum, &$errorPhraseKey = '', array $viewingUser = null)
+    {
+        $this->standardizeViewingUserReference($viewingUser);
         
         if ($this->sv_moderators_respect_view_node === null)
         {
@@ -19,11 +19,11 @@ class SV_IntegratedReports_XenForo_Model_Forum extends XFCP_SV_IntegratedReports
              XenForo_Permission::hasContentPermission($forum['permissions'], 'viewReportPost')
             )
            )
-		{
-			return true;
-		}
+        {
+            return true;
+        }
 
-		$errorPhraseKey = 'you_may_not_manage_this_reported_content';
-		return false;
-	}
+        $errorPhraseKey = 'you_may_not_manage_this_reported_content';
+        return false;
+    }
 }

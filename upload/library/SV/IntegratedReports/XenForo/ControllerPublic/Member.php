@@ -4,8 +4,8 @@ class SV_IntegratedReports_XenForo_ControllerPublic_Member extends XFCP_SV_Integ
 {
     public function actionWarn()
     {
-		if ($this->_request->isPost())
-		{
+        if ($this->_request->isPost())
+        {
             SV_IntegratedReports_Globals::$resolve_report = $this->_input->filterSingle('resolve_linked_report', XenForo_Input::BOOLEAN);
         }
 
@@ -34,8 +34,8 @@ class SV_IntegratedReports_XenForo_ControllerPublic_Member extends XFCP_SV_Integ
         return $response;
     }
 
-	protected function _getReportModel()
-	{
-		return $this->getModelFromCache('XenForo_Model_Report');
-	}
+    protected function _getReportModel()
+    {
+        return $this->getModelFromCache('XenForo_Model_Report');
+    }
 }

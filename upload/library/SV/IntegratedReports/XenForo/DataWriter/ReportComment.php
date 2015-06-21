@@ -13,22 +13,22 @@ class SV_IntegratedReports_XenForo_DataWriter_ReportComment extends XFCP_SV_Inte
         );
     }
 
-	protected function _getFields()
-	{
+    protected function _getFields()
+    {
         $fields = parent::_getFields();
         $fields['xf_report_comment']['warning_log_id'] = array('type' => self::TYPE_UINT,    'default' => 0);
         return $fields;
-	}
+    }
 
-	protected function _preSave()
-	{
-		if (!$this->get('state_change') && !$this->get('message'))
-		{
+    protected function _preSave()
+    {
+        if (!$this->get('state_change') && !$this->get('message'))
+        {
             if ($this->get('warning_log_id'))
             {
                 return;
             }
-		}
+        }
 
         $taggingModel = $this->getModelFromCache('XenForo_Model_UserTagging');
 
@@ -38,7 +38,7 @@ class SV_IntegratedReports_XenForo_DataWriter_ReportComment extends XFCP_SV_Inte
         $this->set('message', $newMessage);
 
         return parent::_preSave();
-	}
+    }
 
     protected function _postSave()
     {

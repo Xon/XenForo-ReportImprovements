@@ -7,21 +7,21 @@ class SV_IntegratedReports_Model_WarningLog extends XenForo_Model
     const Operation_ExpireWarning = 'expire';
     const Operation_NewWarning = 'new';
 
-	/**
-	 * Gets the specified Warning Log if it exists.
-	 *
-	 * @param string $warningLogId
-	 *
-	 * @return array|false
-	 */
-	public function getWarningLogById($warningLogId)
-	{
-		return $this->_getDb()->fetchRow('
-			SELECT *
-			FROM xf_sv_warning_log
-			WHERE warning_log_id = ?
-		', $warningLogId);
-	}
+    /**
+     * Gets the specified Warning Log if it exists.
+     *
+     * @param string $warningLogId
+     *
+     * @return array|false
+     */
+    public function getWarningLogById($warningLogId)
+    {
+        return $this->_getDb()->fetchRow('
+            SELECT *
+            FROM xf_sv_warning_log
+            WHERE warning_log_id = ?
+        ', $warningLogId);
+    }
 
     public function getContentForReportFromWarning(array $warning)
     {
@@ -42,14 +42,14 @@ class SV_IntegratedReports_Model_WarningLog extends XenForo_Model
         return null;
     }
 
-	/**
-	 * Gets the specified Warning Log if it exists.
-	 *
-	 * @param string $operationType
+    /**
+     * Gets the specified Warning Log if it exists.
+     *
+     * @param string $operationType
      * @param array $warning
-	 *
-	 * @return int|false
-	 */
+     *
+     * @return int|false
+     */
     public function LogOperation($operationType, $warning)
     {
         if (@$operationType == '')
@@ -177,13 +177,13 @@ class SV_IntegratedReports_Model_WarningLog extends XenForo_Model
         return '';
     }
 
-	protected function _getUserModel()
-	{
-		return $this->getModelFromCache('XenForo_Model_User');
-	}
+    protected function _getUserModel()
+    {
+        return $this->getModelFromCache('XenForo_Model_User');
+    }
 
-	protected function _getReportModel()
-	{
-		return $this->getModelFromCache('XenForo_Model_Report');
-	}
+    protected function _getReportModel()
+    {
+        return $this->getModelFromCache('XenForo_Model_Report');
+    }
 }

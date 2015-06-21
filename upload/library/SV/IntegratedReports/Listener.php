@@ -4,9 +4,9 @@ class SV_IntegratedReports_Listener
 {
     const AddonNameSpace = 'SV_IntegratedReports';
 
-	public static function install($installedAddon, array $addonData, SimpleXMLElement $xml)
-	{
-		$db = XenForo_Application::getDb();
+    public static function install($installedAddon, array $addonData, SimpleXMLElement $xml)
+    {
+        $db = XenForo_Application::getDb();
 
         XenForo_Db::beginTransaction($db);
 
@@ -67,13 +67,13 @@ where not exists(select * from xf_report where xf_report.content_type = xf_sv_wa
 /*
 
 
-		$db->query("insert ignore into xf_permission_entry_content (content_type, content_id, user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
+        $db->query("insert ignore into xf_permission_entry_content (content_type, content_id, user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
 select distinct content_type, content_id, user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportPost', permission_value, permission_value_int
 from xf_permission_entry_content
 where permission_group_id = 'forum' and permission_id in ('warn','editAnyPost','deleteAnyPost')
 ");
 
-		$db->query("insert ignore into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
+        $db->query("insert ignore into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
 select distinct user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportPost', permission_value, permission_value_int
 from xf_permission_entry
 where permission_group_id = 'forum' and permission_id in ('warn','editAnyPost','deleteAnyPost')
@@ -113,13 +113,13 @@ where permission_group_id = 'general' and  permission_id in ('warn','editBasicPr
 
         XenForo_Model::create('XenForo_Model_ContentType')->rebuildContentTypeCache();
         //XenForo_Application::defer('Permission', array(), 'Permission', true);
-	}
+    }
 
-	public static function uninstall()
-	{
-		$db = XenForo_Application::getDb();
+    public static function uninstall()
+    {
+        $db = XenForo_Application::getDb();
 
-		XenForo_Db::beginTransaction($db);
+        XenForo_Db::beginTransaction($db);
 
         $db->query("
             DELETE FROM xf_content_type_field
@@ -135,21 +135,21 @@ where permission_group_id = 'general' and  permission_id in ('warn','editBasicPr
         $db->query("alter table xf_report_comment drop column warning_log_id;");
         $db->query("drop table xf_sv_warning_log;");
 
-		$db->delete('xf_permission_entry', "permission_id = 'viewReportConversation'");
-		$db->delete('xf_permission_entry', "permission_id = 'viewReportPost'");
-		$db->delete('xf_permission_entry', "permission_id = 'viewReportProfilePost'");
-		$db->delete('xf_permission_entry', "permission_id = 'viewReportUser'");
+        $db->delete('xf_permission_entry', "permission_id = 'viewReportConversation'");
+        $db->delete('xf_permission_entry', "permission_id = 'viewReportPost'");
+        $db->delete('xf_permission_entry', "permission_id = 'viewReportProfilePost'");
+        $db->delete('xf_permission_entry', "permission_id = 'viewReportUser'");
 
-		$db->delete('xf_permission_entry_content', "permission_id = 'viewReportConversation'");
+        $db->delete('xf_permission_entry_content', "permission_id = 'viewReportConversation'");
         $db->delete('xf_permission_entry_content', "permission_id = 'viewReportPost'");
-		$db->delete('xf_permission_entry_content', "permission_id = 'viewReportProfilePost'");
-		$db->delete('xf_permission_entry_content', "permission_id = 'viewReportUser'");
+        $db->delete('xf_permission_entry_content', "permission_id = 'viewReportProfilePost'");
+        $db->delete('xf_permission_entry_content', "permission_id = 'viewReportUser'");
 */
-		XenForo_Db::commit($db);
+        XenForo_Db::commit($db);
 
         XenForo_Model::create('XenForo_Model_ContentType')->rebuildContentTypeCache();
         //XenForo_Application::defer('Permission', array(), 'Permission', true);
-	}
+    }
 
     public static function load_class($class, array &$extend)
     {

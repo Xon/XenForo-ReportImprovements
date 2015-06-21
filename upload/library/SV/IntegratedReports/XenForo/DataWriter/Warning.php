@@ -2,15 +2,15 @@
 
 class SV_IntegratedReports_XenForo_DataWriter_Warning extends XFCP_SV_IntegratedReports_XenForo_DataWriter_Warning
 {
-	protected function _postDelete()
-	{
+    protected function _postDelete()
+    {
         parent::_postDelete();
         $operationType = SV_IntegratedReports_Model_WarningLog::Operation_DeleteWarning;
         $this->_logOperation($operationType);
-	}
+    }
 
-	protected function _postSave()
-	{
+    protected function _postSave()
+    {
         parent::_postSave();
 
         $operationType = '';
@@ -56,8 +56,8 @@ class SV_IntegratedReports_XenForo_DataWriter_Warning extends XFCP_SV_Integrated
         $warningLogId = $this->_getWarningLogModel()->LogOperation($operationType, $this->_getLogData());
     }
 
-	protected function _getWarningLogModel()
-	{
-		return $this->getModelFromCache('SV_IntegratedReports_Model_WarningLog');
-	}
+    protected function _getWarningLogModel()
+    {
+        return $this->getModelFromCache('SV_IntegratedReports_Model_WarningLog');
+    }
 }

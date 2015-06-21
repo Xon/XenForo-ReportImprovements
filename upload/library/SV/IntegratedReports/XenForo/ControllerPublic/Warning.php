@@ -29,8 +29,8 @@ class SV_IntegratedReports_XenForo_ControllerPublic_Warning extends XFCP_SV_Inte
         return $response;
     }
 
-	protected function _getReportModel()
-	{
-		return $this->getModelFromCache('XenForo_Model_Report');
-	}
+    protected function _getReportModel()
+    {
+        return $this->getModelFromCache('XenForo_Model_Report');
+    }
 }
