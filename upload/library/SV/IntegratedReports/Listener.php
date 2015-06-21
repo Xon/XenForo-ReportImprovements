@@ -1,8 +1,8 @@
 <?php
 
-class SV_IntegratedReports_Listener
+class SV_ReportImprovements_Listener
 {
-    const AddonNameSpace = 'SV_IntegratedReports';
+    const AddonNameSpace = 'SV_ReportImprovements';
 
     public static function install($installedAddon, array $addonData, SimpleXMLElement $xml)
     {
@@ -99,14 +99,14 @@ where permission_group_id = 'general' and  permission_id in ('warn','editBasicPr
             INSERT IGNORE INTO xf_content_type
                 (content_type, addon_id, fields)
             VALUES
-                ('".SV_IntegratedReports_Globals::$Report_ContentType."', '".self::AddonNameSpace."', '')
+                ('".SV_ReportImprovements_Globals::$Report_ContentType."', '".self::AddonNameSpace."', '')
         ");
 
         $db->query("
             INSERT IGNORE INTO xf_content_type_field
                 (content_type, field_name, field_value)
             VALUES
-                ('".SV_IntegratedReports_Globals::$Report_ContentType."', 'alert_handler_class', 'SV_IntegratedReports_AlertHandler_Report')
+                ('".SV_ReportImprovements_Globals::$Report_ContentType."', 'alert_handler_class', 'SV_ReportImprovements_AlertHandler_Report')
         ");
 
         XenForo_Db::commit($db);
@@ -123,7 +123,7 @@ where permission_group_id = 'general' and  permission_id in ('warn','editBasicPr
 
         $db->query("
             DELETE FROM xf_content_type_field
-            WHERE xf_content_type_field.field_value = 'SV_IntegratedReports_AlertHandler_Report'
+            WHERE xf_content_type_field.field_value = 'SV_ReportImprovements_AlertHandler_Report'
         ");
 
         $db->query("

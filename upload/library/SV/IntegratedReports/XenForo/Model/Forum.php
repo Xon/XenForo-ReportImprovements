@@ -1,6 +1,6 @@
 <?php
 
-class SV_IntegratedReports_XenForo_Model_Forum extends XFCP_SV_IntegratedReports_XenForo_Model_Forum
+class SV_ReportImprovements_XenForo_Model_Forum extends XFCP_SV_ReportImprovements_XenForo_Model_Forum
 {
     var $sv_moderators_respect_view_node = null;
     public function canManageReportedMessage(array $forum, &$errorPhraseKey = '', array $viewingUser = null)

@@ -1,4 +1,4 @@
-XenForo-WarningImprovements
+XenForo-ReportImprovements
 ======================
 
 A Collection of improvements to XF's reporting system.

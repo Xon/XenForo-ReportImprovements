@@ -1,6 +1,6 @@
 <?php
 
-class SV_IntegratedReports_XenForo_ControllerPublic_Warning extends XFCP_SV_IntegratedReports_XenForo_ControllerPublic_Warning
+class SV_ReportImprovements_XenForo_ControllerPublic_Warning extends XFCP_SV_ReportImprovements_XenForo_ControllerPublic_Warning
 {
     public function actionIndex()
     {

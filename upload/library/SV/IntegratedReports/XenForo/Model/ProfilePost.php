@@ -1,6 +1,6 @@
 <?php
 
-class SV_IntegratedReports_XenForo_Model_ProfilePost extends XFCP_SV_IntegratedReports_XenForo_Model_ProfilePost
+class SV_ReportImprovements_XenForo_Model_ProfilePost extends XFCP_SV_ReportImprovements_XenForo_Model_ProfilePost
 {
 
     public function canManageReportedMessage(array $user, &$errorPhraseKey = '', array $viewingUser = null)

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_IntegratedReports" title="Integrated Reports" version_string="0.0.10" version_id="10" url="" install_callback_class="SV_IntegratedReports_Listener" install_callback_method="install" uninstall_callback_class="SV_IntegratedReports_Listener" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="0.0.11" version_id="11" url="" install_callback_class="SV_ReportImprovements_Listener" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Listener" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -13,20 +13,20 @@
   </admin_template_modifications>
   <code_events/>
   <code_event_listeners>
-    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Member" description="XenForo_ControllerPublic_Member"/>
-    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Warning" description="XenForo_ControllerPublic_Warning"/>
-    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Conversation" description=""/>
-    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Forum" description=""/>
-    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_Model_User" description=""/>
-    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_Model_ProfilePost" description=""/>
-    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Report" description=""/>
-    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Warning" description=""/>
-    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_Post" description=""/>
-    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_ProfilePost" description=""/>
-    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_User" description=""/>
-    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_DataWriter_Warning" description=""/>
-    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_DataWriter_ReportComment" description=""/>
-    <listener event_id="load_class" execute_order="10" callback_class="SV_IntegratedReports_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Report" description="XenForo_ControllerPublic_Report"/>
+    <listener event_id="load_class" execute_order="10" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Member" description="XenForo_ControllerPublic_Member"/>
+    <listener event_id="load_class" execute_order="10" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Warning" description="XenForo_ControllerPublic_Warning"/>
+    <listener event_id="load_class" execute_order="10" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Conversation" description=""/>
+    <listener event_id="load_class" execute_order="10" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Forum" description=""/>
+    <listener event_id="load_class" execute_order="10" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_User" description=""/>
+    <listener event_id="load_class" execute_order="10" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_ProfilePost" description=""/>
+    <listener event_id="load_class" execute_order="10" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Report" description=""/>
+    <listener event_id="load_class" execute_order="10" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Warning" description=""/>
+    <listener event_id="load_class" execute_order="10" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_Post" description=""/>
+    <listener event_id="load_class" execute_order="10" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_ProfilePost" description=""/>
+    <listener event_id="load_class" execute_order="10" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_User" description=""/>
+    <listener event_id="load_class" execute_order="10" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_DataWriter_Warning" description=""/>
+    <listener event_id="load_class" execute_order="10" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_DataWriter_ReportComment" description=""/>
+    <listener event_id="load_class" execute_order="10" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Report" description="XenForo_ControllerPublic_Report"/>
   </code_event_listeners>
   <cron/>
   <email_templates/>
@@ -39,13 +39,13 @@
       <sub_options></sub_options>
       <relation group_id="sv_integrated_reports" display_order="110"/>
     </option>
-    <option option_id="sv_ir_log_to_report_natural_warning_expire" edit_format="onoff" data_type="boolean" can_backup="1">
+    <option option_id="sv_ri_log_to_report_natural_warning_expire" edit_format="onoff" data_type="boolean" can_backup="1">
       <default_value>0</default_value>
       <edit_format_params></edit_format_params>
       <sub_options></sub_options>
       <relation group_id="sv_integrated_reports" display_order="10"/>
     </option>
-    <option option_id="sv_ir_user_id" edit_format="textbox" data_type="unsigned_integer" can_backup="1">
+    <option option_id="sv_ri_user_id" edit_format="textbox" data_type="unsigned_integer" can_backup="1">
       <default_value>1</default_value>
       <edit_format_params></edit_format_params>
       <sub_options></sub_options>
@@ -80,10 +80,10 @@
     <phrase title="option_group_sv_integrated_reports_description" version_id="1" version_string="0.0.1"><![CDATA[]]></phrase>
     <phrase title="option_sv_default_resolve_report_on_warning" version_id="4" version_string="0.0.4"><![CDATA[Resolve Report on Warning]]></phrase>
     <phrase title="option_sv_default_resolve_report_on_warning_explain" version_id="4" version_string="0.0.4"><![CDATA[By default, resolve an contents report when creating a warning.]]></phrase>
-    <phrase title="option_sv_ir_log_to_report_natural_warning_expire" version_id="2" version_string="0.0.2"><![CDATA[Log Automatically Expiring Warning to Report]]></phrase>
-    <phrase title="option_sv_ir_log_to_report_natural_warning_expire_explain" version_id="2" version_string="0.0.2"><![CDATA[]]></phrase>
-    <phrase title="option_sv_ir_user_id" version_id="1" version_string="0.0.1"><![CDATA[Reporter]]></phrase>
-    <phrase title="option_sv_ir_user_id_explain" version_id="1" version_string="0.0.1"><![CDATA[Enter the user id of the person reporting Alter Ego's]]></phrase>
+    <phrase title="option_sv_ri_log_to_report_natural_warning_expire" version_id="2" version_string="0.0.2"><![CDATA[Log Automatically Expiring Warning to Report]]></phrase>
+    <phrase title="option_sv_ri_log_to_report_natural_warning_expire_explain" version_id="2" version_string="0.0.2"><![CDATA[]]></phrase>
+    <phrase title="option_sv_ri_user_id" version_id="1" version_string="0.0.1"><![CDATA[Reporter]]></phrase>
+    <phrase title="option_sv_ri_user_id_explain" version_id="1" version_string="0.0.1"><![CDATA[Enter the user id of the person reporting Alter Ego's]]></phrase>
     <phrase title="option_sv_moderators_respect_view_node" version_id="8" version_string="0.0.8"><![CDATA[Reports respect view-node permission]]></phrase>
     <phrase title="option_sv_moderators_respect_view_node_explain" version_id="8" version_string="0.0.8"><![CDATA[Only allow moderators to see reports from forums they can see]]></phrase>
     <phrase title="option_sv_report_new_warnings" version_id="3" version_string="0.0.3b"><![CDATA[Report New Warnings]]></phrase>
@@ -94,12 +94,12 @@
     <phrase title="permission_profilePost_viewReportProfilePost" version_id="1" version_string="0.0.1"><![CDATA[View ProfilePost Report]]></phrase>
     <phrase title="report_options" version_id="4" version_string="0.0.4"><![CDATA[Report Options]]></phrase>
     <phrase title="resolve_linked_report" version_id="4" version_string="0.0.4"><![CDATA[Resolve linked report]]></phrase>
-    <phrase title="sv_ir_operation_type_delete" version_id="2" version_string="0.0.2"><![CDATA[Deleted Warning]]></phrase>
-    <phrase title="sv_ir_operation_type_edit" version_id="2" version_string="0.0.2"><![CDATA[Edited Warning]]></phrase>
-    <phrase title="sv_ir_operation_type_expire" version_id="2" version_string="0.0.2"><![CDATA[Expired Warning]]></phrase>
-    <phrase title="sv_ir_operation_type_new" version_id="2" version_string="0.0.2"><![CDATA[New Warning]]></phrase>
-    <phrase title="sv_ir_x_commented_on_report" version_id="7" version_string="0.0.7"><![CDATA[{name} commented on the report {report}.]]></phrase>
-    <phrase title="sv_ir_x_tagged_on_report" version_id="10" version_string="0.0.10"><![CDATA[{name} tagged you in the report {report}.]]></phrase>
+    <phrase title="sv_ri_operation_type_delete" version_id="2" version_string="0.0.2"><![CDATA[Deleted Warning]]></phrase>
+    <phrase title="sv_ri_operation_type_edit" version_id="2" version_string="0.0.2"><![CDATA[Edited Warning]]></phrase>
+    <phrase title="sv_ri_operation_type_expire" version_id="2" version_string="0.0.2"><![CDATA[Expired Warning]]></phrase>
+    <phrase title="sv_ri_operation_type_new" version_id="2" version_string="0.0.2"><![CDATA[New Warning]]></phrase>
+    <phrase title="sv_ri_x_commented_on_report" version_id="7" version_string="0.0.7"><![CDATA[{name} commented on the report {report}.]]></phrase>
+    <phrase title="sv_ri_x_tagged_on_report" version_id="10" version_string="0.0.10"><![CDATA[{name} tagged you in the report {report}.]]></phrase>
     <phrase title="warning_log_operation_type" version_id="1" version_string="0.0.1"><![CDATA[Operation Type]]></phrase>
   </phrases>
   <route_prefixes/>
@@ -109,7 +109,7 @@
 <xen:set var="$extra">#reportComment-{$content.extra.report_comment_id}</xen:set>
 </xen:if>
 
-{xen:phrase sv_ir_x_commented_on_report,
+{xen:phrase sv_ri_x_commented_on_report,
 	'name={xen:helper username, $user, 'subject'}',
 	'report=<a href="{xen:link reports, $content}{$extra}" class="PopupItemLink">{$content.contentTitle}</a>'
 }]]></template>
@@ -117,7 +117,7 @@
 <xen:set var="$extra">#reportComment-{$content.extra.report_comment_id}</xen:set>
 </xen:if>
 
-{xen:phrase sv_ir_x_tagged_on_report,
+{xen:phrase sv_ri_x_tagged_on_report,
 	'name={xen:helper username, $user, 'subject'}',
 	'report=<a href="{xen:link reports, $content}{$extra}" class="PopupItemLink">{$content.contentTitle}</a>'
 }]]></template>
@@ -162,13 +162,13 @@
 <dl><dt>{xen:phrase warning_log_operation_type}</dt>
 <dd class="warning_{$comment.operation_type}">
 <xen:if is="{$comment.operation_type} == 'new'" >
-	{xen:phrase sv_ir_operation_type_new}
+	{xen:phrase sv_ri_operation_type_new}
 <xen:elseif  is="{$comment.operation_type} == 'delete'" />
-	{xen:phrase sv_ir_operation_type_delete}
+	{xen:phrase sv_ri_operation_type_delete}
 <xen:elseif  is="{$comment.operation_type} == 'expire'" />
-	{xen:phrase sv_ir_operation_type_expire}
+	{xen:phrase sv_ri_operation_type_expire}
 <xen:elseif  is="{$comment.operation_type} == 'edit'" />
-	{xen:phrase sv_ir_operation_type_edit}
+	{xen:phrase sv_ri_operation_type_edit}
 <xen:else />
 	{$comment.operation_type}
 </xen:if>

@@ -3,7 +3,7 @@
 /**
 * Data writer for warning logs.
 */
-class SV_IntegratedReports_DataWriter_WarningLog extends XenForo_DataWriter
+class SV_ReportImprovements_DataWriter_WarningLog extends XenForo_DataWriter
 {
     /**
     * Gets the fields that are defined for the table. See parent for explanation.
@@ -86,6 +86,6 @@ class SV_IntegratedReports_DataWriter_WarningLog extends XenForo_DataWriter
      */
     protected function _getWarningLogModel()
     {
-        return $this->getModelFromCache('SV_IntegratedReports_Model_WarningLog');
+        return $this->getModelFromCache('SV_ReportImprovements_Model_WarningLog');
     }
 }

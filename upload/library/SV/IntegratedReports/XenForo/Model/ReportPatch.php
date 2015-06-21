@@ -1,6 +1,6 @@
 <?php
 
-class SV_IntegratedReports_XenForo_Model_ReportPatch extends XFCP_SV_IntegratedReports_XenForo_Model_ReportPatch
+class SV_ReportImprovements_XenForo_Model_ReportPatch extends XFCP_SV_ReportImprovements_XenForo_Model_ReportPatch
 {
     public function getReportHandlers()
     {

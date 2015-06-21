@@ -1,11 +1,11 @@
 <?php
 
-class SV_IntegratedReports_XenForo_DataWriter_Warning extends XFCP_SV_IntegratedReports_XenForo_DataWriter_Warning
+class SV_ReportImprovements_XenForo_DataWriter_Warning extends XFCP_SV_ReportImprovements_XenForo_DataWriter_Warning
 {
     protected function _postDelete()
     {
         parent::_postDelete();
-        $operationType = SV_IntegratedReports_Model_WarningLog::Operation_DeleteWarning;
+        $operationType = SV_ReportImprovements_Model_WarningLog::Operation_DeleteWarning;
         $this->_logOperation($operationType);
     }
 
@@ -17,14 +17,14 @@ class SV_IntegratedReports_XenForo_DataWriter_Warning extends XFCP_SV_Integrated
 
         if ($this->isInsert())
         {
-            $operationType = SV_IntegratedReports_Model_WarningLog::Operation_NewWarning;
+            $operationType = SV_ReportImprovements_Model_WarningLog::Operation_NewWarning;
         }
         else if ($this->isUpdate())
         {
-            $operationType = SV_IntegratedReports_Model_WarningLog::Operation_EditWarning;
+            $operationType = SV_ReportImprovements_Model_WarningLog::Operation_EditWarning;
             if (!$this->isChanged('expiry_date') && ($this->get('is_expired') == 1 && $this->getExisting('is_expired') == 0))
             {
-                $operationType = SV_IntegratedReports_Model_WarningLog::Operation_ExpireWarning;
+                $operationType = SV_ReportImprovements_Model_WarningLog::Operation_ExpireWarning;
             }
         }
 
@@ -58,6 +58,6 @@ class SV_IntegratedReports_XenForo_DataWriter_Warning extends XFCP_SV_Integrated
 
     protected function _getWarningLogModel()
     {
-        return $this->getModelFromCache('SV_IntegratedReports_Model_WarningLog');
+        return $this->getModelFromCache('SV_ReportImprovements_Model_WarningLog');
     }
 }

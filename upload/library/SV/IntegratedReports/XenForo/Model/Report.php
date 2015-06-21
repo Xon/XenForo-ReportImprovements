@@ -1,6 +1,6 @@
 <?php
 
-class SV_IntegratedReports_XenForo_Model_Report extends XFCP_SV_IntegratedReports_XenForo_Model_Report
+class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImprovements_XenForo_Model_Report
 {
     public function getReportComments($reportId)
     {
@@ -95,8 +95,8 @@ class SV_IntegratedReports_XenForo_Model_Report extends XFCP_SV_IntegratedReport
 
                     XenForo_Model_Alert::alert($user['user_id'],
                         $taggingUser['user_id'], $taggingUser['username'],
-                        SV_IntegratedReports_Globals::$Report_ContentType, $report['report_id'],
-                        SV_IntegratedReports_Globals::$Report_Tag,
+                        SV_ReportImprovements_Globals::$Report_ContentType, $report['report_id'],
+                        SV_ReportImprovements_Globals::$Report_Tag,
                         array('report_comment_id' => $reportComment['report_comment_id'])
                     );
                 }

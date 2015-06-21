@@ -1,6 +1,6 @@
 <?php
 
-class SV_IntegratedReports_Model_WarningLog extends XenForo_Model
+class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
 {
     const Operation_EditWarning = 'edit';
     const Operation_DeleteWarning = 'delete';
@@ -59,12 +59,12 @@ class SV_IntegratedReports_Model_WarningLog extends XenForo_Model
         $warning['operation_type'] = $operationType;
         $warning['warning_edit_date'] = XenForo_Application::$time;
 
-        $warningLogDw = XenForo_DataWriter::create('SV_IntegratedReports_DataWriter_WarningLog');
+        $warningLogDw = XenForo_DataWriter::create('SV_ReportImprovements_DataWriter_WarningLog');
         $warningLogDw->bulkSet($warning);
         $warningLogDw->save();
         $warningLogId = $warningLogDw->get('warning_log_id');
 
-        if (SV_IntegratedReports_Globals::$SupressLoggingWarningToReport)
+        if (SV_ReportImprovements_Globals::$SupressLoggingWarningToReport)
         {
             return $warningLogId;
         }
@@ -74,26 +74,26 @@ class SV_IntegratedReports_Model_WarningLog extends XenForo_Model
         $contentId = $warning['content_id'];
         $reportModel = $this->_getReportModel();
 
-        $reporterId = $options->sv_ir_user_id;
+        $reporterId = $options->sv_ri_user_id;
         $message = $this->_BuildWarningLogMessage();
         $reportUser = $viewingUser = XenForo_Visitor::getInstance()->toArray();
         $updating_user_id = $viewingUser['user_id'];
         $updating_username = $viewingUser['username'];
-        if (SV_IntegratedReports_Globals::$UseSystemUsernameForComments || $viewingUser['user_id'] == 0 || $viewingUser['username'] == '')
+        if (SV_ReportImprovements_Globals::$UseSystemUsernameForComments || $viewingUser['user_id'] == 0 || $viewingUser['username'] == '')
         {
-            if (!empty(SV_IntegratedReports_Globals::$SystemUserId) || $SystemUserId != $reporterId )
+            if (!empty(SV_ReportImprovements_Globals::$SystemUserId) || $SystemUserId != $reporterId )
             {
                 $userModel = $this->_getUserModel();
                 $reportUser = $userModel->getUserById($reporterId);
-                $updating_user_id = SV_IntegratedReports_Globals::$SystemUserId = $reporterId;
-                $updating_username = SV_IntegratedReports_Globals::$SystemUsername = $reportUser['username'];
+                $updating_user_id = SV_ReportImprovements_Globals::$SystemUserId = $reporterId;
+                $updating_username = SV_ReportImprovements_Globals::$SystemUsername = $reportUser['username'];
             }
         }
 
         $commentToUpdate = null;
         $newReportState = '';
         $assigned_user_id = 0;
-        if(SV_IntegratedReports_Globals::$resolve_report && ($reportUser['user_id'] == $viewingUser['user_id']))
+        if(SV_ReportImprovements_Globals::$resolve_report && ($reportUser['user_id'] == $viewingUser['user_id']))
         {
             $newReportState = 'resolved';
             $assigned_user_id = $reportUser['user_id'];
@@ -123,7 +123,7 @@ class SV_IntegratedReports_Model_WarningLog extends XenForo_Model
         {
             $reportId = $report['report_id'];
             // don't re-open the report when a warning expires naturally.
-            if ($operationType != SV_IntegratedReports_Model_WarningLog::Operation_ExpireWarning)
+            if ($operationType != SV_ReportImprovements_Model_WarningLog::Operation_ExpireWarning)
             {
                 if ($newReportState == '' && ($report['report_state'] == 'resolved' || $report['report_state'] == 'rejected'))
                 {

@@ -1,6 +1,6 @@
 <?php
 
-class SV_IntegratedReports_XenForo_ReportHandler_ProfilePost extends XFCP_SV_IntegratedReports_XenForo_ReportHandler_ProfilePost
+class SV_ReportImprovements_XenForo_ReportHandler_ProfilePost extends XFCP_SV_ReportImprovements_XenForo_ReportHandler_ProfilePost
 {
     public function getVisibleReportsForUser(array $reports, array $viewingUser)
     {

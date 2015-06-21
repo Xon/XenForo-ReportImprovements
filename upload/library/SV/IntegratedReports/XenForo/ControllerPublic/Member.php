@@ -1,12 +1,12 @@
 <?php
 
-class SV_IntegratedReports_XenForo_ControllerPublic_Member extends XFCP_SV_IntegratedReports_XenForo_ControllerPublic_Member
+class SV_ReportImprovements_XenForo_ControllerPublic_Member extends XFCP_SV_ReportImprovements_XenForo_ControllerPublic_Member
 {
     public function actionWarn()
     {
         if ($this->_request->isPost())
         {
-            SV_IntegratedReports_Globals::$resolve_report = $this->_input->filterSingle('resolve_linked_report', XenForo_Input::BOOLEAN);
+            SV_ReportImprovements_Globals::$resolve_report = $this->_input->filterSingle('resolve_linked_report', XenForo_Input::BOOLEAN);
         }
 
         $response = parent::actionWarn();

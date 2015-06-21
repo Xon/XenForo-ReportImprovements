@@ -1,6 +1,6 @@
 <?php
 
-class SV_IntegratedReports_XenForo_DataWriter_ReportComment extends XFCP_SV_IntegratedReports_XenForo_DataWriter_ReportComment
+class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_ReportImprovements_XenForo_DataWriter_ReportComment
 {
     const OPTION_MAX_TAGGED_USERS = 'maxTaggedUsers';
 
@@ -9,7 +9,7 @@ class SV_IntegratedReports_XenForo_DataWriter_ReportComment extends XFCP_SV_Inte
     protected function _getDefaultOptions()
     {
         return parent::_getDefaultOptions() + array(
-            self::OPTION_MAX_TAGGED_USERS => SV_IntegratedReports_Globals::$Report_MaxAlertCount
+            self::OPTION_MAX_TAGGED_USERS => SV_ReportImprovements_Globals::$Report_MaxAlertCount
         );
     }
 
@@ -116,7 +116,7 @@ class SV_IntegratedReports_XenForo_DataWriter_ReportComment extends XFCP_SV_Inte
             {
                 $hasUnviewedReport = $db->fetchRow("select alert_id from xf_user_alert
                     where alerted_user_id = ? and content_type = ? and content_id = ? and view_date = 0 and action = ? ",
-                    array($otherCommenter['user_id'], SV_IntegratedReports_Globals::$Report_ContentType, $this->get('report_id'), SV_IntegratedReports_Globals::$Report_Comment)
+                    array($otherCommenter['user_id'], SV_ReportImprovements_Globals::$Report_ContentType, $this->get('report_id'), SV_ReportImprovements_Globals::$Report_Comment)
                 );
 
                 if (!empty($hasUnviewedReport))
@@ -134,9 +134,9 @@ class SV_IntegratedReports_XenForo_DataWriter_ReportComment extends XFCP_SV_Inte
                         $otherCommenter['user_id'],
                         $this->get('user_id'),
                         $this->get('username'),
-                        SV_IntegratedReports_Globals::$Report_ContentType,
+                        SV_ReportImprovements_Globals::$Report_ContentType,
                         $this->get('report_id'),
-                        SV_IntegratedReports_Globals::$Report_Comment,
+                        SV_ReportImprovements_Globals::$Report_Comment,
                         array('report_comment_id' => $this->get('report_comment_id'))
                     );
                 }

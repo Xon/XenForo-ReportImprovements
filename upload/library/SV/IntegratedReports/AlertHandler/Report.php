@@ -1,6 +1,6 @@
 <?php
 
-class SV_IntegratedReports_AlertHandler_Report extends XenForo_AlertHandler_Abstract
+class SV_ReportImprovements_AlertHandler_Report extends XenForo_AlertHandler_Abstract
 {
     var $_reportModel = null;
     var $_handlerCache = array();
