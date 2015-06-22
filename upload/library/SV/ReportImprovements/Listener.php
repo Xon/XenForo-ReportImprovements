@@ -93,7 +93,7 @@ class SV_ReportImprovements_Listener
         if ($version == 0)
         {
             XenForo_Application::defer('Permission', array(), 'Permission');
-            XenForo_Application::defer('SV_ReportImprovements_Deferred_WarningLogMigration', array());
+            XenForo_Application::defer('SV_ReportImprovements_Deferred_WarningLogMigration', array('warning_id' => -1));
         }
 
         XenForo_Model::create('XenForo_Model_ContentType')->rebuildContentTypeCache();
@@ -115,8 +115,9 @@ class SV_ReportImprovements_Listener
             WHERE xf_content_type.addon_id = '".self::AddonNameSpace."'
         ");
 
-        $db->query("drop table xf_sv_warning_log;");
+        $db->query("delete from xf_report_comment where warning_log_id is not null and warning_log_id <> 0");
         SV_ReportImprovements_Install::dropColumn('xf_report_comment', 'warning_log_id');
+        $db->query("drop table xf_sv_warning_log");
 
         $db->delete('xf_permission_entry', "permission_id = 'viewReportConversation'");
         $db->delete('xf_permission_entry', "permission_id = 'viewReportPost'");

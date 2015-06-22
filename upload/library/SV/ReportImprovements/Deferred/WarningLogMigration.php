@@ -8,7 +8,6 @@ class SV_ReportImprovements_Deferred_WarningLogMigration extends XenForo_Deferre
         $min_warning_id = isset($data['warning_id']) ? $data['warning_id'] : -1;
 
         $db = XenForo_Application::getDb();
-        XenForo_Db::beginTransaction($db);
 
         $warningQuery = $db->query("
             select max(warning_id) as max_warning_id
@@ -21,13 +20,15 @@ class SV_ReportImprovements_Deferred_WarningLogMigration extends XenForo_Deferre
         {
            return false;
         }
+
         $max_warning_id = $warningRows[0]['max_warning_id'];
         $actionPhrase = new XenForo_Phrase('sv_ri_migrating');
+
         $status = sprintf('%s... %s', $actionPhrase, str_repeat(' . ', $max_warning_id / 10));
 
         $warningLogModel = XenForo_Model::create("SV_ReportImprovements_Model_WarningLog");
 
-        // this list must match SV_ReportImprovements_Model_WarningLog::_getLogData()
+        // Except for the sub-select, this list must match SV_ReportImprovements_Model_WarningLog::_getLogData()
         $warningQuery = $db->query("
             SELECT
                 warning_id,
@@ -60,7 +61,9 @@ class SV_ReportImprovements_Deferred_WarningLogMigration extends XenForo_Deferre
             {
                 SV_ReportImprovements_Globals::$SystemUserId = $warning['warning_user_id'];
                 SV_ReportImprovements_Globals::$SystemUsername = $warning['warning_username'];
+                SV_ReportImprovements_Globals::$resolve_report = true;
                 unset($warning['warning_username']);
+
                 $warningLogModel->LogOperation(SV_ReportImprovements_Model_WarningLog::Operation_NewWarning, $warning);
             }
         }
