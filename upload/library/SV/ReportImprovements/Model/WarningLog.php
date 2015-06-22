@@ -84,7 +84,7 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
             if (!empty(SV_ReportImprovements_Globals::$SystemUserId) || $SystemUserId != $reporterId )
             {
                 $userModel = $this->_getUserModel();
-                $reportUser = $userModel->getUserById(SV_ReportImprovements_Globals::$SystemUserId);
+                $viewingUser = $reportUser = $userModel->getUserById(SV_ReportImprovements_Globals::$SystemUserId);
                 $updating_user_id = $reporterId = SV_ReportImprovements_Globals::$SystemUserId;
                 $updating_username = SV_ReportImprovements_Globals::$SystemUsername = $reportUser['username'];
             }
