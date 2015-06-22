@@ -4,23 +4,68 @@ class SV_ReportImprovements_Deferred_WarningLogMigration extends XenForo_Deferre
 {
     public function execute(array $deferred, array $data, $targetRunTime, &$status)
     {
-        $db->query("
-            insert into xf_sv_warning_log (warning_edit_date,operation_type,warning_id,content_type,content_id,content_title,user_id,warning_date,warning_user_id,warning_definition_id,title,notes,points,expiry_date,is_expired,extra_user_group_ids)
-            SELECT xf_warning.warning_date,'new',warning_id,content_type,content_id,content_title,user_id,warning_date,warning_user_id,warning_definition_id,title,notes,points,expiry_date,is_expired,extra_user_group_ids
+        $increment = 100;
+        $min_warning_id = isset($data['warning_id']) ? $data['warning_id'] : -1;
+
+        $db = XenForo_Application::getDb();
+        XenForo_Db::beginTransaction($db);
+
+        $warningQuery = $db->query("
+            select max(warning_id) as max_warning_id
+            from xf_warning
+            where warning_id > ? and warning_id < (? + ?)
+        ", array($min_warning_id,$min_warning_id, $increment));
+        $warningRows = $warningQuery->fetchAll();
+
+        if (empty($warningRows) || empty($warningRows[0]) || empty($warningRows[0]['max_warning_id']))
+        {
+           return false;
+        }
+        $max_warning_id = $warningRows[0]['max_warning_id'];
+        $actionPhrase = new XenForo_Phrase('sv_ri_migrating');
+        $status = sprintf('%s... %s', $actionPhrase, str_repeat(' . ', $max_warning_id / 10));
+
+        $warningLogModel = XenForo_Model::create("SV_ReportImprovements_Model_WarningLog");
+
+        // this list must match SV_ReportImprovements_Model_WarningLog::_getLogData()
+        $warningQuery = $db->query("
+            SELECT
+                warning_id,
+                content_type,
+                content_id,
+                content_title,
+                user_id,
+                warning_date,
+                warning_user_id,
+                warning_definition_id,
+                title,
+                notes,
+                points,
+                expiry_date,
+                is_expired,
+                extra_user_group_ids,
+
+                (select username from xf_user where xf_user.user_id = xf_warning.warning_user_id) as warning_username
             FROM xf_warning
-            where warning_id not in (select warning_id from xf_sv_warning_log)
-        ");
+            where
+                warning_id not in (select warning_id from xf_sv_warning_log)
+                and warning_id >= ? and warning_id <= ?
+        ", array($min_warning_id, $max_warning_id));
 
+        $warningRows = $warningQuery->fetchAll();
+        if (!empty($warningRows))
+        {
+            SV_ReportImprovements_Globals::$UseSystemUsernameForComments = true;
+            foreach($warningRows as $warning)
+            {
+                SV_ReportImprovements_Globals::$SystemUserId = $warning['warning_user_id'];
+                SV_ReportImprovements_Globals::$SystemUsername = $warning['warning_username'];
+                unset($warning['warning_username']);
+                $warningLogModel->LogOperation(SV_ReportImprovements_Model_WarningLog::Operation_NewWarning, $warning);
+            }
+        }
+        XenForo_Db::commit($db);
 
-        $db->query("
-            insert into xf_report_comment (report_id,comment_date,user_id,username,message,state_change,is_report,warning_log_id)
-            select (select report_id from xf_report where xf_report.content_type = xf_sv_warning_log.content_type and xf_report.content_id = xf_sv_warning_log.content_id) as report_id,
-                xf_sv_warning_log. warning_date,xf_user.user_id, xf_user.username,'','',0,warning_log_id
-            from xf_sv_warning_log
-            join xf_user on xf_user.user_id = xf_sv_warning_log.warning_user_id
-            where not exists(select * from xf_report where xf_report.content_type = xf_sv_warning_log.content_type and xf_report.content_id = xf_sv_warning_log.content_id)
-                and not exists(select * from xf_report_comment where xf_report_comment.warning_log_id = xf_sv_warning_log.warning_log_id)
-        ");
-        return false;
+        return array('warning_id' => $max_warning_id);
     }
 }

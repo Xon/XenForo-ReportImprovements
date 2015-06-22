@@ -94,6 +94,7 @@
     <phrase title="permission_profilePost_viewReportProfilePost" version_id="1" version_string="0.0.1"><![CDATA[View ProfilePost Report]]></phrase>
     <phrase title="report_options" version_id="4" version_string="0.0.4"><![CDATA[Report Options]]></phrase>
     <phrase title="resolve_linked_report" version_id="4" version_string="0.0.4"><![CDATA[Resolve linked report]]></phrase>
+    <phrase title="sv_ri_migrating" version_id="11" version_string="0.0.11"><![CDATA[Linking Warnings and Reports]]></phrase>
     <phrase title="sv_ri_operation_type_delete" version_id="2" version_string="0.0.2"><![CDATA[Deleted Warning]]></phrase>
     <phrase title="sv_ri_operation_type_edit" version_id="2" version_string="0.0.2"><![CDATA[Edited Warning]]></phrase>
     <phrase title="sv_ri_operation_type_expire" version_id="2" version_string="0.0.2"><![CDATA[Expired Warning]]></phrase>
