@@ -114,6 +114,15 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
                         $report = $reportModel->getReportById($reportId);
                         $reportComments = $reportModel->getReportComments($reportId);
                         $commentToUpdate = reset($reportComments);
+                        if (SV_ReportImprovements_Globals::$UseWarningTimeStamp)
+                        {
+                            $reportDw = XenForo_DataWriter::create('XenForo_DataWriter_Report');
+                            $reportDw->setExistingData($report['report_id']);
+                            $reportDw->set('first_report_date', $warning['warning_date']);
+                            $reportDw->set('last_modified_date', $warning['warning_date']);
+                            $reportDw->save();
+                            $report['first_report_date'] = $report['last_modified_date'] = $warning['warning_date'];
+                        }
                     }
                 }
             }
@@ -143,10 +152,6 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
                 if(!empty($assigned_user_id))
                 {
                     $reportDw->set('assigned_user_id',  $assigned_user_id);
-                }
-                if (SV_ReportImprovements_Globals::$UseWarningTimeStamp)
-                {
-                    $reportDw->set('first_report_date', $warning['warning_date']);
                 }
                 $reportDw->save();
             }
