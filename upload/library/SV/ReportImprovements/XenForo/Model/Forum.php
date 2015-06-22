@@ -14,10 +14,7 @@ class SV_ReportImprovements_XenForo_Model_Forum extends XFCP_SV_ReportImprovemen
 
         if ($viewingUser['is_moderator'] &&
             (empty($this->sv_moderators_respect_view_node) || $this->canViewForum($forum, $errorPhraseKey, $forum['permissions'], $viewingUser)) &&
-            (XenForo_Permission::hasContentPermission($forum['permissions'], 'editAnyPost') ||
-             XenForo_Permission::hasContentPermission($forum['permissions'], 'deleteAnyPost') ||
-             XenForo_Permission::hasContentPermission($forum['permissions'], 'viewReportPost')
-            )
+            XenForo_Permission::hasContentPermission($forum['permissions'], 'viewReportPost')
            )
         {
             return true;
