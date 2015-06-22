@@ -144,6 +144,10 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
                 {
                     $reportDw->set('assigned_user_id',  $assigned_user_id);
                 }
+                if (SV_ReportImprovements_Globals::$UseWarningTimeStamp)
+                {
+                    $reportDw->set('first_report_date', $warning['warning_date']);
+                }
                 $reportDw->save();
             }
 
@@ -166,6 +170,10 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
                 'state_change' => $newReportState,
                 'warning_log_id' => $warningLogId,
             ));
+            if (SV_ReportImprovements_Globals::$UseWarningTimeStamp)
+            {
+                $commentDw->set('comment_date', $warning['warning_date']);
+            }
             $commentDw->save();
         }
 
