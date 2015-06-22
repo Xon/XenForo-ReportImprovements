@@ -32,36 +32,36 @@
   <email_templates/>
   <email_template_modifications/>
   <optiongroups>
-    <group group_id="sv_integrated_reports" display_order="141" debug_only="0"/>
+    <group group_id="sv_report_improvements" display_order="141" debug_only="0"/>
     <option option_id="sv_default_resolve_report_on_warning" edit_format="onoff" data_type="boolean" can_backup="1">
       <default_value>1</default_value>
       <edit_format_params></edit_format_params>
       <sub_options></sub_options>
-      <relation group_id="sv_integrated_reports" display_order="110"/>
+      <relation group_id="sv_report_improvements" display_order="110"/>
     </option>
     <option option_id="sv_ri_log_to_report_natural_warning_expire" edit_format="onoff" data_type="boolean" can_backup="1">
       <default_value>0</default_value>
       <edit_format_params></edit_format_params>
       <sub_options></sub_options>
-      <relation group_id="sv_integrated_reports" display_order="10"/>
+      <relation group_id="sv_report_improvements" display_order="10"/>
     </option>
     <option option_id="sv_ri_user_id" edit_format="textbox" data_type="unsigned_integer" can_backup="1">
       <default_value>1</default_value>
       <edit_format_params></edit_format_params>
       <sub_options></sub_options>
-      <relation group_id="sv_integrated_reports" display_order="1"/>
+      <relation group_id="sv_report_improvements" display_order="1"/>
     </option>
     <option option_id="sv_moderators_respect_view_node" edit_format="onoff" data_type="boolean" can_backup="1">
       <default_value>0</default_value>
       <edit_format_params></edit_format_params>
       <sub_options></sub_options>
-      <relation group_id="sv_integrated_reports" display_order="210"/>
+      <relation group_id="sv_report_improvements" display_order="210"/>
     </option>
     <option option_id="sv_report_new_warnings" edit_format="onoff" data_type="boolean" can_backup="1">
-      <default_value>0</default_value>
+      <default_value>1</default_value>
       <edit_format_params></edit_format_params>
       <sub_options></sub_options>
-      <relation group_id="sv_integrated_reports" display_order="100"/>
+      <relation group_id="sv_report_improvements" display_order="100"/>
     </option>
   </optiongroups>
   <permissions>
@@ -76,8 +76,8 @@
   </permissions>
   <phrases>
     <phrase title="a_report_will_be_created" version_id="4" version_string="0.0.4"><![CDATA[A report will be created.]]></phrase>
-    <phrase title="option_group_sv_integrated_reports" version_id="3" version_string="0.0.3b"><![CDATA[Integrated Reports]]></phrase>
-    <phrase title="option_group_sv_integrated_reports_description" version_id="1" version_string="0.0.1"><![CDATA[]]></phrase>
+    <phrase title="option_group_sv_report_improvements" version_id="3" version_string="0.0.3b"><![CDATA[Report Improvements]]></phrase>
+    <phrase title="option_group_sv_report_improvements_description" version_id="1" version_string="0.0.1"><![CDATA[]]></phrase>
     <phrase title="option_sv_default_resolve_report_on_warning" version_id="4" version_string="0.0.4"><![CDATA[Resolve Report on Warning]]></phrase>
     <phrase title="option_sv_default_resolve_report_on_warning_explain" version_id="4" version_string="0.0.4"><![CDATA[By default, resolve an contents report when creating a warning.]]></phrase>
     <phrase title="option_sv_ri_log_to_report_natural_warning_expire" version_id="2" version_string="0.0.2"><![CDATA[Log Automatically Expiring Warning to Report]]></phrase>
