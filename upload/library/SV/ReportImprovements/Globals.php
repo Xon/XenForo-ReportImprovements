@@ -14,7 +14,6 @@ class SV_ReportImprovements_Globals
     public static $SystemUserId = null;
     public static $SystemUsername = null;
     public static $resolve_report = false;
-    public static $UseWarningTimeStamp = false;
 
     private function __construct() {}
 }

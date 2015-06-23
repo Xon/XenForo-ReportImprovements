@@ -50,7 +50,7 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
      *
      * @return int|false
      */
-    public function LogOperation($operationType, $warning)
+    public function LogOperation($operationType, $warning, $ImporterMode = false)
     {
         if (@$operationType == '')
             throw new Exception("Unknown operation type when logging warning");
@@ -114,12 +114,13 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
                         $report = $reportModel->getReportById($reportId);
                         $reportComments = $reportModel->getReportComments($reportId);
                         $commentToUpdate = reset($reportComments);
-                        if (SV_ReportImprovements_Globals::$UseWarningTimeStamp)
+                        if ($ImporterMode)
                         {
                             $reportDw = XenForo_DataWriter::create('XenForo_DataWriter_Report');
                             $reportDw->setExistingData($report['report_id']);
                             $reportDw->set('first_report_date', $warning['warning_date']);
                             $reportDw->set('last_modified_date', $warning['warning_date']);
+                            $reportDw->setImportMode(true);
                             $reportDw->save();
                             $report['first_report_date'] = $report['last_modified_date'] = $warning['warning_date'];
                         }
@@ -139,6 +140,11 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
                     // re-open an existing report
                     $newReportState = 'open';
                 }
+            }
+            // do not change the report state to something it already is
+            if ($newReportState != '' && $report['report_state'] == $newReportState)
+            {
+                $newReportState = '';
             }
 
             if (!empty($newReportState) || !empty($assigned_user_id))
@@ -175,9 +181,10 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
                 'state_change' => $newReportState,
                 'warning_log_id' => $warningLogId,
             ));
-            if (SV_ReportImprovements_Globals::$UseWarningTimeStamp)
+            if ($ImporterMode)
             {
                 $commentDw->set('comment_date', $warning['warning_date']);
+                $commentDw->setImportMode(true);
             }
             $commentDw->save();
         }
