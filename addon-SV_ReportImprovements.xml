@@ -39,18 +39,6 @@
       <sub_options></sub_options>
       <relation group_id="sv_report_improvements" display_order="110"/>
     </option>
-    <option option_id="sv_ri_log_to_report_natural_warning_expire" edit_format="onoff" data_type="boolean" can_backup="1">
-      <default_value>0</default_value>
-      <edit_format_params></edit_format_params>
-      <sub_options></sub_options>
-      <relation group_id="sv_report_improvements" display_order="10"/>
-    </option>
-    <option option_id="sv_ri_user_id" edit_format="textbox" data_type="unsigned_integer" can_backup="1">
-      <default_value>1</default_value>
-      <edit_format_params></edit_format_params>
-      <sub_options></sub_options>
-      <relation group_id="sv_report_improvements" display_order="1"/>
-    </option>
     <option option_id="sv_moderators_respect_view_node" edit_format="onoff" data_type="boolean" can_backup="1">
       <default_value>0</default_value>
       <edit_format_params></edit_format_params>
@@ -63,16 +51,30 @@
       <sub_options></sub_options>
       <relation group_id="sv_report_improvements" display_order="100"/>
     </option>
+    <option option_id="sv_ri_log_to_report_natural_warning_expire" edit_format="onoff" data_type="boolean" can_backup="1">
+      <default_value>0</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="sv_report_improvements" display_order="10"/>
+    </option>
+    <option option_id="sv_ri_user_id" edit_format="textbox" data_type="unsigned_integer" can_backup="1">
+      <default_value>1</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="sv_report_improvements" display_order="1"/>
+    </option>
   </optiongroups>
   <permissions>
     <permission_groups/>
     <permissions>
-      <permission permission_group_id="conversation" permission_id="viewReportConversation" permission_type="flag" default_value="unset" interface_group_id="conversationModeratorPermissions" display_order="400"/>
-      <permission permission_group_id="forum" permission_id="viewReportPost" permission_type="flag" default_value="unset" interface_group_id="forumModeratorPermissions" display_order="400"/>
-      <permission permission_group_id="general" permission_id="viewReportUser" permission_type="flag" default_value="unset" interface_group_id="generalModeratorPermissions" display_order="400"/>
-      <permission permission_group_id="profilePost" permission_id="viewReportProfilePost" permission_type="flag" default_value="unset" interface_group_id="profilePostModeratorPermissions" display_order="400"/>
+      <permission permission_group_id="conversation" permission_id="viewReportConversation" permission_type="flag" default_value="unset" interface_group_id="ri_ReportCenter" display_order="400"/>
+      <permission permission_group_id="forum" permission_id="viewReportPost" permission_type="flag" default_value="unset" interface_group_id="ri_ReportCenter" display_order="200"/>
+      <permission permission_group_id="general" permission_id="viewReportUser" permission_type="flag" default_value="unset" interface_group_id="ri_ReportCenter" display_order="100"/>
+      <permission permission_group_id="profilePost" permission_id="viewReportProfilePost" permission_type="flag" default_value="unset" interface_group_id="ri_ReportCenter" display_order="300"/>
     </permissions>
-    <interface_groups/>
+    <interface_groups>
+      <interface_group interface_group_id="ri_ReportCenter" display_order="800"/>
+    </interface_groups>
   </permissions>
   <phrases>
     <phrase title="a_report_will_be_created" version_id="4" version_string="0.0.4"><![CDATA[A report will be created.]]></phrase>
@@ -80,17 +82,18 @@
     <phrase title="option_group_sv_report_improvements_description" version_id="1" version_string="0.0.1"><![CDATA[]]></phrase>
     <phrase title="option_sv_default_resolve_report_on_warning" version_id="4" version_string="0.0.4"><![CDATA[Resolve Report on Warning]]></phrase>
     <phrase title="option_sv_default_resolve_report_on_warning_explain" version_id="4" version_string="0.0.4"><![CDATA[By default, resolve an contents report when creating a warning.]]></phrase>
-    <phrase title="option_sv_ri_log_to_report_natural_warning_expire" version_id="2" version_string="0.0.2"><![CDATA[Log Automatically Expiring Warning to Report]]></phrase>
-    <phrase title="option_sv_ri_log_to_report_natural_warning_expire_explain" version_id="2" version_string="0.0.2"><![CDATA[]]></phrase>
-    <phrase title="option_sv_ri_user_id" version_id="1" version_string="0.0.1"><![CDATA[Reporter]]></phrase>
-    <phrase title="option_sv_ri_user_id_explain" version_id="1" version_string="0.0.1"><![CDATA[Enter the user id of the person reporting Alter Ego's]]></phrase>
     <phrase title="option_sv_moderators_respect_view_node" version_id="8" version_string="0.0.8"><![CDATA[Reports respect view-node permission]]></phrase>
     <phrase title="option_sv_moderators_respect_view_node_explain" version_id="8" version_string="0.0.8"><![CDATA[Only allow moderators to see reports from forums they can see]]></phrase>
     <phrase title="option_sv_report_new_warnings" version_id="3" version_string="0.0.3b"><![CDATA[Report New Warnings]]></phrase>
     <phrase title="option_sv_report_new_warnings_explain" version_id="3" version_string="0.0.3b"><![CDATA[Automatically create Reports for Warnings on content without an associated report]]></phrase>
+    <phrase title="option_sv_ri_log_to_report_natural_warning_expire" version_id="2" version_string="0.0.2"><![CDATA[Log Automatically Expiring Warning to Report]]></phrase>
+    <phrase title="option_sv_ri_log_to_report_natural_warning_expire_explain" version_id="2" version_string="0.0.2"><![CDATA[]]></phrase>
+    <phrase title="option_sv_ri_user_id" version_id="1" version_string="0.0.1"><![CDATA[Reporter]]></phrase>
+    <phrase title="option_sv_ri_user_id_explain" version_id="1" version_string="0.0.1"><![CDATA[Enter the user id of the person reporting Alter Ego's]]></phrase>
     <phrase title="permission_conversation_viewReportConversation" version_id="1" version_string="0.0.1"><![CDATA[View Conversation Report]]></phrase>
     <phrase title="permission_forum_viewReportPost" version_id="1" version_string="0.0.1"><![CDATA[View Post Report]]></phrase>
     <phrase title="permission_general_viewReportUser" version_id="1" version_string="0.0.1"><![CDATA[View User Report]]></phrase>
+    <phrase title="permission_interface_ri_ReportCenter" version_id="11" version_string="0.0.11"><![CDATA[Report Center]]></phrase>
     <phrase title="permission_profilePost_viewReportProfilePost" version_id="1" version_string="0.0.1"><![CDATA[View ProfilePost Report]]></phrase>
     <phrase title="report_options" version_id="4" version_string="0.0.4"><![CDATA[Report Options]]></phrase>
     <phrase title="resolve_linked_report" version_id="4" version_string="0.0.4"><![CDATA[Resolve linked report]]></phrase>
