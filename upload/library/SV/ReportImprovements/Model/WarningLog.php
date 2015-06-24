@@ -25,8 +25,9 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
 
     public function canCreateReportFor($contentType)
     {
-        $handler = $this->_getWarningModel()->getWarningHandler($contentType);
-        return !empty($handler);
+        $WarningHandler = $this->_getWarningModel()->getWarningHandler($contentType);
+        $ReportHandler = $this->_getReportModel()->getReportHandler($contentType);
+        return !empty($WarningHandler) && !empty($ReportHandler);
     }
     
     public function getContentForReportFromWarning(array $warning)
