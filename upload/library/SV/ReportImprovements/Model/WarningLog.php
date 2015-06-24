@@ -23,6 +23,20 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
         ', $warningLogId);
     }
 
+    public function canCreateReportFor($contentType)
+    {
+        switch($contentType)
+        {
+            case 'post':
+                return true;
+            case 'profile_post':
+                return true;
+            case 'user':
+                return true;
+        }
+        return false;
+    }
+    
     public function getContentForReportFromWarning(array $warning)
     {
         $contentType = $warning['content_type'];

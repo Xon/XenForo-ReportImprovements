@@ -29,6 +29,8 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Member extends XFCP_SV_Repo
                         $response->params['report'] = reset($reports);
                     }
                 }
+                $response->params['CanCreateReport'] = $this->_getWarningLogModel()->canCreateReportFor($content_type);
+                $response->params['ContentType'] = $content_type;
             }
         }
         return $response;
@@ -37,5 +39,10 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Member extends XFCP_SV_Repo
     protected function _getReportModel()
     {
         return $this->getModelFromCache('XenForo_Model_Report');
+    }
+
+    protected function _getWarningLogModel()
+    {
+        return $this->getModelFromCache('SV_ReportImprovements_Model_WarningLog');
     }
 }
