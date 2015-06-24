@@ -25,35 +25,20 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
 
     public function canCreateReportFor($contentType)
     {
-        switch($contentType)
-        {
-            case 'post':
-                return true;
-            case 'profile_post':
-                return true;
-            case 'user':
-                return true;
-        }
-        return false;
+        $handler = $this->_getWarningModel()->getWarningHandler($contentType);
+        return !empty($handler);
     }
     
     public function getContentForReportFromWarning(array $warning)
     {
         $contentType = $warning['content_type'];
         $contentId = $warning['content_id'];
-        switch($contentType)
+        $handler = $this->_getWarningModel()->getWarningHandler($contentType);
+        if (empty($handler))
         {
-            case 'post':
-                return $this->getModelFromCache('XenForo_Model_Post')->getPostById($contentId);
-            case 'profile_post':
-                return $this->getModelFromCache('XenForo_Model_ProfilePost')->getProfilePostById($contentId);
-            case 'user':
-                return $this->getModelFromCache('XenForo_Model_User')->getUserById($contentId);
-            default:
-                XenForo_Error::debug("Can't create report for unknown content type: ".$contentType);
-                break;
+            return false;
         }
-        return null;
+        return $handler->getContent($contentId);
     }
 
     /**
@@ -120,7 +105,7 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
             {
                 // create a report for tracking purposes.
                 $content = $this->getContentForReportFromWarning($warning);
-                if ($content)
+                if (!empty($content))
                 {
                     $reportId = $reportModel->reportContent($contentType, $content, '.', $reportUser);
                     if($reportId)
@@ -219,5 +204,10 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
     protected function _getReportModel()
     {
         return $this->getModelFromCache('XenForo_Model_Report');
+    }
+    
+    protected function _getWarningModel()
+    {
+        return $this->getModelFromCache('XenForo_Model_Warning');
     }
 }
