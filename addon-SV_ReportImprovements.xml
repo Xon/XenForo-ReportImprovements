@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="0.0.13" version_id="13" url="" install_callback_class="SV_ReportImprovements_Listener" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Listener" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="0.0.14" version_id="14" url="" install_callback_class="SV_ReportImprovements_Listener" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Listener" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -126,8 +126,8 @@
 	'name={xen:helper username, $user, 'subject'}',
 	'report=<a href="{xen:link reports, $content}{$extra}" class="PopupItemLink">{$content.contentTitle}</a>'
 }]]></template>
-    <template title="ir_report_display" version_id="13" version_string="0.0.13"><![CDATA[<xen:if is="{$report}">
-	<xen:require css="report_overlay.css" />
+    <template title="ir_report_display" version_id="14" version_string="0.0.14"><![CDATA[<xen:if is="{$report}">
+	<xen:require css="ir_report_overlay.css" />
 	<div class="discussionList section">
 		<dl class="sectionHeaders">
 			<dt class="posterAvatar"><a><span></span></a></dt>
@@ -144,6 +144,23 @@
 		</ol>
 	</div>
 </xen:if>]]></template>
+    <template title="ir_report_overlay.css" version_id="14" version_string="0.0.14"><![CDATA[.xenOverlay .formOverlay .discussionListItem .title a:link, a:visited {
+    color: {xen:property primaryMedium};
+}
+
+.xenOverlay .formOverlay .discussionListItem .username {
+    color: {xen:property primaryMedium};
+}
+
+.xenOverlay .formOverlay .discussionListItem .stats dd {
+    color: {xen:property contentText};
+}
+
+.xenOverlay .section {
+    border: none;
+}
+
+]]></template>
     <template title="member_warn_ir_options" version_id="13" version_string="0.0.13"><![CDATA[			<fieldset>
 				<dl class="ctrlUnit">
 					<dt>{xen:phrase report_options}:</dt>
@@ -166,19 +183,6 @@
     <template title="report_list_item_report_node" version_id="8" version_string="0.0.8"><![CDATA[<xen:if is="{$report.extraContent.node_title} AND {$report.extraContent.node_id}">
 , <a href="{xen:link forums, $report.extraContent}" class="forumLink">{$report.extraContent.node_title}</a>
 </xen:if>]]></template>
-    <template title="report_overlay.css" version_id="12" version_string="0.0.12"><![CDATA[.xenOverlay .formOverlay .discussionListItem .title a:link, a:visited {
-    color: {xen:property primaryMedium};
-}
-
-.xenOverlay .formOverlay .discussionListItem .username {
-    color: {xen:property primaryMedium};
-}
-
-.xenOverlay .section {
-    border: none;
-}
-
-]]></template>
     <template title="sv_report_view_warning" version_id="4" version_string="0.0.4"><![CDATA[<xen:if is="{$comment.operation_type}">
 <p class="warningLog">
 <div class="pairsJustified">
