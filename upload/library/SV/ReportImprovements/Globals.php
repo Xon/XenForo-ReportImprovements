@@ -10,10 +10,10 @@ class SV_ReportImprovements_Globals
     public static $Report_MaxAlertCount = 0;
 
     public static $SupressLoggingWarningToReport = false;
-    public static $UseSystemUsernameForComments = false;
-    public static $SystemUserId = null;
-    public static $SystemUsername = null;
-    public static $resolve_report = false;
+    public static $OverrideReportUserId = null;
+    public static $OverrideReportUsername = null;
+    public static $ResolveReport = false;
+    public static $AssignReport = false;
 
     private function __construct() {}
 }

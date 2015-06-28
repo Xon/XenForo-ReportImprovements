@@ -56,12 +56,12 @@ class SV_ReportImprovements_Deferred_WarningLogMigration extends XenForo_Deferre
         $warningRows = $warningQuery->fetchAll();
         if (!empty($warningRows))
         {
-            SV_ReportImprovements_Globals::$UseSystemUsernameForComments = true;
             foreach($warningRows as $warning)
             {
-                SV_ReportImprovements_Globals::$SystemUserId = $warning['warning_user_id'];
-                SV_ReportImprovements_Globals::$SystemUsername = $warning['warning_username'];
-                SV_ReportImprovements_Globals::$resolve_report = true;
+                SV_ReportImprovements_Globals::$OverrideReportUserId = $warning['warning_user_id'];
+                SV_ReportImprovements_Globals::$OverrideReportUsername = $warning['warning_username'];
+                SV_ReportImprovements_Globals::$ResolveReport = true;
+                SV_ReportImprovements_Globals::$AssignReport = true;
                 unset($warning['warning_username']);
 
                 $warningLogModel->LogOperation(SV_ReportImprovements_Model_WarningLog::Operation_NewWarning, $warning, true);

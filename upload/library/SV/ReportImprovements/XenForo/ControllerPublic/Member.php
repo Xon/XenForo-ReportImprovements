@@ -6,7 +6,8 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Member extends XFCP_SV_Repo
     {
         if ($this->_request->isPost())
         {
-            SV_ReportImprovements_Globals::$resolve_report = $this->_input->filterSingle('resolve_linked_report', XenForo_Input::BOOLEAN);
+            SV_ReportImprovements_Globals::$ResolveReport = $this->_input->filterSingle('resolve_linked_report', XenForo_Input::BOOLEAN);
+            SV_ReportImprovements_Globals::$AssignReport = SV_ReportImprovements_Globals::$ResolveReport;
         }
 
         $response = parent::actionWarn();
