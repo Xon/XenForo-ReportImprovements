@@ -78,13 +78,11 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
                 $alertTagged = $this->_taggedUsers;
             }
 
-            $this->_getReportModel()->alertTaggedMembers($report, $reportComment, $alertTagged, $alertedUserIds, array(
+            $alertedUserIds = array_merge($alertedUserIds, $this->_getReportModel()->alertTaggedMembers($report, $reportComment, $alertTagged, $alertedUserIds, array(
                     'user_id' => $this->get('user_id'),
                     'username' => $this->get('username')
                 )
-            );
-
-            $alertedUserIds = $alertedUserIds + $alertTagged;
+            ));
         }
 
         // alert users interacting with this report
@@ -98,7 +96,7 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
 
         $db = XenForo_Application::getDb();
 
-        $_alertedUserIds = array_keys($alertedUserIds);
+        $_alertedUserIds = array_fill_keys($alertedUserIds, true);
 
         foreach ($otherCommenters AS $otherCommenter)
         {
