@@ -13,14 +13,6 @@ class SV_ReportImprovements_XenForo_Model_Warning extends XFCP_SV_ReportImprovem
         {
             SV_ReportImprovements_Globals::$SupressLoggingWarningToReport = true;
         }
-        try
-        {
-            parent::processExpiredWarnings();
-        }
-        finally
-        {
-            SV_ReportImprovements_Globals::$OverrideReportUserId = null;
-            SV_ReportImprovements_Globals::$SupressLoggingWarningToReport = false;
-        }
+        parent::processExpiredWarnings();
     }
 }
