@@ -40,9 +40,9 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         return parent::_preSave();
     }
 
-    protected function _postSave()
+    protected function _postSaveAfterTransaction()
     {
-        parent::_postSave();
+        parent::_postSaveAfterTransaction();
 
         if (!$this->isInsert())
         {
