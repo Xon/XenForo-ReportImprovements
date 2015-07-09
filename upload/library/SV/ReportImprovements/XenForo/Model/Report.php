@@ -2,6 +2,15 @@
 
 class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImprovements_XenForo_Model_Report
 {
+	public function reportContent($contentType, array $content, $message, array $viewingUser = null)
+	{
+        $this->standardizeViewingUserReference($viewingUser);
+
+        SV_ReportImprovements_Globals::$Report_MaxAlertCount = XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'maxTaggedUsers');
+
+        return parent::reportContent($contentType, $content, $message, $viewingUser);
+    }
+
     public function getReportComments($reportId)
     {
         return $this->fetchAllKeyed('
