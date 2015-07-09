@@ -249,6 +249,22 @@ $2]]></replace>
       <replace><![CDATA[<xen:include template="ir_report_display" />
 $0]]></replace>
     </modification>
+    <modification template="conversation_message_report" modification_key="sv_report_improvements_conversation_message_report" description="Add User Tagging support" execution_order="20" enabled="1" action="preg_replace">
+      <find><![CDATA[#(<textarea name="message" .*? class=".*?)(")#si]]></find>
+      <replace><![CDATA[$1 UserTagger$2]]></replace>
+    </modification>
+    <modification template="member_report" modification_key="sv_report_improvements_member_report" description="Add User Tagging support" execution_order="20" enabled="1" action="preg_replace">
+      <find><![CDATA[#(<textarea name="message" .*? class=".*?)(")#si]]></find>
+      <replace><![CDATA[$1 UserTagger$2]]></replace>
+    </modification>
+    <modification template="post_report" modification_key="sv_report_improvements_post_report" description="Add User Tagging support" execution_order="20" enabled="1" action="preg_replace">
+      <find><![CDATA[#(<textarea name="message" .*? class=".*?)(")#si]]></find>
+      <replace><![CDATA[$1 UserTagger$2]]></replace>
+    </modification>
+    <modification template="profile_post_report" modification_key="sv_report_improvements_profile_post_report" description="Add User Tagging support" execution_order="20" enabled="1" action="preg_replace">
+      <find><![CDATA[#(<textarea name="message" .*? class=".*?)(")#si]]></find>
+      <replace><![CDATA[$1 UserTagger$2]]></replace>
+    </modification>
   </public_template_modifications>
   <bb_code_media_sites/>
   <bb_codes/>
