@@ -29,6 +29,28 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Warning extends XFCP_SV_Rep
         return $response;
     }
 
+    public function actionExpire()
+    {
+        if ($this->isConfirmedPost())
+        {
+            SV_ReportImprovements_Globals::$ResolveReport = $this->_input->filterSingle('resolve_linked_report', XenForo_Input::BOOLEAN);
+            SV_ReportImprovements_Globals::$AssignReport = SV_ReportImprovements_Globals::$ResolveReport;
+        }
+
+        return parent::actionExpire();
+    }
+
+    public function actionDelete()
+    {
+        if ($this->isConfirmedPost())
+        {
+            SV_ReportImprovements_Globals::$ResolveReport = $this->_input->filterSingle('resolve_linked_report', XenForo_Input::BOOLEAN);
+            SV_ReportImprovements_Globals::$AssignReport = SV_ReportImprovements_Globals::$ResolveReport;
+        }
+
+        return parent::actionDelete();
+    }
+
     protected function _getReportModel()
     {
         return $this->getModelFromCache('XenForo_Model_Report');

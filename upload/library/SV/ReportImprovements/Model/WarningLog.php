@@ -140,7 +140,9 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
             if ($newReportState == '' && ($report['report_state'] == 'resolved' || $report['report_state'] == 'rejected'))
             {
                 // re-open an existing report
-                $newReportState = empty($report['assigned_user_id']) ? 'open' : 'assigned';
+                $newReportState = empty($report['assigned_user_id']) && empty($assigned_user_id) 
+                                    ? 'open' 
+                                    : 'assigned';
             }
         }
         // do not change the report state to something it already is
