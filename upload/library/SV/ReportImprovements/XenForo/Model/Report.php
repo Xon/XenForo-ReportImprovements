@@ -6,7 +6,8 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
 	{
         $this->standardizeViewingUserReference($viewingUser);
 
-        SV_ReportImprovements_Globals::$Report_MaxAlertCount = XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'maxTaggedUsers');
+        $permissions = empty($viewingUser['permissions']) ? array() : $viewingUser['permissions'];
+        SV_ReportImprovements_Globals::$Report_MaxAlertCount = XenForo_Permission::hasPermission($permissions, 'general', 'maxTaggedUsers');
 
         return parent::reportContent($contentType, $content, $message, $viewingUser);
     }
