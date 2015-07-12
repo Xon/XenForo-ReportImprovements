@@ -12,40 +12,39 @@ class SV_ReportImprovements_Listener
 
         XenForo_Db::beginTransaction($db);
 
-        $db->query("
-            CREATE TABLE IF NOT EXISTS `xf_sv_warning_log` (
-              `warning_log_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-              `warning_edit_date` int(10) unsigned NOT NULL,
-              `operation_type` enum('new','edit','expire','delete') NOT NULL,
-              `warning_id` int(10) unsigned NOT NULL,
-              `content_type` varbinary(25) NOT NULL,
-              `content_id` int(10) unsigned NOT NULL,
-              `content_title` varchar(255) NOT NULL,
-              `user_id` int(10) unsigned NOT NULL,
-              `warning_date` int(10) unsigned NOT NULL,
-              `warning_user_id` int(10) unsigned NOT NULL,
-              `warning_definition_id` int(10) unsigned NOT NULL,
-              `title` varchar(255) NOT NULL,
-              `notes` text NOT NULL,
-              `points` smallint(5) unsigned NOT NULL,
-              `expiry_date` int(10) unsigned NOT NULL,
-              `is_expired` tinyint(3) unsigned NOT NULL,
-              `extra_user_group_ids` varbinary(255) NOT NULL,
-              PRIMARY KEY (`warning_log_id`),
-              KEY (`warning_id`),
-              KEY `content_type_id` (`content_type`,`content_id`),
-              KEY `user_id_date` (`user_id`,`warning_date`),
-              KEY `expiry` (`expiry_date`),
-              KEY `operation_type` (`operation_type`),
-              KEY `warning_edit_date` (`warning_edit_date`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-        ");
-
-        SV_ReportImprovements_Install::addColumn('xf_report_comment', 'warning_log_id', 'int unsigned default 0');
-
-
         if ($version == 0)
         {
+            $db->query("
+                CREATE TABLE IF NOT EXISTS `xf_sv_warning_log` (
+                  `warning_log_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                  `warning_edit_date` int(10) unsigned NOT NULL,
+                  `operation_type` enum('new','edit','expire','delete') NOT NULL,
+                  `warning_id` int(10) unsigned NOT NULL,
+                  `content_type` varbinary(25) NOT NULL,
+                  `content_id` int(10) unsigned NOT NULL,
+                  `content_title` varchar(255) NOT NULL,
+                  `user_id` int(10) unsigned NOT NULL,
+                  `warning_date` int(10) unsigned NOT NULL,
+                  `warning_user_id` int(10) unsigned NOT NULL,
+                  `warning_definition_id` int(10) unsigned NOT NULL,
+                  `title` varchar(255) NOT NULL,
+                  `notes` text NOT NULL,
+                  `points` smallint(5) unsigned NOT NULL,
+                  `expiry_date` int(10) unsigned NOT NULL,
+                  `is_expired` tinyint(3) unsigned NOT NULL,
+                  `extra_user_group_ids` varbinary(255) NOT NULL,
+                  PRIMARY KEY (`warning_log_id`),
+                  KEY (`warning_id`),
+                  KEY `content_type_id` (`content_type`,`content_id`),
+                  KEY `user_id_date` (`user_id`,`warning_date`),
+                  KEY `expiry` (`expiry_date`),
+                  KEY `operation_type` (`operation_type`),
+                  KEY `warning_edit_date` (`warning_edit_date`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+            ");
+
+            SV_ReportImprovements_Install::addColumn('xf_report_comment', 'warning_log_id', 'int unsigned default 0');
+
             $db->query("insert ignore into xf_permission_entry_content (content_type, content_id, user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
                 select distinct content_type, content_id, user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportPost', permission_value, permission_value_int
                 from xf_permission_entry_content
