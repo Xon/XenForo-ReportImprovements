@@ -12,9 +12,9 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         return parent::reportContent($contentType, $content, $message, $viewingUser);
     }
 
-    public function getReportComments($reportId)
+    public function getReportComments($reportId, $orderDirection = 'ASC')
     {
-        return $this->fetchAllKeyed('
+        return $this->fetchAllKeyed("
             SELECT report_comment.*,
                 user.*
                 ,warning.warning_id
@@ -30,8 +30,8 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
             LEFT JOIN xf_warning warning on warningLog.warning_id = warning.warning_id
             LEFT JOIN xf_user AS user ON (user.user_id = report_comment.user_id)
             WHERE report_comment.report_id = ?
-            ORDER BY report_comment.comment_date
-        ', 'report_comment_id', $reportId);
+            ORDER BY report_comment.comment_date $orderDirection
+        ", 'report_comment_id', $reportId);
     }
 
     public function getReportCommentById($id)
