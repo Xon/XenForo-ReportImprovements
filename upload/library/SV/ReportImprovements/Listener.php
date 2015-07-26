@@ -40,7 +40,7 @@ class SV_ReportImprovements_Listener
                   KEY `expiry` (`expiry_date`),
                   KEY `operation_type` (`operation_type`),
                   KEY `warning_edit_date` (`warning_edit_date`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+                ) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci
             ");
 
             SV_ReportImprovements_Install::addColumn('xf_report_comment', 'warning_log_id', 'int unsigned default 0');
