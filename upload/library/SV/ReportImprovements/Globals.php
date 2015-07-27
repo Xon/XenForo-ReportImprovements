@@ -15,5 +15,8 @@ class SV_ReportImprovements_Globals
     public static $ResolveReport = false;
     public static $AssignReport = false;
 
+    // workaround for a bug in Waindigo_EmailReport_Extend_XenForo_Model_Report::reportContent
+    public static $reportId = false;
+
     private function __construct() {}
 }

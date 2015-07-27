@@ -49,6 +49,8 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
             return;
         }
 
+        SV_ReportImprovements_Globals::$reportId = $this->get('report_id');
+
         $reportModel = $this->_getReportModel();
         $report = $reportModel->getReportById($this->get('report_id'));
         if (empty($report))

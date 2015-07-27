@@ -9,7 +9,18 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         $permissions = empty($viewingUser['permissions']) ? array() : $viewingUser['permissions'];
         SV_ReportImprovements_Globals::$Report_MaxAlertCount = XenForo_Permission::hasPermission($permissions, 'general', 'maxTaggedUsers');
 
-        return parent::reportContent($contentType, $content, $message, $viewingUser);
+        SV_ReportImprovements_Globals::$reportId = false;
+        $reportId = parent::reportContent($contentType, $content, $message, $viewingUser);
+        if ($reportId === null)
+        {
+            XenForo_Error::logException(new Exception(class_exists('Waindigo_EmailReport_Extend_XenForo_Model_Report', false)
+                                                      ? "Please upgrade the addon 'Email Reports by Waindigo'"
+                                                      : "Please upgrade addons related to reports."), false);
+            // workaround for a bug in Waindigo_EmailReport_Extend_XenForo_Model_Report (or anyone else implementing reportContent)
+            // reportContent will return false (not null) if the report is created.
+            $reportId = SV_ReportImprovements_Globals::$reportId;
+        }
+        return $reportId;
     }
 
     public function getReportComments($reportId, $orderDirection = 'ASC')
