@@ -24,7 +24,7 @@ class SV_ReportImprovements_AlertHandler_Report extends XenForo_AlertHandler_Abs
 
     public function prepareAlert(array $item, array $viewingUser)
     {
-        parent::prepareAlert($item, $viewingUser);
+        $item = parent::prepareAlert($item, $viewingUser);
 
         if (!empty($item['content']['content_info']))
         {
