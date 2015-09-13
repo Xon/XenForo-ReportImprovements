@@ -10,8 +10,6 @@ class SV_ReportImprovements_Installer
 
         $db = XenForo_Application::getDb();
 
-        XenForo_Db::beginTransaction($db);
-
         $db->query("
             CREATE TABLE IF NOT EXISTS `xf_sv_warning_log` (
               `warning_log_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -42,6 +40,12 @@ class SV_ReportImprovements_Installer
         ");
 
         SV_Utils_Install::addColumn('xf_report_comment', 'warning_log_id', 'int unsigned default 0');
+
+        SV_Utils_Install::addColumn('xf_report_comment', 'likes', 'INT UNSIGNED NOT NULL DEFAULT 0');
+        SV_Utils_Install::addColumn('xf_report_comment', 'like_users', 'BLOB');
+
+        XenForo_Db::beginTransaction($db);
+
         if ($version == 0)
         {
             $db->query("insert ignore into xf_permission_entry_content (content_type, content_id, user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
@@ -72,18 +76,43 @@ class SV_ReportImprovements_Installer
             ");
         }
 
+        if ($version < 1010000)
+        {
+            if ($version != 0)
+            {
+                $db->query("
+                    DELETE FROM xf_content_type_field
+                    WHERE xf_content_type_field.field_value like '".self::AddonNameSpace."%'
+                ");
+
+                $db->query("
+                    DELETE FROM xf_content_type
+                    WHERE xf_content_type.addon_id = '".self::AddonNameSpace."'
+                ");
+
+                XenForo_Application::defer(self::AddonNameSpace.'_Deferred_AlertMigration', array('alert_id' => -1));
+            }
+
+            $db->query("insert ignore into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
+                select distinct user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportUser', permission_value, permission_value_int
+                from xf_permission_entry
+                where permission_group_id = 'general' and  permission_id in ('reportLike')
+            ");
+        }
+
         $db->query("
             INSERT IGNORE INTO xf_content_type
                 (content_type, addon_id, fields)
             VALUES
-                ('".SV_ReportImprovements_Globals::$Report_ContentType."', '".self::AddonNameSpace."', '')
+                ('report_comment', '".self::AddonNameSpace."', '')
         ");
 
         $db->query("
             INSERT IGNORE INTO xf_content_type_field
                 (content_type, field_name, field_value)
             VALUES
-                ('".SV_ReportImprovements_Globals::$Report_ContentType."', 'alert_handler_class', 'SV_ReportImprovements_AlertHandler_Report')
+                ('report_comment', 'like_handler_class', '".self::AddonNameSpace."_LikeHandler_ReportComment'),
+                ('report_comment', 'alert_handler_class', '".self::AddonNameSpace."_AlertHandler_ReportComment')
         ");
 
         XenForo_Db::commit($db);
@@ -91,10 +120,11 @@ class SV_ReportImprovements_Installer
         if ($version == 0)
         {
             XenForo_Application::defer('Permission', array(), 'Permission');
-            XenForo_Application::defer('SV_ReportImprovements_Deferred_WarningLogMigration', array('warning_id' => -1));
+            XenForo_Application::defer(self::AddonNameSpace.'_Deferred_WarningLogMigration', array('warning_id' => -1));
         }
 
         XenForo_Model::create('XenForo_Model_ContentType')->rebuildContentTypeCache();
+        XenForo_Application::defer(self::AddonNameSpace.'_Deferred_AlertMigration', array('alert_id' => -1));
     }
 
     public static function uninstall()
@@ -105,7 +135,7 @@ class SV_ReportImprovements_Installer
 
         $db->query("
             DELETE FROM xf_content_type_field
-            WHERE xf_content_type_field.field_value = 'SV_ReportImprovements_AlertHandler_Report'
+            WHERE xf_content_type_field.field_value like '".self::AddonNameSpace."%'
         ");
 
         $db->query("
@@ -114,19 +144,22 @@ class SV_ReportImprovements_Installer
         ");
 
         $db->query("delete from xf_report_comment where warning_log_id is not null and warning_log_id <> 0");
-        SV_Utils_Install::dropColumn('xf_report_comment', 'warning_log_id');
-        $db->query("drop table xf_sv_warning_log");
 
         $db->delete('xf_permission_entry', "permission_id = 'viewReportConversation'");
         $db->delete('xf_permission_entry', "permission_id = 'viewReportPost'");
         $db->delete('xf_permission_entry', "permission_id = 'viewReportProfilePost'");
         $db->delete('xf_permission_entry', "permission_id = 'viewReportUser'");
+        $db->delete('xf_permission_entry', "permission_id = 'reportLike'");
         $db->delete('xf_permission_entry_content', "permission_id = 'viewReportConversation'");
         $db->delete('xf_permission_entry_content', "permission_id = 'viewReportPost'");
         $db->delete('xf_permission_entry_content', "permission_id = 'viewReportProfilePost'");
         $db->delete('xf_permission_entry_content', "permission_id = 'viewReportUser'");
+        $db->delete('xf_permission_entry_content', "permission_id = 'reportLike'");
 
         XenForo_Db::commit($db);
+
+        SV_Utils_Install::dropColumn('xf_report_comment', 'warning_log_id');
+        $db->query("drop table if exists xf_sv_warning_log");
 
         XenForo_Model::create('XenForo_Model_ContentType')->rebuildContentTypeCache();
         XenForo_Application::defer('Permission', array(), 'Permission');

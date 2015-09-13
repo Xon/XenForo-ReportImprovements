@@ -17,3 +17,4 @@ A Collection of improvements to XF's reporting system.
 - When issuing a Warning, option to resolve any linked report.
 - Separate explicit viewing report permissions by content types; conversation, posts, profile posts, user.
 - Only view Alerts/Reports for forums the moderator can see (configurable), in addition to viewing report permission.
+- Report Comment Likes

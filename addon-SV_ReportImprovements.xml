@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.0.22" version_id="10022" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.1.0 RC1" version_id="1010001" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -13,21 +13,22 @@
   </admin_template_modifications>
   <code_events/>
   <code_event_listeners>
-    <listener event_id="load_class" execute_order="1000" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Member" description="XenForo_ControllerPublic_Member"/>
-    <listener event_id="load_class" execute_order="1000" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Warning" description="XenForo_ControllerPublic_Warning"/>
-    <listener event_id="load_class" execute_order="1000" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Conversation" description=""/>
-    <listener event_id="load_class" execute_order="1000" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Forum" description=""/>
-    <listener event_id="load_class" execute_order="1000" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_User" description=""/>
-    <listener event_id="load_class" execute_order="1000" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_ProfilePost" description=""/>
-    <listener event_id="load_class" execute_order="1000" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Report" description=""/>
-    <listener event_id="load_class" execute_order="1000" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Warning" description=""/>
-    <listener event_id="load_class" execute_order="1000" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_Post" description=""/>
-    <listener event_id="load_class" execute_order="1000" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_ProfilePost" description=""/>
-    <listener event_id="load_class" execute_order="1000" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_ProfilePostComment" description=""/>    
-    <listener event_id="load_class" execute_order="1000" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_User" description=""/>
-    <listener event_id="load_class" execute_order="1000" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_DataWriter_Warning" description=""/>
-    <listener event_id="load_class" execute_order="1000" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_DataWriter_ReportComment" description=""/>
-    <listener event_id="load_class" execute_order="1000" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Report" description="XenForo_ControllerPublic_Report"/>
+    <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Member" description="XenForo_ControllerPublic_Member"/>
+    <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Warning" description="XenForo_ControllerPublic_Warning"/>
+    <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Conversation" description="XenForo_Model_Conversation"/>
+    <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Forum" description="XenForo_Model_Forum"/>
+    <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_User" description="XenForo_Model_User"/>
+    <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_ProfilePost" description="XenForo_Model_ProfilePost"/>
+    <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Report" description="XenForo_Model_Report"/>
+    <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Warning" description="XenForo_Model_Warning"/>
+    <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_Post" description="XenForo_ReportHandler_Post"/>
+    <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_ProfilePost" description="XenForo_ReportHandler_ProfilePost"/>
+    <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_ProfilePostComment" description="XenForo_ReportHandler_ProfilePostComment"/>
+    <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_User" description="XenForo_ReportHandler_User"/>
+    <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_DataWriter_Warning" description="XenForo_DataWriter_Warning"/>
+    <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_DataWriter_ReportComment" description="XenForo_DataWriter_ReportComment"/>
+    <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Report" description="XenForo_ControllerPublic_Report"/>
+    <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Route_Prefix_Reports" description="XenForo_Route_Prefix_Reports"/>
   </code_event_listeners>
   <cron/>
   <email_templates/>
@@ -70,6 +71,7 @@
     <permissions>
       <permission permission_group_id="conversation" permission_id="viewReportConversation" permission_type="flag" default_value="unset" interface_group_id="ri_ReportCenter" display_order="400"/>
       <permission permission_group_id="forum" permission_id="viewReportPost" permission_type="flag" default_value="unset" interface_group_id="ri_ReportCenter" display_order="200"/>
+      <permission permission_group_id="general" permission_id="reportLike" permission_type="flag" default_value="unset" interface_group_id="ri_ReportCenter" display_order="10"/>
       <permission permission_group_id="general" permission_id="viewReportUser" permission_type="flag" default_value="unset" interface_group_id="ri_ReportCenter" display_order="100"/>
       <permission permission_group_id="profilePost" permission_id="viewReportProfilePost" permission_type="flag" default_value="unset" interface_group_id="ri_ReportCenter" display_order="300"/>
     </permissions>
@@ -94,11 +96,16 @@
     <phrase title="option_sv_ri_user_id_explain" version_id="1" version_string="0.0.1"><![CDATA[Enter the user id of the person reporting Alter Ego's]]></phrase>
     <phrase title="permission_conversation_viewReportConversation" version_id="1" version_string="0.0.1"><![CDATA[View Conversation Report]]></phrase>
     <phrase title="permission_forum_viewReportPost" version_id="1" version_string="0.0.1"><![CDATA[View Post Report]]></phrase>
+    <phrase title="permission_general_reportLike" version_id="1010000" version_string="1.1.0"><![CDATA[Like Report Comments]]></phrase>
     <phrase title="permission_general_viewReportUser" version_id="1" version_string="0.0.1"><![CDATA[View User Report]]></phrase>
     <phrase title="permission_interface_ri_ReportCenter" version_id="11" version_string="0.0.11"><![CDATA[Report Center]]></phrase>
     <phrase title="permission_profilePost_viewReportProfilePost" version_id="1" version_string="0.0.1"><![CDATA[View ProfilePost Report]]></phrase>
     <phrase title="report_options" version_id="4" version_string="0.0.4"><![CDATA[Report Options]]></phrase>
     <phrase title="resolve_linked_report" version_id="4" version_string="0.0.4"><![CDATA[Resolve linked report]]></phrase>
+    <phrase title="sv_like_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Like report comment]]></phrase>
+    <phrase title="sv_members_who_liked_this_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Members Who Liked This Report Comment]]></phrase>
+    <phrase title="sv_no_one_has_liked_this_report_comment_yet" version_id="1010000" version_string="1.1.0"><![CDATA[No one has liked this report comment yet.]]></phrase>
+    <phrase title="sv_report_comment_by_x" version_id="1010000" version_string="1.1.0"><![CDATA[Report Comment By {username}]]></phrase>
     <phrase title="sv_ri_migrating" version_id="11" version_string="0.0.11"><![CDATA[Linking Warnings and Reports]]></phrase>
     <phrase title="sv_ri_operation_type_delete" version_id="2" version_string="0.0.2"><![CDATA[Deleted Warning]]></phrase>
     <phrase title="sv_ri_operation_type_edit" version_id="2" version_string="0.0.2"><![CDATA[Edited Warning]]></phrase>
@@ -106,26 +113,26 @@
     <phrase title="sv_ri_operation_type_new" version_id="2" version_string="0.0.2"><![CDATA[New Warning]]></phrase>
     <phrase title="sv_ri_x_commented_on_report" version_id="7" version_string="0.0.7"><![CDATA[{name} commented on the report {report}.]]></phrase>
     <phrase title="sv_ri_x_tagged_on_report" version_id="10" version_string="0.0.10"><![CDATA[{name} tagged you in the report {report}.]]></phrase>
+    <phrase title="sv_unlike_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Unlike report comment]]></phrase>
+    <phrase title="sv_x_liked_your_comment_in_the_report_y" version_id="1010000" version_string="1.1.0"><![CDATA[{name} liked your comment in the report {title}.]]></phrase>
+    <phrase title="sv_x_liked_ys_comment_in_the_report_z" version_id="1010000" version_string="1.1.0"><![CDATA[{name} liked <a {posterParams}>{poster}'s comment</a> in the report {title}.]]></phrase>
+    <phrase title="sv_you_sure_you_want_to_like_this_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Are you sure you want to like this comment?]]></phrase>
+    <phrase title="sv_you_sure_you_want_to_unlike_this_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Are you sure you want to unlike this comment?]]></phrase>
     <phrase title="warning_log_operation_type" version_id="1" version_string="0.0.1"><![CDATA[Operation Type]]></phrase>
   </phrases>
   <route_prefixes/>
   <style_properties/>
   <templates>
-    <template title="alert_report_comment" version_id="7" version_string="0.0.7"><![CDATA[<xen:if is='{$content.extra.report_comment_id}'>
-<xen:set var="$extra">#reportComment-{$content.extra.report_comment_id}</xen:set>
-</xen:if>
-
-{xen:phrase sv_ri_x_commented_on_report,
+    <template title="alert_report_comment_insert" version_id="1010000" version_string="1.1.0"><![CDATA[{xen:phrase sv_ri_x_commented_on_report,
 	'name={xen:helper username, $user, 'subject'}',
-	'report=<a href="{xen:link reports, $content}{$extra}" class="PopupItemLink">{$content.contentTitle}</a>'
+	'report=<a href="{xen:link reports, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
 }]]></template>
-    <template title="alert_report_tag" version_id="10" version_string="0.0.10"><![CDATA[<xen:if is='{$content.extra.report_comment_id}'>
-<xen:set var="$extra">#reportComment-{$content.extra.report_comment_id}</xen:set>
-</xen:if>
-
-{xen:phrase sv_ri_x_tagged_on_report,
+    <template title="alert_report_comment_like" version_id="1010000" version_string="1.1.0"><![CDATA[{xen:phrase sv_x_liked_your_comment_in_the_report_y,
 	'name={xen:helper username, $user, 'subject'}',
-	'report=<a href="{xen:link reports, $content}{$extra}" class="PopupItemLink">{$content.contentTitle}</a>'
+	'title=<a href="{xen:link reports, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{xen:helper threadPrefix, $content}{$content.report.contentTitle}</a>'}]]></template>
+    <template title="alert_report_comment_tag" version_id="1010000" version_string="1.1.0"><![CDATA[{xen:phrase sv_ri_x_tagged_on_report,
+	'name={xen:helper username, $user, 'subject'}',
+	'report=<a href="{xen:link reports, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
 }]]></template>
     <template title="ir_report_display" version_id="14" version_string="0.0.14"><![CDATA[<xen:if is="{$report}">
 	<xen:require css="ir_report_overlay.css" />
@@ -181,9 +188,103 @@
 <xen:include template="ir_resolve_report" />
 </fieldset>
 <xen:include template="ir_report_display" />]]></template>
+    <template title="news_feed_item_report_comment_like" version_id="1010000" version_string="1.1.0"><![CDATA[<h3 class="description">
+
+	<xen:if is="{$content.user_id} == {$visitor.user_id}">
+	
+		<xen:comment><!-- $user liked your post --></xen:comment>
+		{xen:phrase sv_x_liked_your_comment_in_the_report_y,
+			'name={xen:if $user.user_id, {xen:helper username, $user, 'primaryText'}, '<span class="primaryText">{xen:phrase unknown_member}</span>'}',
+			'title=<a href="{xen:link reports, $content, 'report_comment_id={$content.report_comment_id}'}"{xen:if '{$content.hasPreview}', ' class="PreviewTooltip" data-previewUrl="{xen:link reports/preview, $content, 'report_comment_id={$content.report_comment_id}'}"'}">{xen:helper threadPrefix, $content}{$content.title}</a>'}
+		
+	<xen:else />
+	
+		<xen:comment><!-- $user liked $contentUser's post --></xen:comment>
+		{xen:phrase sv_x_liked_ys_comment_in_the_report_z,
+			'name={xen:if $user.user_id, {xen:helper username, $user, 'primaryText'}, '<span class="primaryText">{xen:phrase unknown_member}</span>'}',
+			'posterParams=href="{xen:link posts, $content}"', 'poster={$content.username}',
+			'title=<a href="{xen:link reports, $content, 'report_comment_id={$content.report_comment_id}'}"{xen:if '{$content.hasPreview}', ' class="PreviewTooltip" data-previewUrl="{xen:link reports/preview, $content, 'report_comment_id={$content.report_comment_id}'}"'}>{xen:helper threadPrefix, $content}{$content.title}</a>'}
+		
+	</xen:if>
+
+</h3>
+
+<p class="snippet">{xen:helper snippet, $content.message, $xenOptions.newsFeedMessageSnippetLength, {xen:array 'stripQuote=1'}}</p>
+
+<xen:include template="news_feed_attached_images" />]]></template>
     <template title="report_list_item_report_node" version_id="8" version_string="0.0.8"><![CDATA[<xen:if is="{$report.extraContent.node_title} AND {$report.extraContent.node_id}">
 , <a href="{xen:link forums, $report.extraContent}" class="forumLink">{$report.extraContent.node_title}</a>
 </xen:if>]]></template>
+    <template title="sv_report_comment_aftercontent" version_id="1010001" version_string="1.1.0 RC1"><![CDATA[<div class="messageMeta ToggleTriggerAnchor">
+    <div class="privateControls">
+    </div>
+
+    <div class="publicControls">
+        <xen:if is="{$comment.canLike}">
+            <a href="{xen:link reports/like, $report, 'report_comment_id={$comment.report_comment_id}'}"
+                class="LikeLink item control {xen:if $comment.like_date, unlike, like}" data-container="#likes-{$comment.report_comment_id}">
+                <span></span>
+                <span class="LikeLabel">{xen:if $comment.like_date, {xen:phrase unlike}, {xen:phrase like}}</span>
+            </a>
+        </xen:if>
+    </div>
+</div>
+<div id="likes-{$comment.report_comment_id}">
+    <xen:set var="$likesUrl">{xen:link reports/likes, $report, 'report_comment_id={$comment.report_comment_id}'}</xen:set>
+    <xen:if is="{$comment.likes}">
+        <xen:include template="likes_summary" >
+        <xen:map from="$comment" to="$message" />
+        </xen:include>
+    </xen:if>
+</div>]]></template>
+    <template title="sv_report_comment_like" version_id="1010000" version_string="1.1.0"><![CDATA[<xen:title>{xen:phrase 'sv_report_comment_by_x', 'username={$comment.username}'} - {xen:if $like, '{xen:phrase sv_unlike_report_comment}', '{xen:phrase sv_like_report_comment}'}</xen:title>
+
+<xen:navigation>
+	<xen:breadcrumb source="$nodeBreadCrumbs" />
+	<xen:breadcrumb href="{xen:link reports, $report, 'report_comment_id={$comment.report_comment_id}'}">{xen:helper threadPrefix, $report}{$report.title}</xen:breadcrumb>
+</xen:navigation>
+
+<form action="{xen:link 'reports/like', $report, 'report_comment_id={$comment.report_comment_id}'}" method="post" class="xenForm">
+
+	<dl class="ctrlUnit fullWidth">
+		<dt></dt>
+		<dd>
+			<xen:if is="{$like}">
+				{xen:phrase sv_you_sure_you_want_to_unlike_this_report_comment}
+			<xen:else />
+				{xen:phrase sv_you_sure_you_want_to_like_this_report_comment}
+			</xen:if>
+		</dd>
+	</dl>
+
+	<dl class="ctrlUnit submitUnit">
+		<dt></dt>
+		<dd><input type="submit" value="{xen:if $like, '{xen:phrase sv_unlike_report_comment}', '{xen:phrase sv_like_report_comment}'}" accesskey="s" class="button primary" autofocus="true" /></dd>
+	</dl>
+
+	<input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
+</form>]]></template>
+    <template title="sv_report_comment_likes" version_id="1010000" version_string="1.1.0"><![CDATA[<xen:title>{xen:phrase 'sv_report_comment_by_x', 'username={$comment.username}'} - {xen:phrase sv_members_who_liked_this_report_comment}</xen:title>
+
+<xen:container var="$head.noindex">
+	<meta name="robots" content="noindex" /></xen:container>
+
+<xen:navigation>
+	<xen:breadcrumb source="$nodeBreadCrumbs" />
+	<xen:breadcrumb href="{xen:link reports, $report, 'report_comment_id={$comment.report_comment_id}'}">{xen:helper threadPrefix, $report}{$report.title}</xen:breadcrumb>
+</xen:navigation>
+
+<div class="section">
+	<ol class="overlayScroll">
+	<xen:foreach loop="$likes" value="$like">
+		<xen:include template="member_list_item">
+			<xen:set var="$extraTemplate"><xen:datetime time="$like.like_date" /></xen:set>
+			<xen:map from="$like" to="$user" />
+		</xen:include>
+	</xen:foreach>
+	</ol>
+	<div class="sectionFooter overlayOnly"><a class="button primary OverlayCloser">{xen:phrase close}</a></div>
+</div>]]></template>
     <template title="sv_report_view_warning" version_id="4" version_string="0.0.4"><![CDATA[<xen:if is="{$comment.operation_type}">
 <p class="warningLog">
 <div class="pairsJustified">
@@ -216,6 +317,27 @@
 ]]></template>
   </templates>
   <public_template_modifications>
+    <modification template="report_view" modification_key="SV_ReportImprovements_report_view1" description="Add anchor tags" execution_order="10" enabled="1" action="preg_replace">
+      <find><![CDATA[#(<li class="primaryContent reportComment)([^"]+")#si]]></find>
+      <replace><![CDATA[<xen:require css="message.css" />
+$1 message $2 id="reportComment-{$comment.report_comment_id}"]]></replace>
+    </modification>
+    <modification template="report_view" modification_key="SV_ReportImprovements_report_view2" description="Add User Tagging support" execution_order="20" enabled="1" action="preg_replace">
+      <find><![CDATA[#(<textarea name="comment" .*? class=".*?)(")#si]]></find>
+      <replace><![CDATA[$1 UserTagger$2]]></replace>
+    </modification>
+    <modification template="report_view" modification_key="SV_ReportImprovements_report_view3" description="Insert extra state tracking into the report comments." execution_order="30" enabled="1" action="preg_replace">
+      <find><![CDATA[#(<div class="content">.*?)(\s*</div>\s*</li>)#si]]></find>
+      <replace><![CDATA[$1
+<xen:include template="sv_report_view_warning" />
+$2]]></replace>
+    </modification>
+    <modification template="report_view" modification_key="SV_ReportImprovements_report_view4" description="Inject public controls" execution_order="40" enabled="1" action="preg_replace">
+      <find><![CDATA[#(<div class="content">.*?)(\s*</div>)(\s*</li>)#si]]></find>
+      <replace><![CDATA[$1$2
+<xen:include template="sv_report_comment_aftercontent" />
+$3]]></replace>
+    </modification>
     <modification template="member_warn" modification_key="sv_integrated_report_member_warn_ir_options" description="Inject more options" execution_order="10" enabled="1" action="preg_replace">
       <find><![CDATA[#(<fieldset>.*?{xen:phrase notes}.*?</fieldset>)#s]]></find>
       <replace><![CDATA[$1
@@ -225,29 +347,11 @@
       <find><![CDATA[{$entry.content.user.username}</a>]]></find>
       <replace><![CDATA[$0<a style="margin-left:30px" target="_blank" href="spam-cleaner/{$entry.content.user.user_id}/?noredirect=1">Spam Cleaner</a>]]></replace>
     </modification>
-    <modification template="report_view" modification_key="sv_integrated_report_report_list_item" description="Add anchor tags" execution_order="10" enabled="1" action="str_replace">
-      <find><![CDATA[<li class="primaryContent reportComment {xen:if '!{$comment.is_report}', staffComment}"]]></find>
-      <replace><![CDATA[$0 id="reportComment-{$comment.report_comment_id}"]]></replace>
-    </modification>
     <modification template="report_list_item" modification_key="sv_integrated_report_report_list_item2" description="Add node where relevent to the report list" execution_order="10" enabled="1" action="preg_replace">
       <find><![CDATA[#(<div class="posterDate muted">.*)(\s*)(</div>)#Usi]]></find>
       <replace><![CDATA[$1
 <xen:include template="report_list_item_report_node" />
 $2$3]]></replace>
-    </modification>
-    <modification template="report_view" modification_key="sv_integrated_report_report_view" description="Insert extra state tracking into the report comments." execution_order="10" enabled="1" action="preg_replace">
-      <find><![CDATA[#(<div class="content">.*?)(</div>)#s]]></find>
-      <replace><![CDATA[$1
-<xen:include template="sv_report_view_warning" />
-$2]]></replace>
-    </modification>
-    <modification template="report_view" modification_key="sv_integrated_report_report_view1" description="Add User Tagging support" execution_order="10" enabled="1" action="preg_replace">
-      <find><![CDATA[#(<textarea name="comment" .*? class=".*?)(")#si]]></find>
-      <replace><![CDATA[$1 UserTagger$2]]></replace>
-    </modification>
-    <modification template="conversation_message_report" modification_key="sv_report_improvements_conversation_message_report" description="Add User Tagging support" execution_order="20" enabled="1" action="preg_replace">
-      <find><![CDATA[#(<textarea name="message" .*? class=".*?)(")#si]]></find>
-      <replace><![CDATA[$1 UserTagger$2]]></replace>
     </modification>
     <modification template="member_report" modification_key="sv_report_improvements_member_report" description="Add User Tagging support" execution_order="20" enabled="1" action="preg_replace">
       <find><![CDATA[#(<textarea name="message" .*? class=".*?)(")#si]]></find>
@@ -258,6 +362,10 @@ $2]]></replace>
       <replace><![CDATA[$1 UserTagger$2]]></replace>
     </modification>
     <modification template="profile_post_report" modification_key="sv_report_improvements_profile_post_report" description="Add User Tagging support" execution_order="20" enabled="1" action="preg_replace">
+      <find><![CDATA[#(<textarea name="message" .*? class=".*?)(")#si]]></find>
+      <replace><![CDATA[$1 UserTagger$2]]></replace>
+    </modification>
+    <modification template="report_comment_report" modification_key="sv_report_improvements_report_comment_report" description="Add User Tagging support" execution_order="20" enabled="1" action="preg_replace">
       <find><![CDATA[#(<textarea name="message" .*? class=".*?)(")#si]]></find>
       <replace><![CDATA[$1 UserTagger$2]]></replace>
     </modification>

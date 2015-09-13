@@ -17,9 +17,11 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
     {
         $fields = parent::_getFields();
         $fields['xf_report_comment']['warning_log_id'] = array('type' => self::TYPE_UINT,    'default' => 0);
+        $fields['xf_report_comment']['likes'] = array('type' => self::TYPE_UINT_FORCED, 'default' => 0);
+        $fields['xf_report_comment']['like_users'] = array('type' => self::TYPE_SERIALIZED);
         return $fields;
     }
-
+    
     protected function _preSave()
     {
         if (!$this->get('state_change') && !$this->get('message'))
@@ -114,10 +116,17 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
 
             if ($otherCommenter['is_moderator'])
             {
-                $hasUnviewedReport = $db->fetchRow("select alert_id from xf_user_alert
-                    where alerted_user_id = ? and content_type = ? and content_id = ? and view_date = 0 and action = ? ",
-                    array($otherCommenter['user_id'], SV_ReportImprovements_Globals::$Report_ContentType, $this->get('report_id'), SV_ReportImprovements_Globals::$Report_Comment)
-                );
+                $hasUnviewedReport = $db->fetchRow("
+                    SELECT alert.alert_id 
+                    FROM xf_user_alert AS alert
+                    JOIN xf_report_comment AS report_comment on report_comment_id = alert.content_id
+                    WHERE alert.alerted_user_id = ?
+                          and alert.view_date = 0 
+                          and alert.content_type = ?
+                          and alert.action = ?
+                          and report_comment.report_id = ?
+                    LIMIT 1
+                ", array($otherCommenter['user_id'], 'report_comment', 'insert', $this->get('report_id')));
 
                 if (!empty($hasUnviewedReport))
                 {
@@ -134,11 +143,9 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
                         $otherCommenter['user_id'],
                         $this->get('user_id'),
                         $this->get('username'),
-                        SV_ReportImprovements_Globals::$Report_ContentType,
-                        $this->get('report_id'),
-                        SV_ReportImprovements_Globals::$Report_Comment,
-                        array('report_comment_id' => $this->get('report_comment_id'))
-                    );
+                        'report_comment',
+                        $this->get('report_comment_id'),
+                        'insert');
                 }
             }
         }

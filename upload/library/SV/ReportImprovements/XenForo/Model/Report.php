@@ -2,8 +2,8 @@
 
 class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImprovements_XenForo_Model_Report
 {
-	public function reportContent($contentType, array $content, $message, array $viewingUser = null)
-	{
+    public function reportContent($contentType, array $content, $message, array $viewingUser = null)
+    {
         $this->standardizeViewingUserReference($viewingUser);
 
         $permissions = empty($viewingUser['permissions']) ? array() : $viewingUser['permissions'];
@@ -25,6 +25,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
 
     public function getReportComments($reportId, $orderDirection = 'ASC')
     {
+        $db = $this->_getDb();
         return $this->fetchAllKeyed("
             SELECT report_comment.*,
                 user.*
@@ -36,10 +37,14 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
                 ,warningLog.expiry_date
                 ,warningLog.operation_type
                 ,warning.is_expired
+                ,liked_content.like_date
             FROM xf_report_comment AS report_comment
             LEFT JOIN xf_sv_warning_log warningLog on warningLog.warning_log_id = report_comment.warning_log_id
             LEFT JOIN xf_warning warning on warningLog.warning_id = warning.warning_id
             LEFT JOIN xf_user AS user ON (user.user_id = report_comment.user_id)
+            LEFT JOIN xf_liked_content AS liked_content ON (liked_content.content_type = 'report_comment'
+                            AND liked_content.content_id = report_comment.report_comment_id
+                            AND liked_content.like_user_id = " .$db->quote(XenForo_Visitor::getUserId()) . ")
             WHERE report_comment.report_id = ?
             ORDER BY report_comment.comment_date $orderDirection
         ", 'report_comment_id', $reportId);
@@ -52,6 +57,15 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
             FROM xf_report_comment
             WHERE report_comment_id = ?
         ', $id);
+    }
+
+    public function getReportCommentsByIds($ids)
+    {
+        return $this->fetchAllKeyed('
+            SELECT *
+            FROM xf_report_comment
+            WHERE report_comment_id IN (' . $this->_getDb()->quote($ids) . ')
+        ', 'report_comment_id');
     }
 
     public function getReportsByIds($reportIds)
@@ -101,7 +115,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
             ));
             foreach ($users AS $user)
             {
-                if (isset($alertedUserIds[$user['user_id']]) || $user['user_id'] == $taggingUser['user_id'])
+                if (isset($alertedUserIds[$user['user_id']]) || $user['user_id'] == $taggingUser['user_id'] || !$user['is_moderator'])
                 {
                     continue;
                 }
@@ -116,15 +130,54 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
 
                     XenForo_Model_Alert::alert($user['user_id'],
                         $taggingUser['user_id'], $taggingUser['username'],
-                        SV_ReportImprovements_Globals::$Report_ContentType, $report['report_id'],
-                        SV_ReportImprovements_Globals::$Report_Tag,
-                        array('report_comment_id' => $reportComment['report_comment_id'])
+                        'report_comment', $reportComment['report_comment_id'],
+                        'tag'
                     );
                 }
             }
         }
 
         return array_keys($alertedUserIds);
+    }
+
+    public function prepareReportComment(array $comment)
+    {
+        $comment = parent::prepareReportComment($comment);
+
+        $comment['canLike'] = $this->canLikeReportComment($comment);
+        if (!empty($comment['likes']))
+        {
+            $comment['likeUsers'] = @unserialize($comment['like_users']);
+        }
+        return $comment;
+    }
+
+    public function canLikeReportComment(array $comment, &$errorPhraseKey = '')
+    {
+        if ($comment['user_id'] == XenForo_Visitor::getUserId())
+        {
+            return false;
+        }
+
+        return XenForo_Visitor::getInstance()->hasPermission('general', 'reportLike');
+    }
+
+    public function batchUpdateLikeUser($oldUserId, $newUserId, $oldUsername, $newUsername)
+    {
+        $db = $this->_getDb();
+
+        // note that xf_liked_content should have already been updated with $newUserId
+        $db->query('
+            UPDATE (
+                SELECT content_id FROM xf_liked_content
+                WHERE content_type = \'report_comment\'
+                AND like_user_id = ?
+            ) AS temp
+            INNER JOIN xf_report_comment AS report_comment ON (report_comment.report_comment_id = temp.content_id)
+            SET like_users = REPLACE(like_users, ' .
+            $db->quote('i:' . $oldUserId . ';s:8:"username";s:' . strlen($oldUsername) . ':"' . $oldUsername . '";') . ', ' .
+            $db->quote('i:' . $newUserId . ';s:8:"username";s:' . strlen($newUsername) . ':"' . $newUsername . '";') . ')
+        ', $newUserId);
     }
 
     protected function _getUserModel()
