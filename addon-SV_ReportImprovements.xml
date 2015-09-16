@@ -111,7 +111,12 @@
     <phrase title="sv_ri_operation_type_edit" version_id="2" version_string="0.0.2"><![CDATA[Edited Warning]]></phrase>
     <phrase title="sv_ri_operation_type_expire" version_id="2" version_string="0.0.2"><![CDATA[Expired Warning]]></phrase>
     <phrase title="sv_ri_operation_type_new" version_id="2" version_string="0.0.2"><![CDATA[New Warning]]></phrase>
-    <phrase title="sv_ri_x_commented_on_report" version_id="7" version_string="0.0.7"><![CDATA[{name} commented on the report {report}.]]></phrase>
+    <phrase title="sv_x_commented_on_report" version_id="1010000" version_string="1.1.0"><![CDATA[{name} commented on the report {report}.]]></phrase>
+    <phrase title="sv_x_state_change_report_assigned" version_id="1010000" version_string="1.1.0"><![CDATA[{name} assigned the report {report}.]]></phrase>
+    <phrase title="sv_x_state_change_report_open" version_id="1010000" version_string="1.1.0"><![CDATA[{name} opened the report {report}.]]></phrase>
+    <phrase title="sv_x_state_change_report_resolved" version_id="1010000" version_string="1.1.0"><![CDATA[{name} resolved the report {report}.]]></phrase>
+    <phrase title="sv_x_state_change_report_rejected" version_id="1010000" version_string="1.1.0"><![CDATA[{name} rejected the report {report}.]]></phrase>
+    <phrase title="sv_x_issued_a_warning_on_report" version_id="1010000" version_string="1.1.0"><![CDATA[{name} issued a warning on the report {report}.]]></phrase>
     <phrase title="sv_ri_x_tagged_on_report" version_id="10" version_string="0.0.10"><![CDATA[{name} tagged you in the report {report}.]]></phrase>
     <phrase title="sv_unlike_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Unlike report comment]]></phrase>
     <phrase title="sv_x_liked_your_comment_in_the_report_y" version_id="1010000" version_string="1.1.0"><![CDATA[{name} liked your comment in the report {title}.]]></phrase>
@@ -123,10 +128,50 @@
   <route_prefixes/>
   <style_properties/>
   <templates>
-    <template title="alert_report_comment_insert" version_id="1010000" version_string="1.1.0"><![CDATA[{xen:phrase sv_ri_x_commented_on_report,
+    <template title="alert_report_comment_insert" version_id="1010000" version_string="1.1.0"><![CDATA[<xen:set var="$specific_type">0</xen:set>
+<xen:if is="{$content.state_change}">
+    <xen:if is="{$content.state_change} == 'assigned'">
+        {xen:phrase sv_x_state_change_report_assigned,
+        'name={xen:helper username, $user, 'subject'}',
+        'report=<a href="{xen:link reports, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
+        }
+    <xen:set var="$specific_type">1</xen:set>
+    </xen:if>
+    <xen:if is="{$content.state_change} == 'open'">
+        {xen:phrase sv_x_state_change_report_open,
+        'name={xen:helper username, $user, 'subject'}',
+        'report=<a href="{xen:link reports, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
+        }
+    <xen:set var="$specific_type">1</xen:set>
+    </xen:if>
+    <xen:if is="{$content.state_change} == 'resolved'">
+        {xen:phrase sv_x_state_change_report_resolved,
+        'name={xen:helper username, $user, 'subject'}',
+        'report=<a href="{xen:link reports, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
+        }
+    <xen:set var="$specific_type">1</xen:set>
+    </xen:if>
+    <xen:if is="{$content.state_change} == 'rejected'">
+        {xen:phrase sv_x_state_change_report_rejected,
+        'name={xen:helper username, $user, 'subject'}',
+        'report=<a href="{xen:link reports, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
+        }
+    <xen:set var="$specific_type">1</xen:set>
+    </xen:if>
+</xen:if>
+<xen:if is="!{$specific_type} and {$content.warning_log_id}">
+    {xen:phrase sv_x_issued_a_warning_on_report,
 	'name={xen:helper username, $user, 'subject'}',
 	'report=<a href="{xen:link reports, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
-}]]></template>
+    }
+    <xen:set var="$specific_type">1</xen:set>
+</xen:if>
+<xen:if is="!{$specific_type}">
+    {xen:phrase sv_x_commented_on_report,
+	'name={xen:helper username, $user, 'subject'}',
+	'report=<a href="{xen:link reports, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
+    }
+</xen:if>]]></template>
     <template title="alert_report_comment_like" version_id="1010000" version_string="1.1.0"><![CDATA[{xen:phrase sv_x_liked_your_comment_in_the_report_y,
 	'name={xen:helper username, $user, 'subject'}',
 	'title=<a href="{xen:link reports, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{xen:helper threadPrefix, $content}{$content.report.contentTitle}</a>'}]]></template>
