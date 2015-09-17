@@ -347,7 +347,11 @@
 		<dd>
 			<ul>
 				<li><label for="ctrl_order_date"><input type="radio" name="order" id="ctrl_order_date" value="date"{xen:checked '{$search.order} == "date"'} /> {xen:phrase most_recent}</label></li>
-				<li><label for="ctrl_order_replies"><input type="radio" name="order" id="ctrl_order_replies" value="replies"{xen:checked '{$search.order} == "replies"'} /> {xen:phrase most_replies}</label></li>
+<xen:comment>				
+				<li><label for="ctrl_order_replies"><input type="radio" name="order" id="ctrl_order_reports" value="replies"{xen:checked '{$search.order} == "replies"'} /> {xen:phrase most_reports}</label></li>
+				<li><label for="ctrl_order_replies"><input type="radio" name="order" id="ctrl_order_comments" value="replies"{xen:checked '{$search.order} == "comments"'} /> {xen:phrase most_comments}</label></li>
+				<li><label for="ctrl_order_replies"><input type="radio" name="order" id="ctrl_order_warnings" value="replies"{xen:checked '{$search.order} == "warnings"'} /> {xen:phrase most_warnings}</label></li>
+</xen:comment>
 				<xen:if is="{$supportsRelevance}"><li><label for="ctrl_order_relevance"><input type="radio" name="order" id="ctrl_order_relevance" value="relevance"{xen:checked '{$search.order} == "relevance"'} /> {xen:phrase relevance}</label></li></xen:if>
 			</ul>
 		</dd>
