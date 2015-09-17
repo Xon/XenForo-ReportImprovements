@@ -3,14 +3,16 @@
 class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_ReportImprovements_XenForo_DataWriter_ReportComment
 {
     const OPTION_MAX_TAGGED_USERS = 'maxTaggedUsers';
+    const OPTION_INDEX_FOR_SEARCH = 'indexForSearch';
 
     protected $_taggedUsers = array();
 
     protected function _getDefaultOptions()
     {
-        return parent::_getDefaultOptions() + array(
-            self::OPTION_MAX_TAGGED_USERS => SV_ReportImprovements_Globals::$Report_MaxAlertCount
-        );
+        $defaultOptions = parent::_getDefaultOptions();
+        $defaultOptions[self::OPTION_MAX_TAGGED_USERS] = SV_ReportImprovements_Globals::$Report_MaxAlertCount;
+        $defaultOptions[self::OPTION_INDEX_FOR_SEARCH] = true;
+        return $defaultOptions;
     }
 
     protected function _getFields()
@@ -21,7 +23,7 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         $fields['xf_report_comment']['like_users'] = array('type' => self::TYPE_SERIALIZED);
         return $fields;
     }
-    
+
     protected function _preSave()
     {
         if (!$this->get('state_change') && !$this->get('message'))
@@ -45,6 +47,11 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
     protected function _postSaveAfterTransaction()
     {
         parent::_postSaveAfterTransaction();
+
+        if ($this->getOption(self::OPTION_INDEX_FOR_SEARCH))
+        {
+            $this->_insertIntoSearchIndex();
+        }
 
         if (!$this->isInsert())
         {
@@ -117,11 +124,11 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
             if ($otherCommenter['is_moderator'])
             {
                 $hasUnviewedReport = $db->fetchRow("
-                    SELECT alert.alert_id 
+                    SELECT alert.alert_id
                     FROM xf_user_alert AS alert
                     JOIN xf_report_comment AS report_comment on report_comment_id = alert.content_id
                     WHERE alert.alerted_user_id = ?
-                          and alert.view_date = 0 
+                          and alert.view_date = 0
                           and alert.content_type = ?
                           and alert.action = ?
                           and report_comment.report_id = ?
@@ -149,5 +156,42 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
                 }
             }
         }
+    }
+
+    public function delete()
+    {
+        parent::delete();
+        // update search index outside the transaction
+        $this->_deleteFromSearchIndex();
+    }
+
+    protected function _insertIntoSearchIndex()
+    {
+        $dataHandler = $this->_getSearchDataHandler();
+        if (!$dataHandler)
+        {
+            return;
+        }
+
+        $viewingUser = XenForo_Visitor::getInstance()->toArray();
+        $indexer = new XenForo_Search_Indexer();
+        $dataHandler->insertIntoIndex($indexer, $this->getMergedData(), array());
+    }
+
+    protected function _deleteFromSearchIndex()
+    {
+        $dataHandler = $this->_getSearchDataHandler();
+        if (!$dataHandler)
+        {
+            return;
+        }
+
+        $indexer = new XenForo_Search_Indexer();
+        $dataHandler->deleteFromIndex($indexer, $this->getMergedData());
+    }
+
+    public function _getSearchDataHandler()
+    {
+        return XenForo_Search_DataHandler_Abstract::create('SV_ReportImprovements_Search_DataHandler_ReportComment');
     }
 }

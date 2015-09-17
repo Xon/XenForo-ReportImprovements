@@ -103,6 +103,7 @@
     <phrase title="report_comment" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Report Comment]]></phrase>
     <phrase title="report_options" version_id="4" version_string="0.0.4"><![CDATA[Report Options]]></phrase>
     <phrase title="resolve_linked_report" version_id="4" version_string="0.0.4"><![CDATA[Resolve linked report]]></phrase>
+    <phrase title="search_reports_only" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Search reports only]]></phrase>
     <phrase title="search_report_comments" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Search Report Comments]]></phrase>
     <phrase title="sv_like_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Like report comment]]></phrase>
     <phrase title="sv_members_who_liked_this_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Members Who Liked This Report Comment]]></phrase>
@@ -266,6 +267,7 @@
     <template title="report_list_item_report_node" version_id="8" version_string="0.0.8"><![CDATA[<xen:if is="{$report.extraContent.node_title} AND {$report.extraContent.node_id}">
 , <a href="{xen:link forums, $report.extraContent}" class="forumLink">{$report.extraContent.node_title}</a>
 </xen:if>]]></template>
+    <template title="search_bar_reports_only" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[<label title="{xen:phrase search_reports_only}"><input type="checkbox" name="type" value="report_comment" id="search_bar_conversations" class="Disabler AutoChecker" checked="checked" /> {xen:phrase search_reports_only}</label>]]></template>
     <template title="search_form_report_comment" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[<xen:title>{xen:phrase search_report_comments}</xen:title>
 
 <xen:navigation>
@@ -501,6 +503,14 @@
 ]]></template>
   </templates>
   <public_template_modifications>
+    <modification template="report_list" modification_key="SV_ReportImprovements_report_list" description="Inject Search bar" execution_order="10" enabled="1" action="preg_replace">
+      <find><![CDATA[#$#]]></find>
+      <replace><![CDATA[<xen:container var="$searchBar.reports"><xen:include template="search_bar_reports_only" /></xen:container>]]></replace>
+    </modification>
+    <modification template="report_list_closed" modification_key="SV_ReportImprovements_report_list_closed" description="Inject Search bar" execution_order="10" enabled="1" action="preg_replace">
+      <find><![CDATA[#$#]]></find>
+      <replace><![CDATA[<xen:container var="$searchBar.reports"><xen:include template="search_bar_reports_only" /></xen:container>]]></replace>
+    </modification>
     <modification template="report_view" modification_key="SV_ReportImprovements_report_view1" description="Add anchor tags" execution_order="10" enabled="1" action="preg_replace">
       <find><![CDATA[#(<li class="primaryContent reportComment)([^"]+")#si]]></find>
       <replace><![CDATA[<xen:require css="message.css" />
@@ -521,6 +531,10 @@ $2]]></replace>
       <replace><![CDATA[$1$2
 <xen:include template="sv_report_comment_aftercontent" />
 $3]]></replace>
+    </modification>
+    <modification template="report_view" modification_key="SV_ReportImprovements_report_view5" description="Inject Search bar" execution_order="10" enabled="1" action="preg_replace">
+      <find><![CDATA[#$#]]></find>
+      <replace><![CDATA[<xen:container var="$searchBar.reports"><xen:include template="search_bar_reports_only" /></xen:container>]]></replace>
     </modification>
     <modification template="search_form_tabs" modification_key="SV_ReportImprovements_search_form_tabs" description="Inject Search Tab" execution_order="4345" enabled="1" action="preg_replace">
       <find><![CDATA[#(<xen\:hook name\="search_form_tabs".*?)(\s*)(<li{xen:if "{\$searchType}.*?)(\s*</xen\:hook>)#si]]></find>
