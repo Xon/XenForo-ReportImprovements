@@ -7,39 +7,7 @@ class SV_ReportImprovements_AlertHandler_ReportComment extends XenForo_AlertHand
 
     public function getContentByIds(array $contentIds, $model, $userId, array $viewingUser)
     {
-        if (empty($viewingUser['is_moderator']))
-        {
-            return array();
-        }
-
-        $comments = $this->_getReportModel()->getReportCommentsByIds($contentIds);
-        $reportIds = array_unique(XenForo_Application::arrayColumn($comments, 'report_id'));
-        $reports = $this->_getReportModel()->getReportsByIds($reportIds);
-
-        foreach($reports as $reportId => &$report)
-        {
-            $handler = $this->_getReportHandler($report['content_type']);
-            $visibleReport = $handler->getVisibleReportsForUser(array($report), $viewingUser);
-            if (empty($visibleReport))
-            {
-                unset($reports[$reportId]);
-                continue;
-            }
-        }
-
-        foreach($comments as $commentId => &$comment)
-        {
-            $reportId = $comment['report_id'];
-            if (!isset($reports[$reportId]))
-            {
-                unset($comments[$commentId]);
-                continue;
-            }
-
-            $comment['report'] = $reports[$reportId];
-        }
-
-        return $comments;
+        return $this->_getReportModel()->getReportCommentsByIdsForUser($contentIds, $viewingUser);
     }
 
     public function prepareAlert(array $item, array $viewingUser)

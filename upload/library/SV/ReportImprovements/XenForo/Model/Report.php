@@ -29,6 +29,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         return $this->fetchAllKeyed("
             SELECT report_comment.*,
                 user.*
+                , IF(user.username IS NULL, report_comment.username, user.username) AS username
                 ,warning.warning_id
                 ,warningLog.warning_definition_id
                 ,warningLog.title
@@ -53,8 +54,9 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
     public function getReportCommentById($id)
     {
         return $this->_getDb()->fetchRow('
-            SELECT *
-            FROM xf_report_comment
+            SELECT report_comment.*, user.*, IF(user.username IS NULL, report_comment.username, user.username) AS username
+            FROM xf_report_comment AS report_comment
+            LEFT JOIN xf_user AS user ON (user.user_id = report_comment.user_id)
             WHERE report_comment_id = ?
         ', $id);
     }
@@ -62,10 +64,75 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
     public function getReportCommentsByIds($ids)
     {
         return $this->fetchAllKeyed('
-            SELECT *
-            FROM xf_report_comment
+            SELECT report_comment.*, user.*, IF(user.username IS NULL, report_comment.username, user.username) AS username
+            FROM xf_report_comment AS report_comment
+            LEFT JOIN xf_user AS user ON (user.user_id = report_comment.user_id)
             WHERE report_comment_id IN (' . $this->_getDb()->quote($ids) . ')
         ', 'report_comment_id');
+    }
+
+    var $_handlerCache = array();
+
+    public function getReportHandlerCached($content_type)
+    {
+        if (isset($this->_handlerCache[$content_type]))
+        {
+            $handler = $this->_handlerCache[$content_type];
+        }
+        else
+        {
+            $handler = $this->_handlerCache[$content_type] = $this->getReportHandler($content_type);
+        }
+        return $handler;
+    }
+
+    public function getReportCommentsByIdsForUser(array $contentIds, array $viewingUser)
+    {
+        if (empty($viewingUser['is_moderator']))
+        {
+            return array();
+        }
+
+        $comments = $this->getReportCommentsByIds($contentIds);
+        $reportIds = array_unique(XenForo_Application::arrayColumn($comments, 'report_id'));
+        $reports = $this->getReportsByIds($reportIds);
+
+        foreach($reports as $reportId => &$report)
+        {
+            $handler = $this->getReportHandlerCached($report['content_type']);
+            $visibleReport = $handler->getVisibleReportsForUser(array($report), $viewingUser);
+            if (empty($visibleReport))
+            {
+                unset($reports[$reportId]);
+                continue;
+            }
+        }
+
+        foreach($comments as $commentId => &$comment)
+        {
+            $reportId = $comment['report_id'];
+            if (!isset($reports[$reportId]))
+            {
+                unset($comments[$commentId]);
+                continue;
+            }
+
+            $comment['report'] = $reports[$reportId];
+        }
+
+        return $comments;
+    }
+
+    public function getReportCommentsIdsInRange($start, $limit)
+    {
+        $db = $this->_getDb();
+
+        return $db->fetchCol($db->limit('
+            SELECT report_comment_id
+            FROM xf_report_comment
+            WHERE report_comment_id > ?
+            ORDER BY report_comment_id
+        ', $limit), $start);
     }
 
     public function getReportsByIds($reportIds)

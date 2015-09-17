@@ -112,16 +112,31 @@ class SV_ReportImprovements_Installer
                 (content_type, field_name, field_value)
             VALUES
                 ('report_comment', 'like_handler_class', '".self::AddonNameSpace."_LikeHandler_ReportComment'),
-                ('report_comment', 'alert_handler_class', '".self::AddonNameSpace."_AlertHandler_ReportComment')
+                ('report_comment', 'alert_handler_class', '".self::AddonNameSpace."_AlertHandler_ReportComment'),
+                ('report_comment', 'search_handler_class', '".self::AddonNameSpace."_Search_DataHandler_ReportComment')
         ");
 
         XenForo_Db::commit($db);
 
+        $requireIndexing = array();
+
         if ($version == 0)
         {
+            $requireIndexing['report_comment'] = true;
             XenForo_Application::defer('Permission', array(), 'Permission');
             XenForo_Application::defer(self::AddonNameSpace.'_Deferred_WarningLogMigration', array('warning_id' => -1));
         }
+
+        // if Elastic Search is installed, determine if we need to push optimized mappings for the search types
+        SV_Utils_Install::updateXenEsMapping($requireIndexing, array(
+            'report_comment' => array(
+                "properties" => array(
+                    "report" => array("type" => "long"),
+                    "state_change" => array("type" => "string", "index" => "not_analyzed"),
+                    "is_report" => array("type" => "boolean"),
+                )
+            ),
+        ));
 
         XenForo_Model::create('XenForo_Model_ContentType')->rebuildContentTypeCache();
         XenForo_Application::defer(self::AddonNameSpace.'_Deferred_AlertMigration', array('alert_id' => -1));

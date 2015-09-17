@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.1.0 RC1" version_id="1010001" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.1.0 RC2" version_id="1010002" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -100,27 +100,33 @@
     <phrase title="permission_general_viewReportUser" version_id="1" version_string="0.0.1"><![CDATA[View User Report]]></phrase>
     <phrase title="permission_interface_ri_ReportCenter" version_id="11" version_string="0.0.11"><![CDATA[Report Center]]></phrase>
     <phrase title="permission_profilePost_viewReportProfilePost" version_id="1" version_string="0.0.1"><![CDATA[View ProfilePost Report]]></phrase>
+    <phrase title="report_comment" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Report Comment]]></phrase>
     <phrase title="report_options" version_id="4" version_string="0.0.4"><![CDATA[Report Options]]></phrase>
     <phrase title="resolve_linked_report" version_id="4" version_string="0.0.4"><![CDATA[Resolve linked report]]></phrase>
+    <phrase title="search_report_comments" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Search Report Comments]]></phrase>
     <phrase title="sv_like_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Like report comment]]></phrase>
     <phrase title="sv_members_who_liked_this_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Members Who Liked This Report Comment]]></phrase>
     <phrase title="sv_no_one_has_liked_this_report_comment_yet" version_id="1010000" version_string="1.1.0"><![CDATA[No one has liked this report comment yet.]]></phrase>
-    <phrase title="sv_report_comment_by_x" version_id="1010000" version_string="1.1.0"><![CDATA[Report Comment By {username}]]></phrase>
+    <phrase title="sv_report_comment_by" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Report comment by]]></phrase>
+    <phrase title="sv_report_comment_by_x" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Report comment By {username}]]></phrase>
     <phrase title="sv_ri_migrating" version_id="11" version_string="0.0.11"><![CDATA[Linking Warnings and Reports]]></phrase>
     <phrase title="sv_ri_operation_type_delete" version_id="2" version_string="0.0.2"><![CDATA[Deleted Warning]]></phrase>
     <phrase title="sv_ri_operation_type_edit" version_id="2" version_string="0.0.2"><![CDATA[Edited Warning]]></phrase>
     <phrase title="sv_ri_operation_type_expire" version_id="2" version_string="0.0.2"><![CDATA[Expired Warning]]></phrase>
     <phrase title="sv_ri_operation_type_new" version_id="2" version_string="0.0.2"><![CDATA[New Warning]]></phrase>
-    <phrase title="sv_x_commented_on_report" version_id="1010000" version_string="1.1.0"><![CDATA[{name} commented on the report {report}.]]></phrase>
-    <phrase title="sv_x_state_change_report_assigned" version_id="1010000" version_string="1.1.0"><![CDATA[{name} assigned the report {report}.]]></phrase>
-    <phrase title="sv_x_state_change_report_open" version_id="1010000" version_string="1.1.0"><![CDATA[{name} opened the report {report}.]]></phrase>
-    <phrase title="sv_x_state_change_report_resolved" version_id="1010000" version_string="1.1.0"><![CDATA[{name} resolved the report {report}.]]></phrase>
-    <phrase title="sv_x_state_change_report_rejected" version_id="1010000" version_string="1.1.0"><![CDATA[{name} rejected the report {report}.]]></phrase>
-    <phrase title="sv_x_issued_a_warning_on_report" version_id="1010000" version_string="1.1.0"><![CDATA[{name} issued a warning on the report {report}.]]></phrase>
     <phrase title="sv_ri_x_tagged_on_report" version_id="10" version_string="0.0.10"><![CDATA[{name} tagged you in the report {report}.]]></phrase>
+    <phrase title="sv_select_this_report_comment_by_x" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Select this report comment by {name}]]></phrase>
     <phrase title="sv_unlike_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Unlike report comment]]></phrase>
+    <phrase title="sv_user_report" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[User Report]]></phrase>
+    <phrase title="sv_user_report_by" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[User report by]]></phrase>
+    <phrase title="sv_x_commented_on_report" version_id="1010000" version_string="1.1.0"><![CDATA[{name} commented on the report {report}.]]></phrase>
+    <phrase title="sv_x_issued_a_warning_on_report" version_id="1010000" version_string="1.1.0"><![CDATA[{name} issued a warning on the report {report}.]]></phrase>
     <phrase title="sv_x_liked_your_comment_in_the_report_y" version_id="1010000" version_string="1.1.0"><![CDATA[{name} liked your comment in the report {title}.]]></phrase>
     <phrase title="sv_x_liked_ys_comment_in_the_report_z" version_id="1010000" version_string="1.1.0"><![CDATA[{name} liked <a {posterParams}>{poster}'s comment</a> in the report {title}.]]></phrase>
+    <phrase title="sv_x_state_change_report_assigned" version_id="1010000" version_string="1.1.0"><![CDATA[{name} assigned the report {report}.]]></phrase>
+    <phrase title="sv_x_state_change_report_open" version_id="1010000" version_string="1.1.0"><![CDATA[{name} opened the report {report}.]]></phrase>
+    <phrase title="sv_x_state_change_report_rejected" version_id="1010000" version_string="1.1.0"><![CDATA[{name} rejected the report {report}.]]></phrase>
+    <phrase title="sv_x_state_change_report_resolved" version_id="1010000" version_string="1.1.0"><![CDATA[{name} resolved the report {report}.]]></phrase>
     <phrase title="sv_you_sure_you_want_to_like_this_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Are you sure you want to like this comment?]]></phrase>
     <phrase title="sv_you_sure_you_want_to_unlike_this_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Are you sure you want to unlike this comment?]]></phrase>
     <phrase title="warning_log_operation_type" version_id="1" version_string="0.0.1"><![CDATA[Operation Type]]></phrase>
@@ -128,7 +134,7 @@
   <route_prefixes/>
   <style_properties/>
   <templates>
-    <template title="alert_report_comment_insert" version_id="1010000" version_string="1.1.0"><![CDATA[<xen:set var="$specific_type">0</xen:set>
+    <template title="alert_report_comment_insert" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[<xen:set var="$specific_type">0</xen:set>
 <xen:if is="{$content.state_change}">
     <xen:if is="{$content.state_change} == 'assigned'">
         {xen:phrase sv_x_state_change_report_assigned,
@@ -260,6 +266,139 @@
     <template title="report_list_item_report_node" version_id="8" version_string="0.0.8"><![CDATA[<xen:if is="{$report.extraContent.node_title} AND {$report.extraContent.node_id}">
 , <a href="{xen:link forums, $report.extraContent}" class="forumLink">{$report.extraContent.node_title}</a>
 </xen:if>]]></template>
+    <template title="search_form_report_comment" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[<xen:title>{xen:phrase search_report_comments}</xen:title>
+
+<xen:navigation>
+	<xen:breadcrumb href="{xen:link full:search}">{xen:phrase search}</xen:breadcrumb>
+</xen:navigation>
+
+<form action="{xen:link 'search/search'}" method="post" class="xenForm AutoValidator"
+	data-optInOut="optIn"
+	data-redirect="true">
+
+	<xen:include template="search_form_tabs" />
+
+	<dl class="ctrlUnit">
+		<dt><label for="ctrl_keywords">{xen:phrase keywords}:</label></dt>
+		<dd>
+			<ul>
+				<li><input type="search" name="keywords" value="{$search.keywords}" results="0" class="textCtrl" id="ctrl_keywords" autofocus="true" /></li>
+				<xen:comment>
+				<li><label for="ctrl_title_only"><input type="checkbox" name="title_only" id="ctrl_title_only" value="1" {xen:checked '{$search.title_only}'} /> {xen:phrase search_titles_only}</label></li>
+				</xen:comment>
+			</ul>
+		</dd>
+	</dl>
+
+	<fieldset>
+		<dl class="ctrlUnit">
+			<dt><label for="ctrl_users">{xen:phrase posted_by_member}:</label></dt>
+			<dd>
+				<ul>
+					<li>
+						<input type="text" name="users" value="{$search.users}" class="textCtrl AutoComplete" id="ctrl_users" />
+						<p class="explain">{xen:phrase separate_names_with_comma}</p>
+					</li>
+					<xen:comment>
+						<!-- this doesn't work as expected -->
+						<li><label><input type="checkbox" name="user_content" value="thread" {xen:checked '{$search.user_content} == "conversation"'} /> {xen:phrase search_conversations_started_by_this_member_only}</label></li>
+					</xen:comment>
+				</ul>
+			</dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<dl class="ctrlUnit">
+			<dt><label for="ctrl_date">{xen:phrase newer_than}:</label></dt>
+			<dd>
+				<input type="date" name="date" value="{$search.date}" class="textCtrl" id="ctrl_date" />
+			</dd>
+		</dl>
+<xen:comment>
+		<dl class="ctrlUnit">
+			<dt><label for="ctrl_reply_count">{xen:phrase minimum_number_of_reports}:</label></dt>
+			<dd>
+				<!-- Chrome does horrible things with input:number -->
+				<input type="number" name="report_count" value="{$search.report_count}" class="textCtrl" id="ctrl_reply_count" min="0" step="5" />
+			</dd>
+		</dl>
+		<dl class="ctrlUnit">
+			<dt><label for="ctrl_reply_count">{xen:phrase minimum_number_of_comments}:</label></dt>
+			<dd>
+				<!-- Chrome does horrible things with input:number -->
+				<input type="number" name="comment_count" value="{$search.comment_count}" class="textCtrl" id="ctrl_comment_count" min="0" step="5" />
+			</dd>
+		</dl>
+		<dl class="ctrlUnit">
+			<dt><label for="ctrl_reply_count">{xen:phrase minimum_number_of_warnings}:</label></dt>
+			<dd>
+				<!-- Chrome does horrible things with input:number -->
+				<input type="number" name="warning_count" value="{$search.warning_count}" class="textCtrl" id="ctrl_warning_count" min="0" step="5" />
+			</dd>
+		</dl>
+</xen:comment>
+	</fieldset>
+
+	<dl class="ctrlUnit">
+		<dt><label>{xen:phrase order_by}:</label></dt>
+		<dd>
+			<ul>
+				<li><label for="ctrl_order_date"><input type="radio" name="order" id="ctrl_order_date" value="date"{xen:checked '{$search.order} == "date"'} /> {xen:phrase most_recent}</label></li>
+				<li><label for="ctrl_order_replies"><input type="radio" name="order" id="ctrl_order_replies" value="replies"{xen:checked '{$search.order} == "replies"'} /> {xen:phrase most_replies}</label></li>
+				<xen:if is="{$supportsRelevance}"><li><label for="ctrl_order_relevance"><input type="radio" name="order" id="ctrl_order_relevance" value="relevance"{xen:checked '{$search.order} == "relevance"'} /> {xen:phrase relevance}</label></li></xen:if>
+			</ul>
+		</dd>
+	</dl>
+
+<xen:comment>
+	<dl class="ctrlUnit">
+		<dt></dt>
+		<dd><label for="ctrl_group_discussion"><input type="checkbox" name="group_discussion" id="ctrl_group_discussion" value="1"{xen:checked '{$search.group_discussion}'} /> {xen:phrase display_results_as_reports}</label></dd>
+	</dl>
+</xen:comment>
+
+	<dl class="ctrlUnit submitUnit">
+		<dt></dt>
+		<dd><input type="submit" value="{xen:phrase search}" accesskey="s" class="button primary" /></dd>
+	</dl>
+
+	<input type="hidden" name="type" value="report_comment" />
+	<input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
+
+	<script>
+
+	$(function()
+	{
+		$('#TitleRemove').click(function(e)
+		{
+			$(this).closest('dl.ctrlUnit').xfRemove();
+		});
+	});
+
+	</script>
+</form>]]></template>
+    <template title="search_result_report_comment" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[<li id="report_comment-{$comment.report_comment_id}" class="searchResult report_comment primaryContent{xen:if $conversation_message.isIgnored, ' ignored'}" data-author="{$conversation_message.username}">
+	<div class="listBlock posterAvatar"><xen:avatar user="$comment" size="s" img="true" /></div>
+
+	<div class="listBlock main">
+		<div class="titleText">
+			<span class="contentType">{xen:if $comment.is_report, {xen:phrase sv_user_report}, {xen:phrase report_comment}}</span>
+			<h3 class="title{xen:if {$report_comment.isNew}, ' new'}"><a href="{xen:link reports, $report, 'report_comment_id={$comment.report_comment_id}'}">{xen:helper threadPrefix, $report}{xen:helper highlight, $report.contentTitle, $search.search_query, 'highlight'}</a></h3>
+		</div>
+
+		<blockquote class="snippet">
+			<a href="{xen:link reports, $report, 'report_comment_id={$comment.report_comment_id}'}">{xen:helper snippet, $comment.message, 150, {xen:array 'term={$search.search_query}', 'emClass=highlight', 'stripQuote=1'}}</a>
+		</blockquote>
+
+		<div class="meta">
+			<xen:if is="{$enableInlineMod} AND {$comment.canInlineMod}"><input type="checkbox" name="report_comment[]" value="{$comment.report_comment_id}" class="InlineModCheck" data-target="#message-{$comment.report_comment_id}" title="{xen:phrase sv_select_this_report_comment_by_x, 'name={$report_comment.username}'}" /></xen:if>
+			{xen:if $comment.is_report, {xen:phrase sv_user_report_by}, {xen:phrase sv_report_comment_by}}: <xen:username user="$comment" />,
+			
+			<xen:datetime time="{$comment.comment_date}" />
+		</div>
+	</div>
+</li>]]></template>
     <template title="sv_report_comment_aftercontent" version_id="1010001" version_string="1.1.0 RC1"><![CDATA[<div class="messageMeta ToggleTriggerAnchor">
     <div class="privateControls">
     </div>
@@ -382,6 +521,11 @@ $2]]></replace>
       <replace><![CDATA[$1$2
 <xen:include template="sv_report_comment_aftercontent" />
 $3]]></replace>
+    </modification>
+    <modification template="search_form_tabs" modification_key="SV_ReportImprovements_search_form_tabs" description="Inject Search Tab" execution_order="4345" enabled="1" action="preg_replace">
+      <find><![CDATA[#(<xen\:hook name\="search_form_tabs".*?)(\s*)(<li{xen:if "{\$searchType}.*?)(\s*</xen\:hook>)#si]]></find>
+      <replace><![CDATA[$1$2$3$2<li{xen:if "{$searchType} == 'report_comment'", ' class="active"'}><a href="{xen:link search, '', 'type=report_comment'}">{xen:phrase search_report_comments}</a></li>
+$4]]></replace>
     </modification>
     <modification template="member_warn" modification_key="sv_integrated_report_member_warn_ir_options" description="Inject more options" execution_order="10" enabled="1" action="preg_replace">
       <find><![CDATA[#(<fieldset>.*?{xen:phrase notes}.*?</fieldset>)#s]]></find>
