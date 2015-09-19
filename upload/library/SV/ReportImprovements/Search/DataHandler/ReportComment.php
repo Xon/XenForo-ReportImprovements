@@ -201,6 +201,27 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         if (!($this->enabled)) return array();
         $constraints = array();
 
+        $includeUserReports = $input->filterSingle('include_user_reports', XenForo_Input::UINT);
+        $includeReportComments = $input->filterSingle('include_report_comments', XenForo_Input::UINT);
+        if ($includeUserReports || $includeReportComments)
+        {
+            if (!$includeUserReports || !$includeReportComments)
+            {
+                if ($includeUserReports)
+                {
+                    $constraints['is_report'] = '1';
+                }
+                else if ($includeReportComments)
+                {
+                    $constraints['is_report'] = '0';
+                }
+            }
+        }
+        else
+        {
+            throw new XenForo_Exception(new XenForo_Phrase('please_select_a_report_comment_search_type'), true);
+        }
+
         return $constraints;
     }
 
@@ -214,6 +235,11 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         if (!($this->enabled)) return array();
         switch ($constraint)
         {
+            case 'is_report':
+                if (isset($constraintInfo))
+                {
+                    return array('metadata' => array('is_report', $constraintInfo));
+                }
         }
 
         return false;
@@ -228,6 +254,23 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
     {
         if (!($this->enabled)) return null;
         $params = $input->filterSingle('c', XenForo_Input::ARRAY_SIMPLE);
+
+        if (!isset($params['is_report']))
+        {
+            $viewParams['search']['include_user_reports'] = true;
+            $viewParams['search']['include_report_comments'] = true;
+        }
+        else if (!$params['is_report'])
+        {
+
+            $viewParams['search']['include_user_reports'] = false;
+            $viewParams['search']['include_report_comments'] = true;
+        }
+        else if ($params['is_report'])
+        {
+            $viewParams['search']['include_user_reports'] = true;
+            $viewParams['search']['include_report_comments'] = false;
+        }
 
         return $controller->responseView('XenForo_ViewPublic_Search_Form_Post', 'search_form_report_comment', $viewParams);
     }

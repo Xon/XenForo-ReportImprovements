@@ -100,9 +100,12 @@
     <phrase title="permission_general_viewReportUser" version_id="1" version_string="0.0.1"><![CDATA[View User Report]]></phrase>
     <phrase title="permission_interface_ri_ReportCenter" version_id="11" version_string="0.0.11"><![CDATA[Report Center]]></phrase>
     <phrase title="permission_profilePost_viewReportProfilePost" version_id="1" version_string="0.0.1"><![CDATA[View ProfilePost Report]]></phrase>
+    <phrase title="please_select_a_report_comment_search_type" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Please select at least one report comment type to search.]]></phrase>
     <phrase title="report_comment" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Report Comment]]></phrase>
     <phrase title="report_options" version_id="4" version_string="0.0.4"><![CDATA[Report Options]]></phrase>
     <phrase title="resolve_linked_report" version_id="4" version_string="0.0.4"><![CDATA[Resolve linked report]]></phrase>
+    <phrase title="search_include_report_comments" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Include report comments]]></phrase>
+    <phrase title="search_include_user_reports" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Include user reports]]></phrase>
     <phrase title="search_reports_only" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Search reports only]]></phrase>
     <phrase title="search_report_comments" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Search Report Comments]]></phrase>
     <phrase title="sv_like_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Like report comment]]></phrase>
@@ -267,7 +270,15 @@
     <template title="report_list_item_report_node" version_id="8" version_string="0.0.8"><![CDATA[<xen:if is="{$report.extraContent.node_title} AND {$report.extraContent.node_id}">
 , <a href="{xen:link forums, $report.extraContent}" class="forumLink">{$report.extraContent.node_title}</a>
 </xen:if>]]></template>
-    <template title="search_bar_reports_only" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[<label title="{xen:phrase search_reports_only}"><input type="checkbox" name="type" value="report_comment" id="search_bar_conversations" class="Disabler AutoChecker" checked="checked" /> {xen:phrase search_reports_only}</label>]]></template>
+    <template title="search_bar_reports_only" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[<label title="{xen:phrase search_reports_only}"><input type="checkbox" name="type" value="report_comment" id="search_bar_reports" class="Disabler AutoChecker" checked="checked" /> {xen:phrase search_reports_only}</label>
+	<ul id="search_bar_reports_Disabler">
+		<li><label><input type="checkbox" name="type[report_comment][include_report_comments]" value="1" checked="checked"
+			id="search_bar_include_report_comments" class="AutoChecker"
+			/> {xen:phrase  search_include_report_comments}</label></li>
+		<li><label><input type="checkbox" name="type[report_comment][include_user_reports]" value="1" checked="checked"
+			id="search_bar_include_user_reports" class="AutoChecker"
+			/> {xen:phrase search_include_user_reports}</label></li>
+	</ul>]]></template>
     <template title="search_form_report_comment" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[<xen:title>{xen:phrase search_report_comments}</xen:title>
 
 <xen:navigation>
@@ -315,6 +326,18 @@
 			<dt><label for="ctrl_date">{xen:phrase newer_than}:</label></dt>
 			<dd>
 				<input type="date" name="date" value="{$search.date}" class="textCtrl" id="ctrl_date" />
+			</dd>
+		</dl>
+		<dl class="ctrlUnit">
+			<dt></dt>
+			<dd>
+				<label for="ctrl_search_include_report_comments"><input type="checkbox" name="include_report_comments" value="1"{xen:if '{$search.include_report_comments}', ' checked="checked"'} id="ctrl_include_report_comments" /> {xen:phrase search_include_report_comments}</label>
+			</dd>
+		</dl>
+		<dl class="ctrlUnit">
+			<dt></dt>
+			<dd>
+				<label for="ctrl_search_include_user_reports"><input type="checkbox" name="include_user_reports" value="1"{xen:if '{$search.include_user_reports}', ' checked="checked"'} id="ctrl_search_include_user_reports" /> {xen:phrase search_include_user_reports}</label>
 			</dd>
 		</dl>
 <xen:comment>
