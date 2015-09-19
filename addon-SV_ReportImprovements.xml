@@ -564,9 +564,12 @@ $3]]></replace>
       <replace><![CDATA[<xen:container var="$searchBar.reports"><xen:include template="search_bar_reports_only" /></xen:container>]]></replace>
     </modification>
     <modification template="search_form_tabs" modification_key="SV_ReportImprovements_search_form_tabs" description="Inject Search Tab" execution_order="4345" enabled="1" action="preg_replace">
-      <find><![CDATA[#(<xen\:hook name\="search_form_tabs".*?)(\s*)(<li{xen:if "{\$searchType}.*?)(\s*</xen\:hook>)#si]]></find>
-      <replace><![CDATA[$1$2$3$2<li{xen:if "{$searchType} == 'report_comment'", ' class="active"'}><a href="{xen:link search, '', 'type=report_comment'}">{xen:phrase search_report_comments}</a></li>
-$4]]></replace>
+      <find><![CDATA[#(<xen\:hook name\="search_form_tabs".*?)(\s*<li{xen:if "{\$searchType}.*?)(\s*</xen\:hook>)#si]]></find>
+      <replace><![CDATA[$1$2
+<xen:if is="{$visitor.is_moderator}">
+<li{xen:if "{$searchType} == 'report_comment'", ' class="active"'}><a href="{xen:link search, '', 'type=report_comment'}">{xen:phrase search_report_comments}</a></li>
+</xen:if>
+$3]]></replace>
     </modification>
     <modification template="member_warn" modification_key="sv_integrated_report_member_warn_ir_options" description="Inject more options" execution_order="10" enabled="1" action="preg_replace">
       <find><![CDATA[#(<fieldset>.*?{xen:phrase notes}.*?</fieldset>)#s]]></find>

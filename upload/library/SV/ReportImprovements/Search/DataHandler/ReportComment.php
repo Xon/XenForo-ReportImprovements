@@ -253,6 +253,10 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
     public function getSearchFormControllerResponse(XenForo_ControllerPublic_Abstract $controller, XenForo_Input $input, array $viewParams)
     {
         if (!($this->enabled)) return null;
+
+        $visitor = XenForo_Visitor::getInstance();
+        if (!$visitor['is_moderator']) return null;
+
         $params = $input->filterSingle('c', XenForo_Input::ARRAY_SIMPLE);
 
         if (!isset($params['is_report']))
