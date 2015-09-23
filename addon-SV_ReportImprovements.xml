@@ -538,6 +538,10 @@
       <find><![CDATA[#$#]]></find>
       <replace><![CDATA[<xen:container var="$searchBar.reports"><xen:include template="search_bar_reports_only" /></xen:container>]]></replace>
     </modification>
+    <modification template="report_search" modification_key="SV_ReportImprovements_report_search1" description="Inject Search bar" execution_order="10" enabled="1" action="preg_replace">
+      <find><![CDATA[#$#]]></find>
+      <replace><![CDATA[<xen:container var="$searchBar.reports"><xen:include template="search_bar_reports_only" /></xen:container>]]></replace>
+    </modification>
     <modification template="report_view" modification_key="SV_ReportImprovements_report_view1" description="Add anchor tags" execution_order="10" enabled="1" action="preg_replace">
       <find><![CDATA[#(<li class="primaryContent reportComment)([^"]+")#si]]></find>
       <replace><![CDATA[<xen:require css="message.css" />
