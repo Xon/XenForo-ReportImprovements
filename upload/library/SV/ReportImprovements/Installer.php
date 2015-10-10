@@ -122,9 +122,13 @@ class SV_ReportImprovements_Installer
 
         if ($version == 0)
         {
-            $requireIndexing['report_comment'] = true;
             XenForo_Application::defer('Permission', array(), 'Permission');
             XenForo_Application::defer(self::AddonNameSpace.'_Deferred_WarningLogMigration', array('warning_id' => -1));
+        }
+
+        if ($version < 1010003)
+        {
+            $requireIndexing['report_comment'] = true;
         }
 
         // if Elastic Search is installed, determine if we need to push optimized mappings for the search types
@@ -134,6 +138,8 @@ class SV_ReportImprovements_Installer
                     "report" => array("type" => "long"),
                     "state_change" => array("type" => "string", "index" => "not_analyzed"),
                     "is_report" => array("type" => "boolean"),
+                    "points" => array("type" => "long", "store" => "yes"),
+                    "expiry_date" => array("type" => "long", "store" => "yes"),
                 )
             ),
         ));

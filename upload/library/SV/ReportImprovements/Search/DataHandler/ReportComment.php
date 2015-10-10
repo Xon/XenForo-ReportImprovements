@@ -32,11 +32,26 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         $metadata['state_change'] = $data['state_change'];
         $metadata['is_report'] = $data['is_report'];
 
-        $text = $data['state_change'] . ' '. $data['message'];
+        $title = '';
+        $text = $data['message'];
+        if (!empty($data['state_change']))
+        {
+            $text = $data['state_change'] . ' ' . $text;
+        }
+        if (!empty($data['warning_log_id']))
+        {
+            if (empty($data['title']))
+                throw new Exception(var_export($data, true));
+            $text = $data['title'] . ' '. $data['notes']. ' '. $text;
+
+            $title = $data['title'];
+            $metadata['points'] = $data['points'];
+            $metadata['expiry_date'] = $data['expiry_date'];
+        }
 
         $indexer->insertIntoIndex(
             'report_comment', $data['report_comment_id'],
-            '', $text,
+            $title, $text,
             $data['comment_date'], $data['user_id'], $data['report_comment_id'], $metadata
         );
     }
@@ -222,6 +237,31 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
             throw new XenForo_Exception(new XenForo_Phrase('please_select_a_report_comment_search_type'), true);
         }
 
+        $warningPoints = $input->filterSingle('warning_points', XenForo_Input::ARRAY_SIMPLE);
+
+        if (isset($warningPoints['lower']) && $warningPoints['lower'] !== '')
+        {
+            $constraints['warning_points'][0] = intval($warningPoints['lower']);
+            if ($constraints['warning_points'][0] < 0)
+            {
+                unset($constraints['warning_points'][0]);
+            }
+        }
+
+        if (isset($warningPoints['upper']) && $warningPoints['upper'] !== '')
+        {
+            $constraints['warning_points'][1] = intval($warningPoints['upper']);
+            if ($constraints['warning_points'][1] < 0)
+            {
+                unset($constraints['warning_points'][1]);
+            }
+        }
+
+        if (empty($constraints['warning_points']))
+        {
+            unset($constraints['warning_points']);
+        }
+
         return $constraints;
     }
 
@@ -239,6 +279,15 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
                 if (isset($constraintInfo))
                 {
                     return array('metadata' => array('is_report', $constraintInfo));
+                }
+            case 'warning_points':
+                if (isset($constraintInfo))
+                {
+                    return array(
+                        'range_query' => array('points',
+                                               isset($constraintInfo[0]) ? array('>=', intval($constraintInfo[0])) : array(),
+                                               isset($constraintInfo[1]) ? array('<=', intval($constraintInfo[1])) : array())
+                    );
                 }
         }
 
@@ -274,6 +323,15 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         {
             $viewParams['search']['include_user_reports'] = true;
             $viewParams['search']['include_report_comments'] = false;
+        }
+
+        if (isset($params['warning_points'][0]))
+        {
+            $viewParams['search']['warning_points']['lower'] = $params['warning_points'][0];
+        }
+        if (isset($params['warning_points'][1]))
+        {
+            $viewParams['search']['warning_points']['upper'] = $params['warning_points'][1];
         }
 
         return $controller->responseView('XenForo_ViewPublic_Search_Form_Post', 'search_form_report_comment', $viewParams);
