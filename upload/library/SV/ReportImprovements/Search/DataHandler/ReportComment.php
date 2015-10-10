@@ -38,7 +38,7 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         {
             $text = $data['state_change'] . ' ' . $text;
         }
-        if (!empty($data['warning_log_id']))
+        if (!empty($data['warning_log_id']) && !empty($data['title']))
         {
             if (empty($data['title']))
                 throw new Exception(var_export($data, true));
