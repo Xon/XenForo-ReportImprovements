@@ -21,11 +21,22 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         $fields['xf_report_comment']['warning_log_id'] = array('type' => self::TYPE_UINT,    'default' => 0);
         $fields['xf_report_comment']['likes'] = array('type' => self::TYPE_UINT_FORCED, 'default' => 0);
         $fields['xf_report_comment']['like_users'] = array('type' => self::TYPE_SERIALIZED);
+        $fields['xf_report_comment']['alertSent'] = array('type' => self::TYPE_UINT, 'default' => 0);
+        $fields['xf_report_comment']['alertComment'] = array('type' => self::TYPE_STRING);
         return $fields;
     }
 
     protected function _preSave()
     {
+        if (SV_ReportImprovements_Globals::$UserReportAlertComment)
+        {
+            $this->set('alertSent', true);
+            if (SV_ReportImprovements_Globals::$UserReportAlertComment !== true)
+            {
+                $this->set('alertComment', SV_ReportImprovements_Globals::$UserReportAlertComment);
+            }
+        }
+
         if (!$this->get('state_change') && !$this->get('message'))
         {
             if ($this->get('warning_log_id'))

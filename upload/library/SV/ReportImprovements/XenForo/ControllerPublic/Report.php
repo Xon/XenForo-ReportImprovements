@@ -119,6 +119,14 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
     {
         $visitor = XenForo_Visitor::getInstance();
         SV_ReportImprovements_Globals::$Report_MaxAlertCount = $visitor->hasPermission('general', 'maxTaggedUsers');
+        $input = $this->_input->filter(array(
+            'send_alert' => XenForo_Input::UINT,
+            'alert_comment' => XenForo_Input::STRING,
+        ));
+        if ($input['send_alert'])
+        {
+            SV_ReportImprovements_Globals::$UserReportAlertComment = $input['alert_comment'];
+        }
         return parent::actionUpdate();
     }
 

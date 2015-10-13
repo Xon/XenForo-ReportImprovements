@@ -49,6 +49,11 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
             $metadata['expiry_date'] = $data['expiry_date'];
         }
 
+        if (!empty($data['alertComment']))
+        {
+            $text = $data['alertComment'] . ' ' . $text;
+        }
+
         $indexer->insertIntoIndex(
             'report_comment', $data['report_comment_id'],
             $title, $text,

@@ -11,6 +11,7 @@ class SV_ReportImprovements_Globals
     public static $OverrideReportUsername = null;
     public static $ResolveReport = false;
     public static $AssignReport = false;
+    public static $UserReportAlertComment = null;
 
     // workaround for a bug in Waindigo_EmailReport_Extend_XenForo_Model_Report::reportContent
     public static $reportId = false;

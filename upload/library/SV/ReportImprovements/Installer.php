@@ -43,6 +43,8 @@ class SV_ReportImprovements_Installer
 
         SV_Utils_Install::addColumn('xf_report_comment', 'likes', 'INT UNSIGNED NOT NULL DEFAULT 0');
         SV_Utils_Install::addColumn('xf_report_comment', 'like_users', 'BLOB');
+        SV_Utils_Install::addColumn('xf_report_comment', 'alertSent', 'tinyint(3) unsigned NOT NULL DEFAULT 0');
+        SV_Utils_Install::addColumn('xf_report_comment', 'alertComment', 'MEDIUMTEXT');
 
         XenForo_Db::beginTransaction($db);
 
