@@ -55,7 +55,7 @@ class SV_ReportImprovements_XenForo_DataWriter_Warning extends XFCP_SV_ReportImp
     {
         try
         {
-            $warningLogId = $this->_getWarningLogModel()->LogOperation($operationType, $this->_getLogData());
+            return $this->_getWarningLogModel()->LogOperation($operationType, $this->_getLogData());
         }
         catch(XenForo_Exception $e)
         {

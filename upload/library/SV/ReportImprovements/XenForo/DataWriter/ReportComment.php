@@ -4,6 +4,8 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
 {
     const OPTION_MAX_TAGGED_USERS = 'maxTaggedUsers';
     const OPTION_INDEX_FOR_SEARCH = 'indexForSearch';
+    const OPTION_WARNINGLOG_WARNING = 'warningLog_warning';
+    const OPTION_WARNINGLOG_REPORT = 'warningLog_report';
 
     protected $_taggedUsers = array();
 
@@ -12,6 +14,8 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         $defaultOptions = parent::_getDefaultOptions();
         $defaultOptions[self::OPTION_MAX_TAGGED_USERS] = SV_ReportImprovements_Globals::$Report_MaxAlertCount;
         $defaultOptions[self::OPTION_INDEX_FOR_SEARCH] = true;
+        $defaultOptions[self::OPTION_WARNINGLOG_WARNING] = false;
+        $defaultOptions[self::OPTION_WARNINGLOG_REPORT] = false;
         return $defaultOptions;
     }
 
@@ -37,6 +41,14 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
             }
         }
 
+        $warning = $this->getOption(self::OPTION_WARNINGLOG_WARNING);
+        $report = $this->getOption(self::OPTION_WARNINGLOG_REPORT);
+        if ($warning && $report)
+        {
+            $this->set('warning_log_id', $warning['warning_log_id']);
+            $this->sv_linkWarning($warning, $report);
+        }
+
         if (!$this->get('state_change') && !$this->get('message'))
         {
             if ($this->get('warning_log_id'))
@@ -55,6 +67,59 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         return parent::_preSave();
     }
 
+    protected function sv_linkWarning(array $warning, array $report)
+    {
+        $newReportState = '';
+        $assigned_user_id = 0;
+        if(SV_ReportImprovements_Globals::$ResolveReport)
+        {
+            $newReportState = 'resolved';
+        }
+        if(SV_ReportImprovements_Globals::$AssignReport)
+        {
+            $assigned_user_id = $this->get('user_id');
+        }
+
+        // don't re-open the report when a warning expires naturally.
+        if ($warning['operation_type'] != SV_ReportImprovements_Model_WarningLog::Operation_ExpireWarning)
+        {
+            if ($newReportState == '' && ($report['report_state'] == 'resolved' || $report['report_state'] == 'rejected'))
+            {
+                // re-open an existing report
+                $newReportState = empty($report['assigned_user_id']) && empty($assigned_user_id)
+                                    ? 'open'
+                                    : 'assigned';
+            }
+        }
+        // do not change the report state to something it already is
+        if ($newReportState != '' && $report['report_state'] == $newReportState)
+        {
+            $newReportState = '';
+        }
+
+        if ($this->get('message') == '.')
+        {
+            $this->set('message', '');
+        }
+        $this->set('state_change', $newReportState);
+        $this->set('warning_log_id', $warning['warning_log_id']);
+
+        if (!empty($newReportState) || !empty($assigned_user_id))
+        {
+            $reportDw = XenForo_DataWriter::create('XenForo_DataWriter_Report');
+            $reportDw->setExistingData($report['report_id']);
+            if(!empty($newReportState))
+            {
+                $reportDw->set('report_state',  $newReportState);
+            }
+            if(!empty($assigned_user_id))
+            {
+                $reportDw->set('assigned_user_id',  $assigned_user_id);
+            }
+            $reportDw->save();
+        }
+    }
+
     protected function _postSaveAfterTransaction()
     {
         parent::_postSaveAfterTransaction();
@@ -68,8 +133,6 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         {
             return;
         }
-
-        SV_ReportImprovements_Globals::$reportId = $this->get('report_id');
 
         $reportModel = $this->_getReportModel();
         $report = $reportModel->getReportById($this->get('report_id'));

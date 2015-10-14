@@ -50,7 +50,7 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
      *
      * @return int|false
      */
-    public function LogOperation($operationType, $warning, $ImporterMode = false)
+    public function LogOperation($operationType, array $warning, $ImporterMode = false)
     {
         if (@$operationType == '')
             throw new Exception("Unknown operation type when logging warning");
@@ -62,14 +62,19 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
         $warningLogDw = XenForo_DataWriter::create('SV_ReportImprovements_DataWriter_WarningLog');
         $warningLogDw->bulkSet($warning);
         $warningLogDw->save();
-        $warningLogId = $warningLogDw->get('warning_log_id');
+        $warning['warning_log_id'] = $warningLogDw->get('warning_log_id');
 
         if (SV_ReportImprovements_Globals::$SupressLoggingWarningToReport)
         {
-            return $warningLogId;
+            return $warning['warning_log_id'];
         }
 
         $options = XenForo_Application::getOptions();
+        if ($options->reportIntoForumId)
+        {
+            return $warning['warning_log_id'];
+        }
+
         $reportModel = $this->_getReportModel();
         $reportUser = XenForo_Visitor::getInstance()->toArray();
         if (!empty(SV_ReportImprovements_Globals::$OverrideReportUserId) || $reportUser['user_id'] == 0 || $reportUser['username'] == '')
@@ -77,7 +82,7 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
             $reportUser = $this->_getUserModel()->getUserById(SV_ReportImprovements_Globals::$OverrideReportUserId);
             if (empty($reportUser))
             {
-                return $warningLogId;
+                return $warning['warning_log_id'];
             }
         }
 
@@ -89,115 +94,82 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
         $commentToUpdate = null;
 
         $report = $reportModel->getReportByContent($warning['content_type'], $warning['content_id']);
-        if (empty($report))
+        if($report || $options->sv_report_new_warnings)
         {
-            if($options->sv_report_new_warnings)
+            $content = $this->getContentForReportFromWarning($warning);
+            if (!empty($content))
             {
-                // create a report for tracking purposes.
-                $content = $this->getContentForReportFromWarning($warning);
-                if (!empty($content))
-                {
-                    $reportId = $reportModel->reportContent($warning['content_type'], $content, '.', $reportUser);
-                    if($reportId)
-                    {
-                        $report = $reportModel->getReportById($reportId);
-                        $reportComments = $reportModel->getReportComments($reportId);
-                        $commentToUpdate = reset($reportComments);
-                        if ($ImporterMode)
-                        {
-                            $reportDw = XenForo_DataWriter::create('XenForo_DataWriter_Report');
-                            $reportDw->setExistingData($report['report_id']);
-                            $reportDw->set('first_report_date', $warning['warning_date']);
-                            $reportDw->set('last_modified_date', $warning['warning_date']);
-                            $reportDw->setImportMode(true);
-                            $reportDw->save();
-                            $report['first_report_date'] = $report['last_modified_date'] = $warning['warning_date'];
-                        }
-                    }
-                }
+                $this->createReportContent($report, $warning, $warning['content_type'], $content, $reportUser, $ImporterMode);
             }
         }
 
-        if (empty($report))
-        {
-            return $warningLogId;
-        }
-
-        $newReportState = '';
-        $assigned_user_id = 0;
-        if(SV_ReportImprovements_Globals::$ResolveReport)
-        {
-            $newReportState = 'resolved';
-        }
-        if(SV_ReportImprovements_Globals::$AssignReport)
-        {
-            $assigned_user_id = $reportUser['user_id'];
-        }
-
-        // don't re-open the report when a warning expires naturally.
-        if ($operationType != SV_ReportImprovements_Model_WarningLog::Operation_ExpireWarning)
-        {
-            if ($newReportState == '' && ($report['report_state'] == 'resolved' || $report['report_state'] == 'rejected'))
-            {
-                // re-open an existing report
-                $newReportState = empty($report['assigned_user_id']) && empty($assigned_user_id) 
-                                    ? 'open' 
-                                    : 'assigned';
-            }
-        }
-        // do not change the report state to something it already is
-        if ($newReportState != '' && $report['report_state'] == $newReportState)
-        {
-            $newReportState = '';
-        }
-
-        if (!empty($newReportState) || !empty($assigned_user_id))
-        {
-            $reportDw = XenForo_DataWriter::create('XenForo_DataWriter_Report');
-            $reportDw->setExistingData($report, true);
-            if(!empty($newReportState))
-            {
-                $reportDw->set('report_state',  $newReportState);
-            }
-            if(!empty($assigned_user_id))
-            {
-                $reportDw->set('assigned_user_id',  $assigned_user_id);
-            }
-            $reportDw->save();
-        }
-
-        $commentDw = XenForo_DataWriter::create('XenForo_DataWriter_ReportComment');
-        if (!empty($commentToUpdate))
-        {
-            $commentDw->setExistingData($commentToUpdate);
-        }
-        else
-        {
-            $commentDw->bulkSet(array(
-                'report_id' => $report['report_id'],
-                'user_id' => $reportUser['user_id'],
-                'username' => $reportUser['username'],
-                'is_report' => 0,
-            ));
-        }
-        $commentDw->bulkSet(array(
-            'message' => $this->_BuildWarningLogMessage(),
-            'state_change' => $newReportState,
-            'warning_log_id' => $warningLogId,
-        ));
-        if ($ImporterMode)
-        {
-            $commentDw->set('comment_date', $warning['warning_date']);
-            $commentDw->setImportMode(true);
-        }
-        $commentDw->save();
-
-        return $warningLogId;
+        return $warning['warning_log_id'];
     }
 
-    protected function _BuildWarningLogMessage()
+    public function createReportContent(array $report, array $warning, $contentType, array $content, array $viewingUser = null, $ImporterMode = false)
     {
-        return '';
+        $this->standardizeViewingUserReference($viewingUser);
+
+        if (!$viewingUser['user_id'])
+        {
+            return false;
+        }
+
+        $handler = $this->_getReportModel()->getReportHandler($contentType);
+        if (!$handler)
+        {
+            return false;
+        }
+
+        list($contentId, $contentUserId, $contentInfo) = $handler->getReportDetailsFromContent($content);
+        if (!$contentId)
+        {
+            return false;
+        }
+
+        if (empty($report))
+        {
+            $reportDw = XenForo_DataWriter::create('XenForo_DataWriter_Report');
+            $reportDw->bulkSet(array(
+                'content_type' => $contentType,
+                'content_id' => $contentId,
+                'content_user_id' => $contentUserId,
+                'content_info' => $contentInfo
+            ));
+            $reportDw->save();
+            $report = $reportDw->getMergedData();
+        }
+
+        if ($ImporterMode)
+        {
+            $reportDw = XenForo_DataWriter::create('XenForo_DataWriter_Report');
+            $reportDw->setExistingData($report['report_id']);
+            $reportDw->set('first_report_date', $warning['warning_date']);
+            $reportDw->set('last_modified_date', $warning['warning_date']);
+            $reportDw->setImportMode(true);
+            $reportDw->save();
+            $report['first_report_date'] = $report['last_modified_date'] = $warning['warning_date'];
+            $reasonDw->set('comment_date', $warning['warning_date']);
+            $reasonDw->setImportMode(true);
+        }
+
+        $reasonDw = XenForo_DataWriter::create('XenForo_DataWriter_ReportComment');
+        $reasonDw->setOption(SV_ReportImprovements_XenForo_DataWriter_ReportComment::OPTION_WARNINGLOG_REPORT, $report);
+        $reasonDw->setOption(SV_ReportImprovements_XenForo_DataWriter_ReportComment::OPTION_WARNINGLOG_WARNING, $warning);
+        if ($ImporterMode)
+        {
+            $reasonDw->set('comment_date', $warning['warning_date']);
+            $reasonDw->setImportMode(true);
+        }
+        $reasonDw->bulkSet(array(
+            'report_id' => $report['report_id'],
+            'user_id' => $viewingUser['user_id'],
+            'username' => $viewingUser['username'],
+            'warning_log_id' => $warning['warning_log_id'],
+        ));
+        $reasonDw->save();
+
+        return $report['report_id'];
     }
 
     protected function _getUserModel()
