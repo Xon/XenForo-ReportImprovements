@@ -151,6 +151,12 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         $alertedUserIds = array();
 
         // alert users who are tagged
+        $alertedUserIds = $this->_tagUsers($alertedUserIds, $report, $reportComment);
+        $alertedUserIds = $this->_alertWatchers($handler, $alertedUserIds, $report, $reportComment);
+    }
+
+    protected function _tagUsers(array $alertedUserIds, array $report, array $reportComment)
+    {
         $maxTagged = $this->getOption(self::OPTION_MAX_TAGGED_USERS);
         if ($maxTagged && $this->_taggedUsers)
         {
@@ -169,8 +175,13 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
                 )
             ));
         }
+        return $alertedUserIds;
+    }
 
+    protected function _alertWatchers(XenForo_ReportHandler_Abstract $handler, array $alertedUserIds, array $report, array $reportComment)
+    {
         // alert users interacting with this report
+        $reportModel = $this->_getReportModel();
         $otherCommenterIds = $reportModel->getReportCommentUserIds(
             $this->get('report_id')
         );
@@ -190,7 +201,7 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
                 continue;
             }
 
-            if ($otherCommenter['user_id'] == $this->get('user_id'))
+            if ($otherCommenter['user_id'] == $reportComment['user_id'])
             {
                 continue;
             }
@@ -207,7 +218,7 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
                           and alert.action = ?
                           and report_comment.report_id = ?
                     LIMIT 1
-                ", array($otherCommenter['user_id'], 'report_comment', 'insert', $this->get('report_id')));
+                ", array($otherCommenter['user_id'], 'report_comment', 'insert', $report['report_id']));
 
                 if (!empty($hasUnviewedReport))
                 {
@@ -216,16 +227,16 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
 
                 $otherCommenter['permissions'] = XenForo_Permission::unserializePermissions($otherCommenter['global_permission_cache']);
 
-                $reports = $handler->getVisibleReportsForUser(array($this->get('report_id') => $report), $otherCommenter);
+                $reports = $handler->getVisibleReportsForUser(array($report['report_id'] => $report), $otherCommenter);
 
                 if (!empty($reports))
                 {
                     XenForo_Model_Alert::alert(
                         $otherCommenter['user_id'],
-                        $this->get('user_id'),
-                        $this->get('username'),
+                        $reportComment['user_id'],
+                        $reportComment['username'],
                         'report_comment',
-                        $this->get('report_comment_id'),
+                        $reportComment['report_comment_id'],
                         'insert');
                 }
             }
