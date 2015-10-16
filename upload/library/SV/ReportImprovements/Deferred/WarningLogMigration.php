@@ -56,6 +56,14 @@ class SV_ReportImprovements_Deferred_WarningLogMigration extends XenForo_Deferre
         $warningRows = $warningQuery->fetchAll();
         if (!empty($warningRows))
         {
+            // make sure the add-on is enabled
+            XenForo_DataWriter::create('XenForo_DataWriter_ReportComment');
+            if (!class_exists('XFCP_SV_ReportImprovements_XenForo_DataWriter_ReportComment',false))
+            {
+                throw new Exception('Please enable the Report Improvements add-on and install/upgrade it again to migrate warnings');
+            }
+
+            XenForo_Db::beginTransaction($db);
             foreach($warningRows as $warning)
             {
                 SV_ReportImprovements_Globals::$OverrideReportUserId = $warning['warning_user_id'];
@@ -66,8 +74,8 @@ class SV_ReportImprovements_Deferred_WarningLogMigration extends XenForo_Deferre
 
                 $warningLogModel->LogOperation(SV_ReportImprovements_Model_WarningLog::Operation_NewWarning, $warning, true);
             }
+            XenForo_Db::commit($db);
         }
-        XenForo_Db::commit($db);
 
         return array('warning_id' => $max_warning_id);
     }

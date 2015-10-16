@@ -144,13 +144,17 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
         {
             $reportDw = XenForo_DataWriter::create('XenForo_DataWriter_Report');
             $reportDw->setExistingData($report['report_id']);
-            $reportDw->set('first_report_date', $warning['warning_date']);
-            $reportDw->set('last_modified_date', $warning['warning_date']);
-            $reportDw->setImportMode(true);
+            if ($warning['warning_date'] < $reportDw->get('first_report_date'))
+            {
+                $reportDw->set('first_report_date', $warning['warning_date']);
+            }
+            $last_modified_date = $reportDw->get('last_modified_date');
+            if ($warning['warning_date'] > $last_modified_date || $last_modified_date == XenForo_Application::$time)
+            {
+                $reportDw->set('last_modified_date', $warning['warning_date']);
+            }
             $reportDw->save();
-            $report['first_report_date'] = $report['last_modified_date'] = $warning['warning_date'];
-            $reasonDw->set('comment_date', $warning['warning_date']);
-            $reasonDw->setImportMode(true);
+            $report = $reportDw->getMergedData();
         }
 
         $reasonDw = XenForo_DataWriter::create('XenForo_DataWriter_ReportComment');
@@ -159,7 +163,7 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
         if ($ImporterMode)
         {
             $reasonDw->set('comment_date', $warning['warning_date']);
-            $reasonDw->setImportMode(true);
+            $reasonDw->setOption(SV_ReportImprovements_XenForo_DataWriter_ReportComment::OPTION_SEND_ALERTS, false);
         }
         $reasonDw->bulkSet(array(
             'report_id' => $report['report_id'],

@@ -6,6 +6,7 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
     const OPTION_INDEX_FOR_SEARCH = 'indexForSearch';
     const OPTION_WARNINGLOG_WARNING = 'warningLog_warning';
     const OPTION_WARNINGLOG_REPORT = 'warningLog_report';
+    const OPTION_SEND_ALERTS = 'sendAlerts';
 
     protected $_taggedUsers = array();
 
@@ -16,6 +17,7 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         $defaultOptions[self::OPTION_INDEX_FOR_SEARCH] = true;
         $defaultOptions[self::OPTION_WARNINGLOG_WARNING] = false;
         $defaultOptions[self::OPTION_WARNINGLOG_REPORT] = false;
+        $defaultOptions[self::OPTION_SEND_ALERTS] = true;
         return $defaultOptions;
     }
 
