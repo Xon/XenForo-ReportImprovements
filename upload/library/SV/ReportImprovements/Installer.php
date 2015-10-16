@@ -122,10 +122,14 @@ class SV_ReportImprovements_Installer
 
         $requireIndexing = array();
 
-        if ($version == 0)
+        if ($version < 1010000)
         {
             XenForo_Application::defer('Permission', array(), 'Permission');
-            XenForo_Application::defer(self::AddonNameSpace.'_Deferred_WarningLogMigration', array('warning_id' => -1));
+        }
+
+        if ($version < 1010001)
+        {
+            XenForo_Application::defer(self::AddonNameSpace.'_Deferred_AlertMigration', array('alert_id' => -1));
         }
 
         if ($version < 1010003)
@@ -147,7 +151,8 @@ class SV_ReportImprovements_Installer
         ));
 
         XenForo_Model::create('XenForo_Model_ContentType')->rebuildContentTypeCache();
-        XenForo_Application::defer(self::AddonNameSpace.'_Deferred_AlertMigration', array('alert_id' => -1));
+        // migration code which gets to run each install
+        XenForo_Application::defer(self::AddonNameSpace.'_Deferred_WarningLogMigration', array('warning_id' => -1));
     }
 
     public static function uninstall()
