@@ -106,7 +106,7 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
         return $warning['warning_log_id'];
     }
 
-    public function createReportContent(array $report, array $warning, $contentType, array $content, array $viewingUser = null, $ImporterMode = false)
+    public function createReportContent($report, array $warning, $contentType, array $content, array $viewingUser = null, $ImporterMode = false)
     {
         $this->standardizeViewingUserReference($viewingUser);
 
