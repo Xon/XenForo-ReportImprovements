@@ -29,8 +29,25 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
             $metadata['prefix'] = $data['prefix_id'];
         }
 
-        $metadata['state_change'] = $data['state_change'];
-        $metadata['is_report'] = $data['is_report'];
+        switch($data['state_change'])
+        {
+            case '':
+                $metadata['state_change'] = 0;
+                break;
+            case 'open':
+                $metadata['state_change'] = 1;
+                break;
+            case 'assigned':
+                $metadata['state_change'] = 2;
+                break;
+            case 'resolved':
+                $metadata['state_change'] = 3;
+                break;
+            case 'rejected':
+                $metadata['state_change'] = 4;
+                break;
+        }
+        $metadata['is_report'] = $data['is_report'] ? true : false;
 
         $title = '';
         $text = $data['message'];
@@ -229,11 +246,11 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
             {
                 if ($includeUserReports)
                 {
-                    $constraints['is_report'] = '1';
+                    $constraints['is_report'] = true;
                 }
                 else if ($includeReportComments)
                 {
-                    $constraints['is_report'] = '0';
+                    $constraints['is_report'] = false;
                 }
             }
         }

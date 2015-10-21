@@ -132,9 +132,15 @@ class SV_ReportImprovements_Installer
             XenForo_Application::defer(self::AddonNameSpace.'_Deferred_AlertMigration', array('alert_id' => -1));
         }
 
-        if ($version < 1010003)
+        if ($version < 1010006)
         {
             $requireIndexing['report_comment'] = true;
+            if ($version >= 1010000)
+            {
+                // need to delete mapping to permit re-indexing to work correctly
+                $indexName = XenES_Api::getInstance()->getIndex();
+                XenES_Api::deleteMapping($indexName, 'report_comment');
+            }
         }
 
         // if Elastic Search is installed, determine if we need to push optimized mappings for the search types
@@ -142,10 +148,10 @@ class SV_ReportImprovements_Installer
             'report_comment' => array(
                 "properties" => array(
                     "report" => array("type" => "long"),
-                    "state_change" => array("type" => "string", "index" => "not_analyzed"),
+                    "state_change" => array("type" => "long"),
                     "is_report" => array("type" => "boolean"),
-                    "points" => array("type" => "long", "store" => "yes"),
-                    "expiry_date" => array("type" => "long", "store" => "yes"),
+                    "points" => array("type" => "long"),
+                    "expiry_date" => array("type" => "long"),
                 )
             ),
         ));
