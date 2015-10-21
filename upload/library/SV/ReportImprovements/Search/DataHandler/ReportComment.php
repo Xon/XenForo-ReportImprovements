@@ -356,6 +356,8 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
             $viewParams['search']['warning_points']['upper'] = $params['warning_points'][1];
         }
 
+        $viewParams['search']['range_query'] = class_exists('XFCP_SV_SearchImprovements_XenES_Search_SourceHandler_ElasticSearch', false);
+
         return $controller->responseView('XenForo_ViewPublic_Search_Form_Post', 'search_form_report_comment', $viewParams);
     }
 

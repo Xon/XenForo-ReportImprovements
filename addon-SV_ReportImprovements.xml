@@ -283,7 +283,7 @@
 			id="search_bar_include_user_reports" class="AutoChecker"
 			/> {xen:phrase search_include_user_reports}</label></li>
 	</ul>]]></template>
-    <template title="search_form_report_comment" version_id="1010003" version_string="1.1.0 RC3"><![CDATA[<xen:title>{xen:phrase search_report_comments}</xen:title>
+    <template title="search_form_report_comment" version_id="1010006" version_string="1.1.0 RC5"><![CDATA[<xen:title>{xen:phrase search_report_comments}</xen:title>
 
 <xen:navigation>
 	<xen:breadcrumb href="{xen:link full:search}">{xen:phrase search}</xen:breadcrumb>
@@ -344,6 +344,7 @@
 				<label for="ctrl_search_include_user_reports"><input type="checkbox" name="include_user_reports" value="1"{xen:if '{$search.include_user_reports}', ' checked="checked"'} id="ctrl_search_include_user_reports" /> {xen:phrase search_include_user_reports}</label>
 			</dd>
 		</dl>
+		<xen:if is="{$search.range_query}">
 		<dl class="ctrlUnit">
 			<dt><label for="ctrl_date">{xen:phrase warning_points}:</label></dt>
 			<dd>
@@ -351,6 +352,7 @@
 				<input type="number" placeholder="{xen:phrase warning_points_upper_bound}" name="warning_points[upper]" value="{$search.warning_points.upper}" class="textCtrl" id="ctrl_warning_points_upper" />
 			</dd>
 		</dl>
+		</xen:if>
 <xen:comment>
 		<dl class="ctrlUnit">
 			<dt><label for="ctrl_reply_count">{xen:phrase minimum_number_of_reports}:</label></dt>
