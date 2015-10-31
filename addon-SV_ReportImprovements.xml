@@ -72,9 +72,9 @@
     <permissions>
       <permission permission_group_id="conversation" permission_id="viewReportConversation" permission_type="flag" default_value="unset" interface_group_id="ri_ReportCenter" display_order="400"/>
       <permission permission_group_id="forum" permission_id="viewReportPost" permission_type="flag" default_value="unset" interface_group_id="ri_ReportCenter" display_order="200"/>
-      <permission permission_group_id="general" permission_id="assignReports" permission_type="flag" depend_permission_id="viewReports" default_value="unset" interface_group_id="ri_ReportCenter" display_order="30"/>
+      <permission permission_group_id="general" permission_id="assignReport" permission_type="flag" depend_permission_id="viewReports" default_value="unset" interface_group_id="ri_ReportCenter" display_order="30"/>
       <permission permission_group_id="general" permission_id="reportLike" permission_type="flag" default_value="unset" interface_group_id="ri_ReportCenter" display_order="40"/>
-      <permission permission_group_id="general" permission_id="updateReports" permission_type="flag" depend_permission_id="viewReports" default_value="unset" interface_group_id="ri_ReportCenter" display_order="20"/>
+      <permission permission_group_id="general" permission_id="updateReport" permission_type="flag" depend_permission_id="viewReports" default_value="unset" interface_group_id="ri_ReportCenter" display_order="20"/>
       <permission permission_group_id="general" permission_id="viewReportUser" permission_type="flag" default_value="unset" interface_group_id="ri_ReportCenter" display_order="100"/>
       <permission permission_group_id="general" permission_id="viewReports" permission_type="flag" default_value="unset" interface_group_id="ri_ReportCenter" display_order="10"/>
       <permission permission_group_id="profilePost" permission_id="viewReportProfilePost" permission_type="flag" default_value="unset" interface_group_id="ri_ReportCenter" display_order="300"/>
@@ -100,9 +100,9 @@
     <phrase title="option_sv_ri_user_id_explain" version_id="1" version_string="0.0.1"><![CDATA[Enter the user id of the person reporting Alter Ego's]]></phrase>
     <phrase title="permission_conversation_viewReportConversation" version_id="1" version_string="0.0.1"><![CDATA[View Conversation Report]]></phrase>
     <phrase title="permission_forum_viewReportPost" version_id="1" version_string="0.0.1"><![CDATA[View Post Report]]></phrase>
-    <phrase title="permission_general_assignReports" version_id="1020000" version_string="1.2.0 Alpha1"><![CDATA[Assign Report]]></phrase>
+    <phrase title="permission_general_assignReport" version_id="1020000" version_string="1.2.0 Alpha1"><![CDATA[Assign Report]]></phrase>
     <phrase title="permission_general_reportLike" version_id="1010000" version_string="1.1.0"><![CDATA[Like Report Comments]]></phrase>
-    <phrase title="permission_general_updateReports" version_id="1020000" version_string="1.2.0 Alpha1"><![CDATA[Update Report]]></phrase>
+    <phrase title="permission_general_updateReport" version_id="1020000" version_string="1.2.0 Alpha1"><![CDATA[Update Report]]></phrase>
     <phrase title="permission_general_viewReports" version_id="1020000" version_string="1.2.0a"><![CDATA[View Report Center]]></phrase>
     <phrase title="permission_general_viewReportUser" version_id="1" version_string="0.0.1"><![CDATA[View User Report]]></phrase>
     <phrase title="permission_interface_ri_ReportCenter" version_id="11" version_string="0.0.11"><![CDATA[Report Center]]></phrase>
