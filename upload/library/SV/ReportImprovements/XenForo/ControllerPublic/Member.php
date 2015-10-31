@@ -14,12 +14,11 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Member extends XFCP_SV_Repo
 
         if ($response instanceof XenForo_ControllerResponse_View && $response->templateName == 'member_warn')
         {
-            $visitor = XenForo_Visitor::getInstance()->toArray();
-            if ($visitor['is_moderator'])
+            $reportModel = $this->_getReportModel();
+            if ($reportModel->canViewReports())
             {
                 $content_type = $response->params['contentType'];
                 $content_id = $response->params['contentId'];
-                $reportModel = $this->_getReportModel();
 
                 $report = $reportModel->getReportByContent($content_type, $content_id);
                 if ($report)

@@ -7,7 +7,7 @@ class SV_ReportImprovements_XenForo_Model_User extends XFCP_SV_ReportImprovement
     {
         $this->standardizeViewingUserReference($viewingUser);
 
-        if ($viewingUser['is_moderator'] &&
+        if ($this->_getReportModel()->canViewReports($viewingUser) &&
             (
              XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'viewReportUser')
             )
@@ -18,5 +18,10 @@ class SV_ReportImprovements_XenForo_Model_User extends XFCP_SV_ReportImprovement
 
         $errorPhraseKey = 'you_may_not_manage_this_reported_content';
         return false;
+    }
+
+    protected function _getReportModel()
+    {
+        return $this->getModelFromCache('XenForo_Model_Report');
     }
 }

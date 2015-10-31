@@ -208,7 +208,7 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
                 continue;
             }
 
-            if ($otherCommenter['is_moderator'])
+            if ($reportModel->canViewReports($otherCommenter))
             {
                 $hasUnviewedReport = $db->fetchRow("
                     SELECT alert.alert_id

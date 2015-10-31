@@ -96,7 +96,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
 
     public function getReportCommentsByIdsForUser(array $contentIds, array $viewingUser)
     {
-        if (empty($viewingUser['is_moderator']))
+        if (!$this->canViewReports($viewingUser))
         {
             return array();
         }
@@ -190,7 +190,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
             ));
             foreach ($users AS $user)
             {
-                if (isset($alertedUserIds[$user['user_id']]) || $user['user_id'] == $taggingUser['user_id'] || !$user['is_moderator'])
+                if (isset($alertedUserIds[$user['user_id']]) || $user['user_id'] == $taggingUser['user_id'] || !$this->canViewReports($user))
                 {
                     continue;
                 }
@@ -227,14 +227,39 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         return $comment;
     }
 
-    public function canLikeReportComment(array $comment, &$errorPhraseKey = '')
+    public function canViewReports(array $viewingUser = null)
     {
+        $this->standardizeViewingUserReference($viewingUser);
+
+        return $viewingUser['is_moderator'] || XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'viewReports');
+    }
+
+    public function canUpdateReport(array $report, array $viewingUser = null)
+    {
+        $this->standardizeViewingUserReference($viewingUser);
+
+        return parent::canUpdateReport($report, $viewingUser) && 
+               ($viewingUser['is_moderator'] || XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'updateReport'));
+    }
+
+    public function canAssignReport(array $report, array $viewingUser = null)
+    {
+        $this->standardizeViewingUserReference($viewingUser);
+
+        return parent::canUpdateReport($report, $viewingUser) && 
+               ($viewingUser['is_moderator'] || XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'assignReport'));
+    }
+
+    public function canLikeReportComment(array $comment, &$errorPhraseKey = '', array $viewingUser = null)
+    {
+        $this->standardizeViewingUserReference($viewingUser);
+
         if ($comment['user_id'] == XenForo_Visitor::getUserId())
         {
             return false;
         }
 
-        return XenForo_Visitor::getInstance()->hasPermission('general', 'reportLike');
+        return XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'reportLike');
     }
 
     public function batchUpdateLikeUser($oldUserId, $newUserId, $oldUsername, $newUsername)

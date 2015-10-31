@@ -325,8 +325,7 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
     {
         if (!($this->enabled)) return null;
 
-        $visitor = XenForo_Visitor::getInstance();
-        if (!$visitor['is_moderator']) return null;
+        if (!$this->_getReportModel()->canViewReports()) return null;
 
         $params = $input->filterSingle('c', XenForo_Input::ARRAY_SIMPLE);
 

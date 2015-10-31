@@ -2,6 +2,14 @@
 
 class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_ReportImprovements_XenForo_ControllerPublic_Report
 {
+	protected function _preDispatch($action)
+	{
+		if (!$this->_getReportModel()->canViewReports())
+		{
+			throw $this->getNoPermissionResponseException();
+		}
+	}
+
     public function actionLike()
     {
         $commentId = $this->_input->filterSingle('report_comment_id', XenForo_Input::UINT);
@@ -134,12 +142,12 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
     {
         $report = $this->_getVisibleReportOrError($reportId);
 
-		$comment = $this->_getReportModel()->getReportCommentById($commentId);
-		if (!$comment || $comment['report_id'] != $reportId)
-		{
-			throw $this->responseException($this->responseError(new XenForo_Phrase('requested_report_not_found'), 404));
-		}
+        $comment = $this->_getReportModel()->getReportCommentById($commentId);
+        if (!$comment || $comment['report_id'] != $reportId)
+        {
+            throw $this->responseException($this->responseError(new XenForo_Phrase('requested_report_not_found'), 404));
+        }
 
-		return array($report, $comment);
+        return array($report, $comment);
     }
 }

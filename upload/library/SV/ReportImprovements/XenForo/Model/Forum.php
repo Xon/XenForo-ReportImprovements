@@ -12,8 +12,8 @@ class SV_ReportImprovements_XenForo_Model_Forum extends XFCP_SV_ReportImprovemen
             $this->sv_moderators_respect_view_node = XenForo_Application::getOptions()->sv_moderators_respect_view_node;
         }
 
-        if ($viewingUser['is_moderator'] &&
-            (empty($this->sv_moderators_respect_view_node) || $this->canViewForum($forum, $errorPhraseKey, $forum['permissions'], $viewingUser)) &&
+        if ($this->_getReportModel()->canViewReports($viewingUser) &&
+            ((empty($this->sv_moderators_respect_view_node) && $viewingUser['is_moderator'])  || $this->canViewForum($forum, $errorPhraseKey, $forum['permissions'], $viewingUser)) &&
             XenForo_Permission::hasContentPermission($forum['permissions'], 'viewReportPost')
            )
         {
@@ -22,5 +22,10 @@ class SV_ReportImprovements_XenForo_Model_Forum extends XFCP_SV_ReportImprovemen
 
         $errorPhraseKey = 'you_may_not_manage_this_reported_content';
         return false;
+    }
+
+    protected function _getReportModel()
+    {
+        return $this->getModelFromCache('XenForo_Model_Report');
     }
 }

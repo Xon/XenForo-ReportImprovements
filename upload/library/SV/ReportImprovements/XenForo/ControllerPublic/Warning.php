@@ -8,12 +8,11 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Warning extends XFCP_SV_Rep
 
         if ($response instanceof XenForo_ControllerResponse_View && $response->templateName == 'warning_info')
         {
-            $visitor = XenForo_Visitor::getInstance()->toArray();
-            if ($visitor['is_moderator'] && isset($response->params['warning']['content_type']) && isset($response->params['warning']['content_id']))
+            $reportModel = $this->_getReportModel();
+            if ($reportModel->canViewReports() && isset($response->params['warning']['content_type']) && isset($response->params['warning']['content_id']))
             {
                 $content_type = $response->params['warning']['content_type'];
                 $content_id = $response->params['warning']['content_id'];
-                $reportModel = $this->_getReportModel();
 
                 $report = $reportModel->getReportByContent($content_type, $content_id);
                 if ($report)
