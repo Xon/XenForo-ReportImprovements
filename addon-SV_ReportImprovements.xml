@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.2.0 Alpha 2" version_id="1020002" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.2.0 Alpha 3" version_id="1020003" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -41,6 +41,12 @@
       <edit_format_params></edit_format_params>
       <sub_options></sub_options>
       <relation group_id="sv_report_improvements" display_order="110"/>
+    </option>
+    <option option_id="sv_moderators_bypass_report_permissions" edit_format="onoff" data_type="boolean" can_backup="1">
+      <default_value>1</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="sv_report_improvements" display_order="220"/>
     </option>
     <option option_id="sv_moderators_respect_view_node" edit_format="onoff" data_type="boolean" can_backup="1">
       <default_value>0</default_value>
@@ -91,6 +97,8 @@
     <phrase title="option_group_sv_report_improvements_description" version_id="1" version_string="0.0.1"><![CDATA[]]></phrase>
     <phrase title="option_sv_default_resolve_report_on_warning" version_id="4" version_string="0.0.4"><![CDATA[Resolve Report on Warning]]></phrase>
     <phrase title="option_sv_default_resolve_report_on_warning_explain" version_id="4" version_string="0.0.4"><![CDATA[By default, resolve an contents report when creating a warning.]]></phrase>
+    <phrase title="option_sv_moderators_bypass_report_permissions" version_id="1020003" version_string="1.2.0 Alpha 3"><![CDATA[Moderator bypass group-permissions]]></phrase>
+    <phrase title="option_sv_moderators_bypass_report_permissions_explain" version_id="1020003" version_string="1.2.0 Alpha 3"><![CDATA[Allows moderators to access all report centre functionality. User-group based permission checks will be skipped.]]></phrase>
     <phrase title="option_sv_moderators_respect_view_node" version_id="8" version_string="0.0.8"><![CDATA[Reports respect view-node permission]]></phrase>
     <phrase title="option_sv_moderators_respect_view_node_explain" version_id="8" version_string="0.0.8"><![CDATA[Only allow moderators to see reports from forums they can see]]></phrase>
     <phrase title="option_sv_report_new_warnings" version_id="3" version_string="0.0.3b"><![CDATA[Report New Warnings]]></phrase>
@@ -98,7 +106,7 @@
     <phrase title="option_sv_ri_log_to_report_natural_warning_expire" version_id="2" version_string="0.0.2"><![CDATA[Log Automatically Expiring Warning to Report]]></phrase>
     <phrase title="option_sv_ri_log_to_report_natural_warning_expire_explain" version_id="2" version_string="0.0.2"><![CDATA[]]></phrase>
     <phrase title="option_sv_ri_user_id" version_id="1" version_string="0.0.1"><![CDATA[Reporter]]></phrase>
-    <phrase title="option_sv_ri_user_id_explain" version_id="1" version_string="0.0.1"><![CDATA[Enter the user id of the person reporting Alter Ego's]]></phrase>
+    <phrase title="option_sv_ri_user_id_explain" version_id="1020003" version_string="1.2.0 Alpha 3"><![CDATA[Enter the user id of the person reporting expired warnings]]></phrase>
     <phrase title="permission_conversation_viewReportConversation" version_id="1" version_string="0.0.1"><![CDATA[View Conversation Report]]></phrase>
     <phrase title="permission_forum_viewReportPost" version_id="1" version_string="0.0.1"><![CDATA[View Post Report]]></phrase>
     <phrase title="permission_general_assignReport" version_id="1020000" version_string="1.2.0 Alpha1"><![CDATA[Assign Report]]></phrase>
