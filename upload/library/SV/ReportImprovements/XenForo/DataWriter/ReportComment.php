@@ -208,6 +208,7 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
                 continue;
             }
 
+            $otherCommenter['permissions'] = XenForo_Permission::unserializePermissions($otherCommenter['global_permission_cache']);
             if ($reportModel->canViewReports($otherCommenter))
             {
                 $hasUnviewedReport = $db->fetchRow("
@@ -226,8 +227,6 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
                 {
                     continue;
                 }
-
-                $otherCommenter['permissions'] = XenForo_Permission::unserializePermissions($otherCommenter['global_permission_cache']);
 
                 $reports = $handler->getVisibleReportsForUser(array($report['report_id'] => $report), $otherCommenter);
 
