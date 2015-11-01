@@ -550,6 +550,10 @@
 ]]></template>
   </templates>
   <public_template_modifications>
+    <modification template="PAGE_CONTAINER" modification_key="SV_ReportImprovements_PAGE_CONTAINER1" description="Inject Moderator bar" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[<xen:if is="{$visitor.is_moderator} || {$visitor.is_admin}">]]></find>
+      <replace><![CDATA[<xen:if is="{$visitor.is_moderator} || {$visitor.is_admin} || {$visitor.canViewReports}">]]></replace>
+    </modification>
     <modification template="report_list" modification_key="SV_ReportImprovements_report_list" description="Inject Search bar" execution_order="10" enabled="1" action="preg_replace">
       <find><![CDATA[#$#]]></find>
       <replace><![CDATA[<xen:container var="$searchBar.reports"><xen:include template="search_bar_reports_only" /></xen:container>]]></replace>
