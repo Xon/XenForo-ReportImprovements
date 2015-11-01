@@ -232,10 +232,20 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
 
                 if (!empty($reports))
                 {
+                    if ($reportModel->canViewReporterUsername($report) || !$reportComment['is_report'])
+                    {
+                        $user_id = $reportComment['user_id'];
+                        $username = $reportComment['username'];
+                    }
+                    else
+                    {
+                        $user_id = 0;
+                        $username = 'Guest';
+                    }
                     XenForo_Model_Alert::alert(
                         $otherCommenter['user_id'],
-                        $reportComment['user_id'],
-                        $reportComment['username'],
+                        $user_id,
+                        $username,
                         'report_comment',
                         $reportComment['report_comment_id'],
                         'insert');
