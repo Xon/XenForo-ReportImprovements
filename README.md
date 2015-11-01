@@ -17,5 +17,8 @@ A Collection of improvements to XF's reporting system.
 - When issuing a Warning, option to resolve any linked report.
 - Separate explicit viewing report permissions by content types; conversation, posts, profile posts, user.
 - Only view Alerts/Reports for forums the moderator can see (configurable), in addition to viewing report permission.
+- Optional ability to log warnings into reports when they expire. This does not disrupt who the report was assigned to, and does not re-open the report.
 - Report Comment Likes.
 - Report Alerts are logged into Report Comments.
+- Search report comments
+-- Optional ability to search report comments by associated warning points. (Requires Enhanced Search Improvements add-on)
