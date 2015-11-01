@@ -638,7 +638,7 @@ $2]]></replace>
     <modification template="search_form_tabs" modification_key="SV_ReportImprovements_search_form_tabs" description="Inject Search Tab" execution_order="4345" enabled="1" action="preg_replace">
       <find><![CDATA[#(<xen\:hook name\="search_form_tabs".*?)(\s*<li{xen:if "{\$searchType}.*?)(\s*</xen\:hook>)#si]]></find>
       <replace><![CDATA[$1$2
-<xen:if is="{$visitor.is_moderator}">
+<xen:if is="{$visitor.is_moderator} || {$visitor.canViewReports}">
 <li{xen:if "{$searchType} == 'report_comment'", ' class="active"'}><a href="{xen:link search, '', 'type=report_comment'}">{xen:phrase search_report_comments}</a></li>
 </xen:if>
 $3]]></replace>
