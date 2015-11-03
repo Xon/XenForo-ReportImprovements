@@ -261,7 +261,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         $this->standardizeViewingUserReference($viewingUser);
 
         return $viewingUser['user_id'] &&
-               parent::canUpdateReport($report, $viewingUser) &&
+               parent::canAssignReport($report, $viewingUser) &&
                ($this->bypassPermissionCheck($viewingUser)  || XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'assignReport'));
     }
 
