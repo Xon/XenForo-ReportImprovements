@@ -236,7 +236,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
             self::$sv_moderators_bypass_report_permissions = XenForo_Application::getOptions()->sv_moderators_bypass_report_permissions;
         }
 
-        return self::$sv_moderators_bypass_report_permissions || $viewingUser['is_moderator'];
+        return self::$sv_moderators_bypass_report_permissions && $viewingUser['is_moderator'];
     }
 
     public function canViewReports(array $viewingUser = null)
