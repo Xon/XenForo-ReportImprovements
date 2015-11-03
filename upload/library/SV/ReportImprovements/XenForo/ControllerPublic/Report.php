@@ -16,7 +16,7 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
 
         if ($response instanceof XenForo_ControllerResponse_View)
         {
-            $response->params['canViewReporterUsername'] = $this->_getReportModel()->canViewReporterUsername(null);
+            $response->params['canViewReporterUsername'] = $this->_getReportModel()->canViewReporterUsername();
         }
         return $response;
     }
@@ -27,7 +27,7 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
 
         if ($response instanceof XenForo_ControllerResponse_View)
         {
-            $response->params['canViewReporterUsername'] = $this->_getReportModel()->canViewReporterUsername(null);
+            $response->params['canViewReporterUsername'] = $this->_getReportModel()->canViewReporterUsername();
         }
         return $response;
     }
@@ -39,7 +39,7 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
         if ($response instanceof XenForo_ControllerResponse_View && isset($response->params['report']))
         {
             $report = $response->params['report'];
-            $response->params['canViewReporterUsername'] = $this->_getReportModel()->canViewReporterUsername($report);
+            $response->params['canViewReporterUsername'] = $this->_getReportModel()->canViewReporterUsername();
         }
         return $response;
     }

@@ -265,7 +265,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
                ($this->bypassPermissionCheck($viewingUser)  || XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'assignReport'));
     }
 
-    public function canViewReporterUsername(array $report = null, array $viewingUser = null)
+    public function canViewReporterUsername(array $viewingUser = null)
     {
         $this->standardizeViewingUserReference($viewingUser);
 
