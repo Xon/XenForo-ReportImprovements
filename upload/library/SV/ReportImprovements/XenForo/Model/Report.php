@@ -190,12 +190,17 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
             ));
             foreach ($users AS $user)
             {
-                if (isset($alertedUserIds[$user['user_id']]) || $user['user_id'] == $taggingUser['user_id'] || !$this->canViewReports($user))
+                if (isset($alertedUserIds[$user['user_id']]) || $user['user_id'] == $taggingUser['user_id'])
                 {
                     continue;
                 }
 
                 $user['permissions'] = XenForo_Permission::unserializePermissions($user['global_permission_cache']);
+
+                if (!$this->canViewReports($user))
+                {
+                    continue;
+                }
 
                 $reports = $handler->getVisibleReportsForUser(array($report['report_id'] => $report), $user);
 
