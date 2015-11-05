@@ -229,19 +229,17 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         {
             $comment['likeUsers'] = @unserialize($comment['like_users']);
         }
-        return $comment;
-    }
-
-    protected static $sv_moderators_bypass_report_permissions = null;
-
-    protected function bypassPermissionCheck(array $viewingUser)
-    {
-        if (self::$sv_moderators_bypass_report_permissions == null)
+        $comment['canViewReporterUsername'] = $this->canViewReporterUsername($comment);
+        if (!empty($comment['canViewReporterUsername']))
         {
-            self::$sv_moderators_bypass_report_permissions = XenForo_Application::getOptions()->sv_moderators_bypass_report_permissions;
+            $comment['username'] = new XenForo_Phrase('guest');
+            $comment['user_id'] = 0;
+            $this->_getUserModel();
+            $comment['permission_combination_id'] = XenForo_Model_User::$defaultGuestGroupId;
+            $comment['email'] = '';
+            $comment['gender'] = '';
         }
-
-        return self::$sv_moderators_bypass_report_permissions && $viewingUser['is_moderator'];
+        return $comment;
     }
 
     public function canViewReports(array $viewingUser = null)
@@ -249,7 +247,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         $this->standardizeViewingUserReference($viewingUser);
 
         return $viewingUser['user_id'] &&
-               ($this->bypassPermissionCheck($viewingUser) || XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'viewReports'));
+               XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'viewReports');
     }
 
     public function canUpdateReport(array $report, array $viewingUser = null)
@@ -258,7 +256,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
 
         return $viewingUser['user_id'] &&
                parent::canUpdateReport($report, $viewingUser) &&
-               ($this->bypassPermissionCheck($viewingUser)  || XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'updateReport'));
+               XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'updateReport');
     }
 
     public function canAssignReport(array $report, array $viewingUser = null)
@@ -267,15 +265,29 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
 
         return $viewingUser['user_id'] &&
                parent::canAssignReport($report, $viewingUser) &&
-               ($this->bypassPermissionCheck($viewingUser)  || XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'assignReport'));
+               XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'assignReport');
     }
 
-    public function canViewReporterUsername(array $viewingUser = null)
+    public function canViewReporterUsername(array $comment, array $viewingUser = null)
     {
         $this->standardizeViewingUserReference($viewingUser);
 
-        return $viewingUser['user_id'] &&
-              ($this->bypassPermissionCheck($viewingUser) || XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'viewReporterUsername'));
+        if (empty($viewingUser['user_id']))
+        {
+            return false;
+        }
+
+        if ($comment['user_id'] == $viewingUser['user_id'])
+        {
+            return true;
+        }
+
+        if ($comment['is_report'] || !empty($comment['warning_log_id']))
+        {
+            return true;
+        }
+
+        return XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'viewReporterUsername');
     }
 
     public function canLikeReportComment(array $comment, &$errorPhraseKey = '', array $viewingUser = null)

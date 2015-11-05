@@ -42,12 +42,6 @@
       <sub_options></sub_options>
       <relation group_id="sv_report_improvements" display_order="110"/>
     </option>
-    <option option_id="sv_moderators_bypass_report_permissions" edit_format="onoff" data_type="boolean" can_backup="1">
-      <default_value>1</default_value>
-      <edit_format_params></edit_format_params>
-      <sub_options></sub_options>
-      <relation group_id="sv_report_improvements" display_order="220"/>
-    </option>
     <option option_id="sv_moderators_respect_view_node" edit_format="onoff" data_type="boolean" can_backup="1">
       <default_value>0</default_value>
       <edit_format_params></edit_format_params>
@@ -97,8 +91,6 @@
     <phrase title="option_group_sv_report_improvements_description" version_id="1" version_string="0.0.1"><![CDATA[]]></phrase>
     <phrase title="option_sv_default_resolve_report_on_warning" version_id="4" version_string="0.0.4"><![CDATA[Resolve Report on Warning]]></phrase>
     <phrase title="option_sv_default_resolve_report_on_warning_explain" version_id="4" version_string="0.0.4"><![CDATA[By default, resolve an contents report when creating a warning.]]></phrase>
-    <phrase title="option_sv_moderators_bypass_report_permissions" version_id="1020003" version_string="1.2.0 Alpha 3"><![CDATA[Moderator bypass group-permissions]]></phrase>
-    <phrase title="option_sv_moderators_bypass_report_permissions_explain" version_id="1020003" version_string="1.2.0 Alpha 3"><![CDATA[Allows moderators to access all report centre functionality. User-group based permission checks will be skipped.]]></phrase>
     <phrase title="option_sv_moderators_respect_view_node" version_id="8" version_string="0.0.8"><![CDATA[Reports respect view-node permission]]></phrase>
     <phrase title="option_sv_moderators_respect_view_node_explain" version_id="8" version_string="0.0.8"><![CDATA[Only allow moderators to see reports from forums they can see]]></phrase>
     <phrase title="option_sv_report_new_warnings" version_id="3" version_string="0.0.3b"><![CDATA[Report New Warnings]]></phrase>
@@ -620,20 +612,6 @@ $3]]></replace>
 </xen:if>
 </xen:if>
 $2]]></replace>
-    </modification>
-    <modification template="report_view" modification_key="SV_ReportImprovements_report_view7" description="Hide reporter username if required" execution_order="10" enabled="1" action="str_replace">
-      <find><![CDATA[<xen:username user="$comment" />]]></find>
-      <replace><![CDATA[<xen:if is="{$comment.user_id} == {$visitor.user_id} || !{$comment.is_report} || {$comment.warning_log_id} || {$canViewReporterUsername}">
-<xen:username user="$comment" />
-<xen:else />
-<span class="username guest dimmed">{xen:phrase guest}</span>
-</xen:if>]]></replace>
-    </modification>
-    <modification template="report_view" modification_key="SV_ReportImprovements_report_view8" description="Hide reporter user avatar if required" execution_order="10" enabled="1" action="str_replace">
-      <find><![CDATA[<xen:avatar user="$comment" size="s" />]]></find>
-      <replace><![CDATA[<xen:if is="{$comment.user_id} == {$visitor.user_id} || !{$comment.is_report} || {$comment.warning_log_id} || {$canViewReporterUsername}">
-<xen:avatar user="$comment" size="s" />
-</xen:if>]]></replace>
     </modification>
     <modification template="search_form_tabs" modification_key="SV_ReportImprovements_search_form_tabs" description="Inject Search Tab" execution_order="4345" enabled="1" action="preg_replace">
       <find><![CDATA[#(<xen\:hook name\="search_form_tabs".*?)(\s*<li{xen:if "{\$searchType}.*?)(\s*</xen\:hook>)#si]]></find>
