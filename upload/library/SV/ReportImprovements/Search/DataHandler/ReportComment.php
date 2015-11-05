@@ -168,7 +168,7 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
     public function canViewResult(array $result, array $viewingUser)
     {
         if (!($this->enabled)) return false;
-        return true;
+        return $this->_getReportModel()->canViewReporterUsername($result, $viewingUser);
     }
 
     /**
