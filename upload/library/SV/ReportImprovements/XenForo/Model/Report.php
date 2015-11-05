@@ -230,7 +230,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
             $comment['likeUsers'] = @unserialize($comment['like_users']);
         }
         $comment['canViewReporterUsername'] = $this->canViewReporterUsername($comment);
-        if (!empty($comment['canViewReporterUsername']))
+        if (empty($comment['canViewReporterUsername']))
         {
             $comment['username'] = new XenForo_Phrase('guest');
             $comment['user_id'] = 0;
@@ -282,7 +282,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
             return true;
         }
 
-        if ($comment['is_report'] || !empty($comment['warning_log_id']))
+        if (empty($comment['is_report']) || !empty($comment['warning_log_id']))
         {
             return true;
         }
