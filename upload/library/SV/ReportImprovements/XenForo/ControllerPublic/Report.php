@@ -10,6 +10,39 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
         }
     }
 
+    public function actionIndex()
+    {
+        $response = parent::actionIndex();
+
+        if ($response instanceof XenForo_ControllerResponse_View)
+        {
+            $response->params['canViewReporterUsername'] = $this->_getReportModel()->canViewReporterUsername();
+        }
+        return $response;
+    }
+
+    public function actionClosed()
+    {
+        $response = parent::actionClosed();
+
+        if ($response instanceof XenForo_ControllerResponse_View)
+        {
+            $response->params['canViewReporterUsername'] = $this->_getReportModel()->canViewReporterUsername();
+        }
+        return $response;
+    }
+
+    public function actionSearch()
+    {
+        $response = parent::actionSearch();
+
+        if ($response instanceof XenForo_ControllerResponse_View)
+        {
+            $response->params['canViewReporterUsername'] = $this->_getReportModel()->canViewReporterUsername();
+        }
+        return $response;
+    }
+    
     public function actionLike()
     {
         $commentId = $this->_input->filterSingle('report_comment_id', XenForo_Input::UINT);

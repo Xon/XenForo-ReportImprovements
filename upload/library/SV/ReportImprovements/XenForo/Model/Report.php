@@ -268,7 +268,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
                XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'assignReport');
     }
 
-    public function canViewReporterUsername(array $comment, array $viewingUser = null)
+    public function canViewReporterUsername(array $comment = null, array $viewingUser = null)
     {
         $this->standardizeViewingUserReference($viewingUser);
 
@@ -277,14 +277,17 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
             return false;
         }
 
-        if ($comment['user_id'] == $viewingUser['user_id'])
+        if ($comment)
         {
-            return true;
-        }
+            if ($comment['user_id'] == $viewingUser['user_id'])
+            {
+                return true;
+            }
 
-        if (empty($comment['is_report']) || !empty($comment['warning_log_id']))
-        {
-            return true;
+            if (empty($comment['is_report']) || !empty($comment['warning_log_id']))
+            {
+                return true;
+            }
         }
 
         return XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'viewReporterUsername');
