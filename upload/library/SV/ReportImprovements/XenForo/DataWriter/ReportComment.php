@@ -184,17 +184,12 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
     {
         // alert users interacting with this report
         $reportModel = $this->_getReportModel();
-        $otherCommenterIds = $reportModel->getReportCommentUserIds(
-            $this->get('report_id')
-        );
-
-        $otherCommenters = $this->_getUserModel()->getUsersByIds($otherCommenterIds, array(
-            'join' => XenForo_Model_User::FETCH_USER_PERMISSIONS
-        ));
+        $otherCommenters = $reportModel->getUsersForReportCommentAlerts($report);
 
         $db = XenForo_Application::getDb();
 
         $_alertedUserIds = array_fill_keys($alertedUserIds, true);
+        $alertedUserIds = array();
 
         foreach ($otherCommenters AS $otherCommenter)
         {
@@ -208,7 +203,10 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
                 continue;
             }
 
-            $otherCommenter['permissions'] = XenForo_Permission::unserializePermissions($otherCommenter['global_permission_cache']);
+            if (!isset($otherCommenter['permissions']))
+            {
+                $otherCommenter['permissions'] = XenForo_Permission::unserializePermissions($otherCommenter['global_permission_cache']);
+            }
             if ($reportModel->canViewReports($otherCommenter))
             {
                 $hasUnviewedReport = $db->fetchRow("
@@ -249,9 +247,11 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
                         'report_comment',
                         $reportComment['report_comment_id'],
                         'insert');
+                    $alertedUserIds[$otherCommenter['user_id']] = true;
                 }
             }
         }
+        return array_keys($alertedUserIds);
     }
 
     public function delete()

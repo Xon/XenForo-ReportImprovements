@@ -156,13 +156,36 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         ', 'report_id');
     }
 
-    public function getReportCommentUserIds($reportId)
+    public function getUsersForReportCommentAlerts(array $report)
     {
-        return $this->_getDb()->fetchCol('
-            SELECT DISTINCT user_id
-            FROM xf_report_comment
-            WHERE report_id = ?
-        ', $reportId);
+        $alert_mode = XenForo_Application::getOptions()->sv_report_alert_mode;
+        $users = array();
+        $watcherUserIds = array();
+        if ($alert_mode != 'always_alert')
+        {
+            $watcherUserIds = $this->_getDb()->fetchCol('
+                SELECT DISTINCT user_id
+                FROM xf_report_comment
+                WHERE report_id = ?
+            ', $report['report_id']);
+        }
+        // if a single user id is returned, then this is a new report
+        if (count($watcherUserIds) <= 1 && $alert_mode != 'watchers' )
+        {
+           $users = $this->getUsersWhoCanViewReport($report);
+        }
+
+        $userIds = XenForo_Application::arrayColumn($users, 'user_id');
+        $userIds = array_diff($watcherUserIds, $userIds);
+
+        if ($userIds)
+        {
+            // otherwise build a list of users to notify
+            $users = $users + $this->_getUserModel()->getUsersByIds($userIds, array(
+                'join' => XenForo_Model_User::FETCH_USER_PERMISSIONS
+            ));
+        }
+        return $users;
     }
 
     public function alertTaggedMembers(array $report, array $reportComment, array $tagged, array $alreadyAlerted, array $taggingUser)
