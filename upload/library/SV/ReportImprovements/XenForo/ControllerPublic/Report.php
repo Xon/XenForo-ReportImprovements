@@ -42,7 +42,18 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
         }
         return $response;
     }
-    
+
+    public function actionView()
+    {
+        $response = parent::actionView();
+
+        if ($response instanceof XenForo_ControllerResponse_View && isset($response->params['report']))
+        {
+            $response->params['canCommentReport'] = $this->_getReportModel()->canCommentReport($response->params['report']);
+        }
+        return $response;
+    }
+
     public function actionLike()
     {
         $commentId = $this->_input->filterSingle('report_comment_id', XenForo_Input::UINT);

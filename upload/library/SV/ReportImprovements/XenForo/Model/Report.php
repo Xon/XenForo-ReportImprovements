@@ -268,6 +268,24 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
                XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'assignReport');
     }
 
+    public function canCommentReport(array $report, array $viewingUser = null)
+    {
+        $this->standardizeViewingUserReference($viewingUser);
+
+        if (!$viewingUser['user_id'])
+        {
+            return false;
+        }
+
+        if (($report['report_state'] == 'resolved' || $report['report_state'] == 'rejected') &&
+            !XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'replyReportClosed'))
+        {
+            return false;
+        }
+
+        return XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'replyReport');
+    }
+
     public function canViewReporterUsername(array $comment = null, array $viewingUser = null)
     {
         $this->standardizeViewingUserReference($viewingUser);
@@ -297,7 +315,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
     {
         $this->standardizeViewingUserReference($viewingUser);
 
-        if ($comment['user_id'] == XenForo_Visitor::getUserId())
+        if ($comment['user_id'] == $viewingUser['user_id'])
         {
             return false;
         }
