@@ -269,16 +269,24 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
     {
         $this->standardizeViewingUserReference($viewingUser);
 
-        return $viewingUser['user_id'] &&
-               XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'viewReports');
+        if (empty($viewingUser['user_id']))
+        {
+            return false;
+        }
+
+        return XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'viewReports');
     }
 
     public function canUpdateReport(array $report, array $viewingUser = null)
     {
         $this->standardizeViewingUserReference($viewingUser);
 
-        return $viewingUser['user_id'] &&
-               parent::canUpdateReport($report, $viewingUser) &&
+        if (empty($viewingUser['user_id']))
+        {
+            return false;
+        }
+
+        return parent::canUpdateReport($report, $viewingUser) &&
                XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'updateReport');
     }
 
@@ -286,8 +294,12 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
     {
         $this->standardizeViewingUserReference($viewingUser);
 
-        return $viewingUser['user_id'] &&
-               parent::canAssignReport($report, $viewingUser) &&
+        if (empty($viewingUser['user_id']))
+        {
+            return false;
+        }
+
+        return parent::canAssignReport($report, $viewingUser) &&
                XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'assignReport');
     }
 
@@ -295,7 +307,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
     {
         $this->standardizeViewingUserReference($viewingUser);
 
-        if (!$viewingUser['user_id'])
+        if (empty($viewingUser['user_id']))
         {
             return false;
         }
@@ -338,13 +350,17 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
     {
         $this->standardizeViewingUserReference($viewingUser);
 
+        if (empty($viewingUser['user_id']))
+        {
+            return false;
+        }
+
         if ($comment['user_id'] == $viewingUser['user_id'])
         {
             return false;
         }
 
-        return $viewingUser['user_id'] &&
-               XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'reportLike');
+        return XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'reportLike');
     }
 
     public function batchUpdateLikeUser($oldUserId, $newUserId, $oldUsername, $newUsername)
