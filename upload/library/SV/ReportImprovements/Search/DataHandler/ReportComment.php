@@ -178,16 +178,8 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
      */
     public function prepareResult(array $result, array $viewingUser)
     {
-        if (!($this->enabled)) return $result;
-        $reportModel = $this->_getReportModel();
-
-        $handler = $reportModel->getReportHandlerCached($result['report']['content_type']);
-        if ($handler)
-        {
-            $result['report'] = $handler->prepareReport($result['report']);
-        }
-
-        return $reportModel->prepareReportComment($result);
+        // data is prepared in getReportCommentsByIdsForUser
+        return $result;
     }
 
     public function addInlineModOption(array &$result)

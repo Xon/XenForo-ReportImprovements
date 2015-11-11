@@ -114,6 +114,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
                 unset($reports[$reportId]);
                 continue;
             }
+            $report = $handler->prepareReport($report);
         }
 
         foreach($comments as $commentId => &$comment)
@@ -125,6 +126,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
                 continue;
             }
 
+            $comment = $this->prepareReportComment($comment, $viewingUser);
             $comment['report'] = $reports[$reportId];
         }
 
@@ -243,16 +245,18 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         return array_keys($alertedUserIds);
     }
 
-    public function prepareReportComment(array $comment)
+    public function prepareReportComment(array $comment, array $viewingUser = null)
     {
         $comment = parent::prepareReportComment($comment);
 
-        $comment['canLike'] = $this->canLikeReportComment($comment);
+        $this->standardizeViewingUserReference($viewingUser);
+
+        $comment['canLike'] = $this->canLikeReportComment($comment, $null, $viewingUser);
         if (!empty($comment['likes']))
         {
             $comment['likeUsers'] = @unserialize($comment['like_users']);
         }
-        $comment['canViewReporterUsername'] = $this->canViewReporterUsername($comment);
+        $comment['canViewReporterUsername'] = $this->canViewReporterUsername($comment, $null, $viewingUser);
         if (empty($comment['canViewReporterUsername']))
         {
             $comment['username'] = new XenForo_Phrase('guest');
