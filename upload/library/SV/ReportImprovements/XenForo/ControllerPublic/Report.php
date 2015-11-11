@@ -186,11 +186,13 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
     {
         $report = $this->_getVisibleReportOrError($reportId);
 
-        $comment = $this->_getReportModel()->getReportCommentById($commentId);
+        $reportModel = $this->_getReportModel();
+        $comment = $reportModel->getReportCommentById($commentId);
         if (!$comment || $comment['report_id'] != $reportId)
         {
             throw $this->responseException($this->responseError(new XenForo_Phrase('requested_report_not_found'), 404));
         }
+        $comment = $reportModel->prepareReportComment($comment);
 
         return array($report, $comment);
     }
