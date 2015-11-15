@@ -110,6 +110,18 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
 
     public function actionComment()
     {
+        $commentId = $this->_input->filterSingle('report_comment_id', XenForo_Input::UINT);
+        $reportId = $this->_input->filterSingle('report_id', XenForo_Input::UINT);
+        if ($commentId && $reportId)
+        {
+            list($report, $comment) = $this->_getReportCommentOrError($reportId, $commentId);
+
+            return $this->responseRedirect(
+                    XenForo_ControllerResponse_Redirect::RESOURCE_CANONICAL,
+                    XenForo_Link::buildPublicLink('reports', $report, array('report_comment_id' => $comment['report_comment_id']))
+            );
+        }
+
         $visitor = XenForo_Visitor::getInstance();
         SV_ReportImprovements_Globals::$Report_MaxAlertCount = $visitor->hasPermission('general', 'maxTaggedUsers');
         return parent::actionComment();

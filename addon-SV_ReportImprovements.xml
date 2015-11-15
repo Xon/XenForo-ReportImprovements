@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.1.1" version_id="1010100" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.1.2" version_id="1010200" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -156,33 +156,33 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
   <route_prefixes/>
   <style_properties/>
   <templates>
-    <template title="alert_report_comment_insert" version_id="1010100" version_string="1.1.1"><![CDATA[<xen:set var="$specific_type">0</xen:set>
+    <template title="alert_report_comment_insert" version_id="1010200" version_string="1.1.2"><![CDATA[<xen:set var="$specific_type">0</xen:set>
 <xen:if is="{$content.state_change}">
     <xen:if is="{$content.state_change} == 'assigned'">
         {xen:phrase sv_x_state_change_report_assigned,
         'name={xen:helper username, $user, 'subject'}',
-        'report=<a href="{xen:link reports, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
+        'report=<a href="{xen:link reports/comment, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
         }
     <xen:set var="$specific_type">1</xen:set>
     </xen:if>
     <xen:if is="{$content.state_change} == 'open'">
         {xen:phrase sv_x_state_change_report_open,
         'name={xen:helper username, $user, 'subject'}',
-        'report=<a href="{xen:link reports, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
+        'report=<a href="{xen:link reports/comment, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
         }
     <xen:set var="$specific_type">1</xen:set>
     </xen:if>
     <xen:if is="{$content.state_change} == 'resolved'">
         {xen:phrase sv_x_state_change_report_resolved,
         'name={xen:helper username, $user, 'subject'}',
-        'report=<a href="{xen:link reports, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
+        'report=<a href="{xen:link reports/comment, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
         }
     <xen:set var="$specific_type">1</xen:set>
     </xen:if>
     <xen:if is="{$content.state_change} == 'rejected'">
         {xen:phrase sv_x_state_change_report_rejected,
         'name={xen:helper username, $user, 'subject'}',
-        'report=<a href="{xen:link reports, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
+        'report=<a href="{xen:link reports/comment, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
         }
     <xen:set var="$specific_type">1</xen:set>
     </xen:if>
@@ -190,7 +190,7 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 <xen:if is="!{$specific_type} and {$content.warning_log_id}">
     {xen:phrase sv_x_issued_a_warning_on_report,
 	'name={xen:helper username, $user, 'subject'}',
-	'report=<a href="{xen:link reports, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
+	'report=<a href="{xen:link reports/comment, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
     }
     <xen:set var="$specific_type">1</xen:set>
 </xen:if>
@@ -198,21 +198,21 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <xen:if is="{$content.is_report}">
         {xen:phrase sv_x_reported_on_report,
         'name={xen:helper username, $user, 'subject'}',
-        'report=<a href="{xen:link reports, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
+        'report=<a href="{xen:link reports/comment, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
         }
     <xen:else />
         {xen:phrase sv_x_commented_on_report,
         'name={xen:helper username, $user, 'subject'}',
-        'report=<a href="{xen:link reports, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
+        'report=<a href="{xen:link reports/comment, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
         }
     </xen:if>
 </xen:if>]]></template>
-    <template title="alert_report_comment_like" version_id="1010000" version_string="1.1.0"><![CDATA[{xen:phrase sv_x_liked_your_comment_in_the_report_y,
+    <template title="alert_report_comment_like" version_id="1010200" version_string="1.1.2"><![CDATA[{xen:phrase sv_x_liked_your_comment_in_the_report_y,
 	'name={xen:helper username, $user, 'subject'}',
-	'title=<a href="{xen:link reports, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{xen:helper threadPrefix, $content}{$content.report.contentTitle}</a>'}]]></template>
-    <template title="alert_report_comment_tag" version_id="1010000" version_string="1.1.0"><![CDATA[{xen:phrase sv_ri_x_tagged_on_report,
+	'title=<a href="{xen:link reports/comment, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{xen:helper threadPrefix, $content}{$content.report.contentTitle}</a>'}]]></template>
+    <template title="alert_report_comment_tag" version_id="1010200" version_string="1.1.2"><![CDATA[{xen:phrase sv_ri_x_tagged_on_report,
 	'name={xen:helper username, $user, 'subject'}',
-	'report=<a href="{xen:link reports, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
+	'report=<a href="{xen:link reports/comment, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
 }]]></template>
     <template title="ir_report_display" version_id="14" version_string="0.0.14"><![CDATA[<xen:if is="{$report}">
 	<xen:require css="ir_report_overlay.css" />
@@ -268,14 +268,14 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 <xen:include template="ir_resolve_report" />
 </fieldset>
 <xen:include template="ir_report_display" />]]></template>
-    <template title="news_feed_item_report_comment_like" version_id="1010000" version_string="1.1.0"><![CDATA[<h3 class="description">
+    <template title="news_feed_item_report_comment_like" version_id="1010200" version_string="1.1.2"><![CDATA[<h3 class="description">
 
 	<xen:if is="{$content.user_id} == {$visitor.user_id}">
 	
 		<xen:comment><!-- $user liked your post --></xen:comment>
 		{xen:phrase sv_x_liked_your_comment_in_the_report_y,
 			'name={xen:if $user.user_id, {xen:helper username, $user, 'primaryText'}, '<span class="primaryText">{xen:phrase unknown_member}</span>'}',
-			'title=<a href="{xen:link reports, $content, 'report_comment_id={$content.report_comment_id}'}"{xen:if '{$content.hasPreview}', ' class="PreviewTooltip" data-previewUrl="{xen:link reports/preview, $content, 'report_comment_id={$content.report_comment_id}'}"'}">{xen:helper threadPrefix, $content}{$content.title}</a>'}
+			'title=<a href="{xen:link reports/comment, $content, 'report_comment_id={$content.report_comment_id}'}"{xen:if '{$content.hasPreview}', ' class="PreviewTooltip" data-previewUrl="{xen:link reports/preview, $content, 'report_comment_id={$content.report_comment_id}'}"'}">{xen:helper threadPrefix, $content}{$content.title}</a>'}
 		
 	<xen:else />
 	
@@ -283,7 +283,7 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 		{xen:phrase sv_x_liked_ys_comment_in_the_report_z,
 			'name={xen:if $user.user_id, {xen:helper username, $user, 'primaryText'}, '<span class="primaryText">{xen:phrase unknown_member}</span>'}',
 			'posterParams=href="{xen:link posts, $content}"', 'poster={$content.username}',
-			'title=<a href="{xen:link reports, $content, 'report_comment_id={$content.report_comment_id}'}"{xen:if '{$content.hasPreview}', ' class="PreviewTooltip" data-previewUrl="{xen:link reports/preview, $content, 'report_comment_id={$content.report_comment_id}'}"'}>{xen:helper threadPrefix, $content}{$content.title}</a>'}
+			'title=<a href="{xen:link reports/comment, $content, 'report_comment_id={$content.report_comment_id}'}"{xen:if '{$content.hasPreview}', ' class="PreviewTooltip" data-previewUrl="{xen:link reports/preview, $content, 'report_comment_id={$content.report_comment_id}'}"'}>{xen:helper threadPrefix, $content}{$content.title}</a>'}
 		
 	</xen:if>
 
@@ -441,17 +441,17 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 
 	</script>
 </form>]]></template>
-    <template title="search_result_report_comment" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[<li id="report_comment-{$comment.report_comment_id}" class="searchResult report_comment primaryContent{xen:if $conversation_message.isIgnored, ' ignored'}" data-author="{$conversation_message.username}">
+    <template title="search_result_report_comment" version_id="1010200" version_string="1.1.2"><![CDATA[<li id="report_comment-{$comment.report_comment_id}" class="searchResult report_comment primaryContent{xen:if $conversation_message.isIgnored, ' ignored'}" data-author="{$conversation_message.username}">
 	<div class="listBlock posterAvatar"><xen:avatar user="$comment" size="s" img="true" /></div>
 
 	<div class="listBlock main">
 		<div class="titleText">
 			<span class="contentType">{xen:if $comment.is_report, {xen:phrase sv_user_report}, {xen:phrase report_comment}}</span>
-			<h3 class="title{xen:if {$report_comment.isNew}, ' new'}"><a href="{xen:link reports, $report, 'report_comment_id={$comment.report_comment_id}'}">{xen:helper threadPrefix, $report}{xen:helper highlight, $report.contentTitle, $search.search_query, 'highlight'}</a></h3>
+			<h3 class="title{xen:if {$report_comment.isNew}, ' new'}"><a href="{xen:link reports/comment, $report, 'report_comment_id={$comment.report_comment_id}'}">{xen:helper threadPrefix, $report}{xen:helper highlight, $report.contentTitle, $search.search_query, 'highlight'}</a></h3>
 		</div>
 
 		<blockquote class="snippet">
-			<a href="{xen:link reports, $report, 'report_comment_id={$comment.report_comment_id}'}">{xen:helper snippet, $comment.message, 150, {xen:array 'term={$search.search_query}', 'emClass=highlight', 'stripQuote=1'}}</a>
+			<a href="{xen:link reports/comment, $report, 'report_comment_id={$comment.report_comment_id}'}">{xen:helper snippet, $comment.message, 150, {xen:array 'term={$search.search_query}', 'emClass=highlight', 'stripQuote=1'}}</a>
 		</blockquote>
 
 		<div class="meta">
@@ -484,11 +484,11 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
         </xen:include>
     </xen:if>
 </div>]]></template>
-    <template title="sv_report_comment_like" version_id="1010000" version_string="1.1.0"><![CDATA[<xen:title>{xen:phrase 'sv_report_comment_by_x', 'username={$comment.username}'} - {xen:if $like, '{xen:phrase sv_unlike_report_comment}', '{xen:phrase sv_like_report_comment}'}</xen:title>
+    <template title="sv_report_comment_like" version_id="1010200" version_string="1.1.2"><![CDATA[<xen:title>{xen:phrase 'sv_report_comment_by_x', 'username={$comment.username}'} - {xen:if $like, '{xen:phrase sv_unlike_report_comment}', '{xen:phrase sv_like_report_comment}'}</xen:title>
 
 <xen:navigation>
 	<xen:breadcrumb source="$nodeBreadCrumbs" />
-	<xen:breadcrumb href="{xen:link reports, $report, 'report_comment_id={$comment.report_comment_id}'}">{xen:helper threadPrefix, $report}{$report.title}</xen:breadcrumb>
+	<xen:breadcrumb href="{xen:link reports/comment, $report, 'report_comment_id={$comment.report_comment_id}'}">{xen:helper threadPrefix, $report}{$report.title}</xen:breadcrumb>
 </xen:navigation>
 
 <form action="{xen:link 'reports/like', $report, 'report_comment_id={$comment.report_comment_id}'}" method="post" class="xenForm">
@@ -511,14 +511,14 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 
 	<input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
 </form>]]></template>
-    <template title="sv_report_comment_likes" version_id="1010000" version_string="1.1.0"><![CDATA[<xen:title>{xen:phrase 'sv_report_comment_by_x', 'username={$comment.username}'} - {xen:phrase sv_members_who_liked_this_report_comment}</xen:title>
+    <template title="sv_report_comment_likes" version_id="1010200" version_string="1.1.2"><![CDATA[<xen:title>{xen:phrase 'sv_report_comment_by_x', 'username={$comment.username}'} - {xen:phrase sv_members_who_liked_this_report_comment}</xen:title>
 
 <xen:container var="$head.noindex">
 	<meta name="robots" content="noindex" /></xen:container>
 
 <xen:navigation>
 	<xen:breadcrumb source="$nodeBreadCrumbs" />
-	<xen:breadcrumb href="{xen:link reports, $report, 'report_comment_id={$comment.report_comment_id}'}">{xen:helper threadPrefix, $report}{$report.title}</xen:breadcrumb>
+	<xen:breadcrumb href="{xen:link reports/comment, $report, 'report_comment_id={$comment.report_comment_id}'}">{xen:helper threadPrefix, $report}{$report.title}</xen:breadcrumb>
 </xen:navigation>
 
 <div class="section">
