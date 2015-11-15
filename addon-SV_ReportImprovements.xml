@@ -190,8 +190,8 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 </xen:if>
 <xen:if is="!{$specific_type} and {$content.warning_log_id}">
     {xen:phrase sv_x_issued_a_warning_on_report,
-	'name={xen:helper username, $user, 'subject'}',
-	'report=<a href="{xen:link reports/comment, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
+    'name={xen:helper username, $user, 'subject'}',
+    'report=<a href="{xen:link reports/comment, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
     }
     <xen:set var="$specific_type">1</xen:set>
 </xen:if>
@@ -209,29 +209,29 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     </xen:if>
 </xen:if>]]></template>
     <template title="alert_report_comment_like" version_id="1010200" version_string="1.1.2"><![CDATA[{xen:phrase sv_x_liked_your_comment_in_the_report_y,
-	'name={xen:helper username, $user, 'subject'}',
-	'title=<a href="{xen:link reports/comment, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{xen:helper threadPrefix, $content}{$content.report.contentTitle}</a>'}]]></template>
+    'name={xen:helper username, $user, 'subject'}',
+    'title=<a href="{xen:link reports/comment, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{xen:helper threadPrefix, $content}{$content.report.contentTitle}</a>'}]]></template>
     <template title="alert_report_comment_tag" version_id="1010200" version_string="1.1.2"><![CDATA[{xen:phrase sv_ri_x_tagged_on_report,
-	'name={xen:helper username, $user, 'subject'}',
-	'report=<a href="{xen:link reports/comment, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
+    'name={xen:helper username, $user, 'subject'}',
+    'report=<a href="{xen:link reports/comment, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{$content.report.contentTitle}</a>'
 }]]></template>
     <template title="ir_report_display" version_id="14" version_string="0.0.14"><![CDATA[<xen:if is="{$report}">
-	<xen:require css="ir_report_overlay.css" />
-	<div class="discussionList section">
-		<dl class="sectionHeaders">
-			<dt class="posterAvatar"><a><span></span></a></dt>
-			<dd class="main">
-				<a class="title"><span>{xen:phrase content}</span></a>
-			</dd>
-			<dd class="stats">
-				<a class="major"><span>{xen:phrase comments}</span></a>
-			</dd>
-			<dd class="lastPost"><a><span>{xen:phrase last_modified}</span></a></dd>
-		</dl>
-		<ol class="discussionListItems">	
-			<xen:include template="report_list_item" />
-		</ol>
-	</div>
+    <xen:require css="ir_report_overlay.css" />
+    <div class="discussionList section">
+        <dl class="sectionHeaders">
+            <dt class="posterAvatar"><a><span></span></a></dt>
+            <dd class="main">
+                <a class="title"><span>{xen:phrase content}</span></a>
+            </dd>
+            <dd class="stats">
+                <a class="major"><span>{xen:phrase comments}</span></a>
+            </dd>
+            <dd class="lastPost"><a><span>{xen:phrase last_modified}</span></a></dd>
+        </dl>
+        <ol class="discussionListItems">
+            <xen:include template="report_list_item" />
+        </ol>
+    </div>
 </xen:if>]]></template>
     <template title="ir_report_overlay.css" version_id="14" version_string="0.0.14"><![CDATA[.xenOverlay .formOverlay .discussionListItem .title a {
     color: {xen:property primaryMedium};
@@ -251,19 +251,19 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 
 ]]></template>
     <template title="ir_resolve_report" version_id="10020" version_string="1.0.20"><![CDATA[<dl class="ctrlUnit">
-	<dt>{xen:phrase report_options}:</dt>
-	<dd>
-		<ul>
-			<li><label><input type="checkbox" id="resolveLinkedReport" name="resolve_linked_report" value="1" class="Disabler" {xen:if $xenOptions.sv_default_resolve_report_on_warning, 'checked="checked"' } /> {xen:phrase resolve_linked_report} </label></li>
-			<xen:if is="!{$report}">
+    <dt>{xen:phrase report_options}:</dt>
+    <dd>
+        <ul>
+            <li><label><input type="checkbox" id="resolveLinkedReport" name="resolve_linked_report" value="1" class="Disabler" {xen:if $xenOptions.sv_default_resolve_report_on_warning, 'checked="checked"' } /> {xen:phrase resolve_linked_report} </label></li>
+            <xen:if is="!{$report}">
 <xen:if is="{$CanCreateReport}">
     <li>{xen:phrase a_report_will_be_created}</li>
 <xen:else />
     <li>{xen:phrase a_report_can_not_be_created, 'content_type={$ContentType}'}</li>
 </xen:if>
-			</xen:if>
-		</ul>
-	</dd>
+            </xen:if>
+        </ul>
+    </dd>
 </dl>]]></template>
     <template title="member_warn_ir_options" version_id="10020" version_string="1.0.20"><![CDATA[<fieldset>
 <xen:include template="ir_resolve_report" />
@@ -271,22 +271,22 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 <xen:include template="ir_report_display" />]]></template>
     <template title="news_feed_item_report_comment_like" version_id="1010200" version_string="1.1.2"><![CDATA[<h3 class="description">
 
-	<xen:if is="{$content.user_id} == {$visitor.user_id}">
-	
-		<xen:comment><!-- $user liked your post --></xen:comment>
-		{xen:phrase sv_x_liked_your_comment_in_the_report_y,
-			'name={xen:if $user.user_id, {xen:helper username, $user, 'primaryText'}, '<span class="primaryText">{xen:phrase unknown_member}</span>'}',
-			'title=<a href="{xen:link reports/comment, $content, 'report_comment_id={$content.report_comment_id}'}"{xen:if '{$content.hasPreview}', ' class="PreviewTooltip" data-previewUrl="{xen:link reports/preview, $content, 'report_comment_id={$content.report_comment_id}'}"'}">{xen:helper threadPrefix, $content}{$content.title}</a>'}
-		
-	<xen:else />
-	
-		<xen:comment><!-- $user liked $contentUser's post --></xen:comment>
-		{xen:phrase sv_x_liked_ys_comment_in_the_report_z,
-			'name={xen:if $user.user_id, {xen:helper username, $user, 'primaryText'}, '<span class="primaryText">{xen:phrase unknown_member}</span>'}',
-			'posterParams=href="{xen:link posts, $content}"', 'poster={$content.username}',
-			'title=<a href="{xen:link reports/comment, $content, 'report_comment_id={$content.report_comment_id}'}"{xen:if '{$content.hasPreview}', ' class="PreviewTooltip" data-previewUrl="{xen:link reports/preview, $content, 'report_comment_id={$content.report_comment_id}'}"'}>{xen:helper threadPrefix, $content}{$content.title}</a>'}
-		
-	</xen:if>
+    <xen:if is="{$content.user_id} == {$visitor.user_id}">
+
+        <xen:comment><!-- $user liked your post --></xen:comment>
+        {xen:phrase sv_x_liked_your_comment_in_the_report_y,
+            'name={xen:if $user.user_id, {xen:helper username, $user, 'primaryText'}, '<span class="primaryText">{xen:phrase unknown_member}</span>'}',
+            'title=<a href="{xen:link reports/comment, $content, 'report_comment_id={$content.report_comment_id}'}"{xen:if '{$content.hasPreview}', ' class="PreviewTooltip" data-previewUrl="{xen:link reports/preview, $content, 'report_comment_id={$content.report_comment_id}'}"'}">{xen:helper threadPrefix, $content}{$content.title}</a>'}
+
+    <xen:else />
+
+        <xen:comment><!-- $user liked $contentUser's post --></xen:comment>
+        {xen:phrase sv_x_liked_ys_comment_in_the_report_z,
+            'name={xen:if $user.user_id, {xen:helper username, $user, 'primaryText'}, '<span class="primaryText">{xen:phrase unknown_member}</span>'}',
+            'posterParams=href="{xen:link posts, $content}"', 'poster={$content.username}',
+            'title=<a href="{xen:link reports/comment, $content, 'report_comment_id={$content.report_comment_id}'}"{xen:if '{$content.hasPreview}', ' class="PreviewTooltip" data-previewUrl="{xen:link reports/preview, $content, 'report_comment_id={$content.report_comment_id}'}"'}>{xen:helper threadPrefix, $content}{$content.title}</a>'}
+
+    </xen:if>
 
 </h3>
 
@@ -297,193 +297,193 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 , <a href="{xen:link forums, $report.extraContent}" class="forumLink">{$report.extraContent.node_title}</a>
 </xen:if>]]></template>
     <template title="search_bar_reports_only" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[<label title="{xen:phrase search_reports_only}"><input type="checkbox" name="type" value="report_comment" id="search_bar_reports" class="Disabler AutoChecker" checked="checked" /> {xen:phrase search_reports_only}</label>
-	<ul id="search_bar_reports_Disabler">
-		<li><label><input type="checkbox" name="type[report_comment][include_report_comments]" value="1" checked="checked"
-			id="search_bar_include_report_comments" class="AutoChecker"
-			/> {xen:phrase  search_include_report_comments}</label></li>
-		<li><label><input type="checkbox" name="type[report_comment][include_user_reports]" value="1" checked="checked"
-			id="search_bar_include_user_reports" class="AutoChecker"
-			/> {xen:phrase search_include_user_reports}</label></li>
-	</ul>]]></template>
+    <ul id="search_bar_reports_Disabler">
+        <li><label><input type="checkbox" name="type[report_comment][include_report_comments]" value="1" checked="checked"
+            id="search_bar_include_report_comments" class="AutoChecker"
+            /> {xen:phrase  search_include_report_comments}</label></li>
+        <li><label><input type="checkbox" name="type[report_comment][include_user_reports]" value="1" checked="checked"
+            id="search_bar_include_user_reports" class="AutoChecker"
+            /> {xen:phrase search_include_user_reports}</label></li>
+    </ul>]]></template>
     <template title="search_form_report_comment" version_id="1010006" version_string="1.1.0 RC5"><![CDATA[<xen:title>{xen:phrase search_report_comments}</xen:title>
 
 <xen:navigation>
-	<xen:breadcrumb href="{xen:link full:search}">{xen:phrase search}</xen:breadcrumb>
+    <xen:breadcrumb href="{xen:link full:search}">{xen:phrase search}</xen:breadcrumb>
 </xen:navigation>
 
 <form action="{xen:link 'search/search'}" method="post" class="xenForm AutoValidator"
-	data-optInOut="optIn"
-	data-redirect="true">
+    data-optInOut="optIn"
+    data-redirect="true">
 
-	<xen:include template="search_form_tabs" />
+    <xen:include template="search_form_tabs" />
 
-	<dl class="ctrlUnit">
-		<dt><label for="ctrl_keywords">{xen:phrase keywords}:</label></dt>
-		<dd>
-			<ul>
-				<li><input type="search" name="keywords" value="{$search.keywords}" results="0" class="textCtrl" id="ctrl_keywords" autofocus="true" /></li>
-				<xen:comment>
-				<li><label for="ctrl_title_only"><input type="checkbox" name="title_only" id="ctrl_title_only" value="1" {xen:checked '{$search.title_only}'} /> {xen:phrase search_titles_only}</label></li>
-				</xen:comment>
-			</ul>
-		</dd>
-	</dl>
+    <dl class="ctrlUnit">
+        <dt><label for="ctrl_keywords">{xen:phrase keywords}:</label></dt>
+        <dd>
+            <ul>
+                <li><input type="search" name="keywords" value="{$search.keywords}" results="0" class="textCtrl" id="ctrl_keywords" autofocus="true" /></li>
+                <xen:comment>
+                <li><label for="ctrl_title_only"><input type="checkbox" name="title_only" id="ctrl_title_only" value="1" {xen:checked '{$search.title_only}'} /> {xen:phrase search_titles_only}</label></li>
+                </xen:comment>
+            </ul>
+        </dd>
+    </dl>
 
-	<fieldset>
-		<dl class="ctrlUnit">
-			<dt><label for="ctrl_users">{xen:phrase posted_by_member}:</label></dt>
-			<dd>
-				<ul>
-					<li>
-						<input type="text" name="users" value="{$search.users}" class="textCtrl AutoComplete" id="ctrl_users" />
-						<p class="explain">{xen:phrase separate_names_with_comma}</p>
-					</li>
-					<xen:comment>
-						<!-- this doesn't work as expected -->
-						<li><label><input type="checkbox" name="user_content" value="thread" {xen:checked '{$search.user_content} == "conversation"'} /> {xen:phrase search_conversations_started_by_this_member_only}</label></li>
-					</xen:comment>
-				</ul>
-			</dd>
-		</dl>
-	</fieldset>
+    <fieldset>
+        <dl class="ctrlUnit">
+            <dt><label for="ctrl_users">{xen:phrase posted_by_member}:</label></dt>
+            <dd>
+                <ul>
+                    <li>
+                        <input type="text" name="users" value="{$search.users}" class="textCtrl AutoComplete" id="ctrl_users" />
+                        <p class="explain">{xen:phrase separate_names_with_comma}</p>
+                    </li>
+                    <xen:comment>
+                        <!-- this doesn't work as expected -->
+                        <li><label><input type="checkbox" name="user_content" value="thread" {xen:checked '{$search.user_content} == "conversation"'} /> {xen:phrase search_conversations_started_by_this_member_only}</label></li>
+                    </xen:comment>
+                </ul>
+            </dd>
+        </dl>
+    </fieldset>
 
-	<fieldset>
-		<dl class="ctrlUnit">
-			<dt><label for="ctrl_date">{xen:phrase newer_than}:</label></dt>
-			<dd>
-				<input type="date" name="date" value="{$search.date}" class="textCtrl" id="ctrl_date" />
-			</dd>
-		</dl>
-		<dl class="ctrlUnit">
-			<dt></dt>
-			<dd>
-				<label for="ctrl_search_include_report_comments"><input type="checkbox" name="include_report_comments" value="1"{xen:if '{$search.include_report_comments}', ' checked="checked"'} id="ctrl_include_report_comments" /> {xen:phrase search_include_report_comments}</label>
-			</dd>
-		</dl>
-		<dl class="ctrlUnit">
-			<dt></dt>
-			<dd>
-				<label for="ctrl_search_include_user_reports"><input type="checkbox" name="include_user_reports" value="1"{xen:if '{$search.include_user_reports}', ' checked="checked"'} id="ctrl_search_include_user_reports" /> {xen:phrase search_include_user_reports}</label>
-			</dd>
-		</dl>
-		<xen:if is="{$search.range_query}">
-		<dl class="ctrlUnit">
-			<dt><label for="ctrl_date">{xen:phrase warning_points}:</label></dt>
-			<dd>
-				<input type="number" placeholder="{xen:phrase warning_points_lower_bound}" name="warning_points[lower]" value="{$search.warning_points.lower}" class="textCtrl" id="ctrl_warning_points_lower" /> - 
-				<input type="number" placeholder="{xen:phrase warning_points_upper_bound}" name="warning_points[upper]" value="{$search.warning_points.upper}" class="textCtrl" id="ctrl_warning_points_upper" />
-			</dd>
-		</dl>
-		</xen:if>
+    <fieldset>
+        <dl class="ctrlUnit">
+            <dt><label for="ctrl_date">{xen:phrase newer_than}:</label></dt>
+            <dd>
+                <input type="date" name="date" value="{$search.date}" class="textCtrl" id="ctrl_date" />
+            </dd>
+        </dl>
+        <dl class="ctrlUnit">
+            <dt></dt>
+            <dd>
+                <label for="ctrl_search_include_report_comments"><input type="checkbox" name="include_report_comments" value="1"{xen:if '{$search.include_report_comments}', ' checked="checked"'} id="ctrl_include_report_comments" /> {xen:phrase search_include_report_comments}</label>
+            </dd>
+        </dl>
+        <dl class="ctrlUnit">
+            <dt></dt>
+            <dd>
+                <label for="ctrl_search_include_user_reports"><input type="checkbox" name="include_user_reports" value="1"{xen:if '{$search.include_user_reports}', ' checked="checked"'} id="ctrl_search_include_user_reports" /> {xen:phrase search_include_user_reports}</label>
+            </dd>
+        </dl>
+        <xen:if is="{$search.range_query}">
+        <dl class="ctrlUnit">
+            <dt><label for="ctrl_date">{xen:phrase warning_points}:</label></dt>
+            <dd>
+                <input type="number" placeholder="{xen:phrase warning_points_lower_bound}" name="warning_points[lower]" value="{$search.warning_points.lower}" class="textCtrl" id="ctrl_warning_points_lower" /> -
+                <input type="number" placeholder="{xen:phrase warning_points_upper_bound}" name="warning_points[upper]" value="{$search.warning_points.upper}" class="textCtrl" id="ctrl_warning_points_upper" />
+            </dd>
+        </dl>
+        </xen:if>
 <xen:comment>
-		<dl class="ctrlUnit">
-			<dt><label for="ctrl_reply_count">{xen:phrase minimum_number_of_reports}:</label></dt>
-			<dd>
-				<!-- Chrome does horrible things with input:number -->
-				<input type="number" name="report_count" value="{$search.report_count}" class="textCtrl" id="ctrl_reply_count" min="0" step="5" />
-			</dd>
-		</dl>
-		<dl class="ctrlUnit">
-			<dt><label for="ctrl_reply_count">{xen:phrase minimum_number_of_comments}:</label></dt>
-			<dd>
-				<!-- Chrome does horrible things with input:number -->
-				<input type="number" name="comment_count" value="{$search.comment_count}" class="textCtrl" id="ctrl_comment_count" min="0" step="5" />
-			</dd>
-		</dl>
-		<dl class="ctrlUnit">
-			<dt><label for="ctrl_reply_count">{xen:phrase minimum_number_of_warnings}:</label></dt>
-			<dd>
-				<!-- Chrome does horrible things with input:number -->
-				<input type="number" name="warning_count" value="{$search.warning_count}" class="textCtrl" id="ctrl_warning_count" min="0" step="5" />
-			</dd>
-		</dl>
+        <dl class="ctrlUnit">
+            <dt><label for="ctrl_reply_count">{xen:phrase minimum_number_of_reports}:</label></dt>
+            <dd>
+                <!-- Chrome does horrible things with input:number -->
+                <input type="number" name="report_count" value="{$search.report_count}" class="textCtrl" id="ctrl_reply_count" min="0" step="5" />
+            </dd>
+        </dl>
+        <dl class="ctrlUnit">
+            <dt><label for="ctrl_reply_count">{xen:phrase minimum_number_of_comments}:</label></dt>
+            <dd>
+                <!-- Chrome does horrible things with input:number -->
+                <input type="number" name="comment_count" value="{$search.comment_count}" class="textCtrl" id="ctrl_comment_count" min="0" step="5" />
+            </dd>
+        </dl>
+        <dl class="ctrlUnit">
+            <dt><label for="ctrl_reply_count">{xen:phrase minimum_number_of_warnings}:</label></dt>
+            <dd>
+                <!-- Chrome does horrible things with input:number -->
+                <input type="number" name="warning_count" value="{$search.warning_count}" class="textCtrl" id="ctrl_warning_count" min="0" step="5" />
+            </dd>
+        </dl>
 </xen:comment>
-	</fieldset>
+    </fieldset>
 
-	<dl class="ctrlUnit">
-		<dt><label>{xen:phrase order_by}:</label></dt>
-		<dd>
-			<ul>
-				<li><label for="ctrl_order_date"><input type="radio" name="order" id="ctrl_order_date" value="date"{xen:checked '{$search.order} == "date"'} /> {xen:phrase most_recent}</label></li>
-<xen:comment>				
-				<li><label for="ctrl_order_replies"><input type="radio" name="order" id="ctrl_order_reports" value="replies"{xen:checked '{$search.order} == "replies"'} /> {xen:phrase most_reports}</label></li>
-				<li><label for="ctrl_order_replies"><input type="radio" name="order" id="ctrl_order_comments" value="replies"{xen:checked '{$search.order} == "comments"'} /> {xen:phrase most_comments}</label></li>
-				<li><label for="ctrl_order_replies"><input type="radio" name="order" id="ctrl_order_warnings" value="replies"{xen:checked '{$search.order} == "warnings"'} /> {xen:phrase most_warnings}</label></li>
+    <dl class="ctrlUnit">
+        <dt><label>{xen:phrase order_by}:</label></dt>
+        <dd>
+            <ul>
+                <li><label for="ctrl_order_date"><input type="radio" name="order" id="ctrl_order_date" value="date"{xen:checked '{$search.order} == "date"'} /> {xen:phrase most_recent}</label></li>
+<xen:comment>
+                <li><label for="ctrl_order_replies"><input type="radio" name="order" id="ctrl_order_reports" value="replies"{xen:checked '{$search.order} == "replies"'} /> {xen:phrase most_reports}</label></li>
+                <li><label for="ctrl_order_replies"><input type="radio" name="order" id="ctrl_order_comments" value="replies"{xen:checked '{$search.order} == "comments"'} /> {xen:phrase most_comments}</label></li>
+                <li><label for="ctrl_order_replies"><input type="radio" name="order" id="ctrl_order_warnings" value="replies"{xen:checked '{$search.order} == "warnings"'} /> {xen:phrase most_warnings}</label></li>
 </xen:comment>
-				<xen:if is="{$supportsRelevance}"><li><label for="ctrl_order_relevance"><input type="radio" name="order" id="ctrl_order_relevance" value="relevance"{xen:checked '{$search.order} == "relevance"'} /> {xen:phrase relevance}</label></li></xen:if>
-			</ul>
-		</dd>
-	</dl>
+                <xen:if is="{$supportsRelevance}"><li><label for="ctrl_order_relevance"><input type="radio" name="order" id="ctrl_order_relevance" value="relevance"{xen:checked '{$search.order} == "relevance"'} /> {xen:phrase relevance}</label></li></xen:if>
+            </ul>
+        </dd>
+    </dl>
 
 <xen:comment>
-	<dl class="ctrlUnit">
-		<dt></dt>
-		<dd><label for="ctrl_group_discussion"><input type="checkbox" name="group_discussion" id="ctrl_group_discussion" value="1"{xen:checked '{$search.group_discussion}'} /> {xen:phrase display_results_as_reports}</label></dd>
-	</dl>
+    <dl class="ctrlUnit">
+        <dt></dt>
+        <dd><label for="ctrl_group_discussion"><input type="checkbox" name="group_discussion" id="ctrl_group_discussion" value="1"{xen:checked '{$search.group_discussion}'} /> {xen:phrase display_results_as_reports}</label></dd>
+    </dl>
 </xen:comment>
 
-	<dl class="ctrlUnit submitUnit">
-		<dt></dt>
-		<dd><input type="submit" value="{xen:phrase search}" accesskey="s" class="button primary" /></dd>
-	</dl>
+    <dl class="ctrlUnit submitUnit">
+        <dt></dt>
+        <dd><input type="submit" value="{xen:phrase search}" accesskey="s" class="button primary" /></dd>
+    </dl>
 
-	<input type="hidden" name="type" value="report_comment" />
-	<input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
+    <input type="hidden" name="type" value="report_comment" />
+    <input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
 
-	<script>
+    <script>
 
-	$(function()
-	{
-		$('#TitleRemove').click(function(e)
-		{
-			$(this).closest('dl.ctrlUnit').xfRemove();
-		});
-	});
+    $(function()
+    {
+        $('#TitleRemove').click(function(e)
+        {
+            $(this).closest('dl.ctrlUnit').xfRemove();
+        });
+    });
 
-	</script>
+    </script>
 </form>]]></template>
     <template title="search_result_report_comment" version_id="1010200" version_string="1.1.2"><![CDATA[<li id="report_comment-{$comment.report_comment_id}" class="searchResult report_comment primaryContent{xen:if $conversation_message.isIgnored, ' ignored'}" data-author="{$conversation_message.username}">
-	<div class="listBlock posterAvatar"><xen:avatar user="$comment" size="s" img="true" /></div>
+    <div class="listBlock posterAvatar"><xen:avatar user="$comment" size="s" img="true" /></div>
 
-	<div class="listBlock main">
-		<div class="titleText">
-			<span class="contentType">{xen:if $comment.is_report, {xen:phrase sv_user_report}, {xen:phrase report_comment}}</span>
-			<h3 class="title{xen:if {$report_comment.isNew}, ' new'}"><a href="{xen:link reports/comment, $report, 'report_comment_id={$comment.report_comment_id}'}">{xen:helper threadPrefix, $report}{xen:helper highlight, $report.contentTitle, $search.search_query, 'highlight'}</a></h3>
-		</div>
+    <div class="listBlock main">
+        <div class="titleText">
+            <span class="contentType">{xen:if $comment.is_report, {xen:phrase sv_user_report}, {xen:phrase report_comment}}</span>
+            <h3 class="title{xen:if {$report_comment.isNew}, ' new'}"><a href="{xen:link reports/comment, $report, 'report_comment_id={$comment.report_comment_id}'}">{xen:helper threadPrefix, $report}{xen:helper highlight, $report.contentTitle, $search.search_query, 'highlight'}</a></h3>
+        </div>
 
-		<blockquote class="snippet">
-			<a href="{xen:link reports/comment, $report, 'report_comment_id={$comment.report_comment_id}'}">
-				{xen:helper snippet, $comment.message, 150, {xen:array 'term={$search.search_query}', 'emClass=highlight', 'stripQuote=1'}}
-				<xen:if is="{$comment.operation_type}" >
-					<xen:if is="{$comment.operation_type} == 'new'" >
-						{xen:phrase sv_ri_operation_type_new}
-					<xen:elseif  is="{$comment.operation_type} == 'delete'" />
-						{xen:phrase sv_ri_operation_type_delete}
-					<xen:elseif  is="{$comment.operation_type} == 'expire'" />
-						{xen:phrase sv_ri_operation_type_expire}
-					<xen:elseif  is="{$comment.operation_type} == 'edit'" />
-						{xen:phrase sv_ri_operation_type_edit}
-					<xen:else />
-						{$comment.operation_type}
-					</xen:if>
-					{xen:phrase sv_x_warning_points_for_y, 'points={$comment.warning_points}', 'reason={$comment.title}'}					
+        <blockquote class="snippet">
+            <a href="{xen:link reports/comment, $report, 'report_comment_id={$comment.report_comment_id}'}">
+                {xen:helper snippet, $comment.message, 150, {xen:array 'term={$search.search_query}', 'emClass=highlight', 'stripQuote=1'}}
+                <xen:if is="{$comment.operation_type}" >
+                    <xen:if is="{$comment.operation_type} == 'new'" >
+                        {xen:phrase sv_ri_operation_type_new}
+                    <xen:elseif  is="{$comment.operation_type} == 'delete'" />
+                        {xen:phrase sv_ri_operation_type_delete}
+                    <xen:elseif  is="{$comment.operation_type} == 'expire'" />
+                        {xen:phrase sv_ri_operation_type_expire}
+                    <xen:elseif  is="{$comment.operation_type} == 'edit'" />
+                        {xen:phrase sv_ri_operation_type_edit}
+                    <xen:else />
+                        {$comment.operation_type}
+                    </xen:if>
+                    {xen:phrase sv_x_warning_points_for_y, 'points={$comment.warning_points}', 'reason={$comment.title}'}
 
-					<xen:if is="{$comment.notes}">
-						{$comment.notes}
-					</xen:if>
-					<xen:if is="{$comment.state_change} && {$comment.state_change} != {$report.report_state}">
-						{$comment.stateChange}
-					</xen:if>
-				</xen:if>
-			</a>
-		</blockquote>
+                    <xen:if is="{$comment.notes}">
+                        {$comment.notes}
+                    </xen:if>
+                    <xen:if is="{$comment.state_change} && {$comment.state_change} != {$report.report_state}">
+                        {$comment.stateChange}
+                    </xen:if>
+                </xen:if>
+            </a>
+        </blockquote>
 
-		<div class="meta">
-			<xen:if is="{$enableInlineMod} AND {$comment.canInlineMod}"><input type="checkbox" name="report_comment[]" value="{$comment.report_comment_id}" class="InlineModCheck" data-target="#message-{$comment.report_comment_id}" title="{xen:phrase sv_select_this_report_comment_by_x, 'name={$report_comment.username}'}" /></xen:if>
-			{xen:if $comment.is_report, {xen:phrase sv_user_report_by}, {xen:phrase sv_report_comment_by}}: <xen:username user="$comment" />,
-			<xen:datetime time="{$comment.comment_date}" />, {$report.reportState}
-		</div>
-	</div>
+        <div class="meta">
+            <xen:if is="{$enableInlineMod} AND {$comment.canInlineMod}"><input type="checkbox" name="report_comment[]" value="{$comment.report_comment_id}" class="InlineModCheck" data-target="#message-{$comment.report_comment_id}" title="{xen:phrase sv_select_this_report_comment_by_x, 'name={$report_comment.username}'}" /></xen:if>
+            {xen:if $comment.is_report, {xen:phrase sv_user_report_by}, {xen:phrase sv_report_comment_by}}: <xen:username user="$comment" />,
+            <xen:datetime time="{$comment.comment_date}" />, {$report.reportState}
+        </div>
+    </div>
 </li>]]></template>
     <template title="sv_report_comment_aftercontent" version_id="1010001" version_string="1.1.0 RC1"><![CDATA[<div class="messageMeta ToggleTriggerAnchor">
     <div class="privateControls">
@@ -510,50 +510,50 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <template title="sv_report_comment_like" version_id="1010200" version_string="1.1.2"><![CDATA[<xen:title>{xen:phrase 'sv_report_comment_by_x', 'username={$comment.username}'} - {xen:if $like, '{xen:phrase sv_unlike_report_comment}', '{xen:phrase sv_like_report_comment}'}</xen:title>
 
 <xen:navigation>
-	<xen:breadcrumb source="$nodeBreadCrumbs" />
-	<xen:breadcrumb href="{xen:link reports/comment, $report, 'report_comment_id={$comment.report_comment_id}'}">{xen:helper threadPrefix, $report}{$report.title}</xen:breadcrumb>
+    <xen:breadcrumb source="$nodeBreadCrumbs" />
+    <xen:breadcrumb href="{xen:link reports/comment, $report, 'report_comment_id={$comment.report_comment_id}'}">{xen:helper threadPrefix, $report}{$report.title}</xen:breadcrumb>
 </xen:navigation>
 
 <form action="{xen:link 'reports/like', $report, 'report_comment_id={$comment.report_comment_id}'}" method="post" class="xenForm">
 
-	<dl class="ctrlUnit fullWidth">
-		<dt></dt>
-		<dd>
-			<xen:if is="{$like}">
-				{xen:phrase sv_you_sure_you_want_to_unlike_this_report_comment}
-			<xen:else />
-				{xen:phrase sv_you_sure_you_want_to_like_this_report_comment}
-			</xen:if>
-		</dd>
-	</dl>
+    <dl class="ctrlUnit fullWidth">
+        <dt></dt>
+        <dd>
+            <xen:if is="{$like}">
+                {xen:phrase sv_you_sure_you_want_to_unlike_this_report_comment}
+            <xen:else />
+                {xen:phrase sv_you_sure_you_want_to_like_this_report_comment}
+            </xen:if>
+        </dd>
+    </dl>
 
-	<dl class="ctrlUnit submitUnit">
-		<dt></dt>
-		<dd><input type="submit" value="{xen:if $like, '{xen:phrase sv_unlike_report_comment}', '{xen:phrase sv_like_report_comment}'}" accesskey="s" class="button primary" autofocus="true" /></dd>
-	</dl>
+    <dl class="ctrlUnit submitUnit">
+        <dt></dt>
+        <dd><input type="submit" value="{xen:if $like, '{xen:phrase sv_unlike_report_comment}', '{xen:phrase sv_like_report_comment}'}" accesskey="s" class="button primary" autofocus="true" /></dd>
+    </dl>
 
-	<input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
+    <input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
 </form>]]></template>
     <template title="sv_report_comment_likes" version_id="1010200" version_string="1.1.2"><![CDATA[<xen:title>{xen:phrase 'sv_report_comment_by_x', 'username={$comment.username}'} - {xen:phrase sv_members_who_liked_this_report_comment}</xen:title>
 
 <xen:container var="$head.noindex">
-	<meta name="robots" content="noindex" /></xen:container>
+    <meta name="robots" content="noindex" /></xen:container>
 
 <xen:navigation>
-	<xen:breadcrumb source="$nodeBreadCrumbs" />
-	<xen:breadcrumb href="{xen:link reports/comment, $report, 'report_comment_id={$comment.report_comment_id}'}">{xen:helper threadPrefix, $report}{$report.title}</xen:breadcrumb>
+    <xen:breadcrumb source="$nodeBreadCrumbs" />
+    <xen:breadcrumb href="{xen:link reports/comment, $report, 'report_comment_id={$comment.report_comment_id}'}">{xen:helper threadPrefix, $report}{$report.title}</xen:breadcrumb>
 </xen:navigation>
 
 <div class="section">
-	<ol class="overlayScroll">
-	<xen:foreach loop="$likes" value="$like">
-		<xen:include template="member_list_item">
-			<xen:set var="$extraTemplate"><xen:datetime time="$like.like_date" /></xen:set>
-			<xen:map from="$like" to="$user" />
-		</xen:include>
-	</xen:foreach>
-	</ol>
-	<div class="sectionFooter overlayOnly"><a class="button primary OverlayCloser">{xen:phrase close}</a></div>
+    <ol class="overlayScroll">
+    <xen:foreach loop="$likes" value="$like">
+        <xen:include template="member_list_item">
+            <xen:set var="$extraTemplate"><xen:datetime time="$like.like_date" /></xen:set>
+            <xen:map from="$like" to="$user" />
+        </xen:include>
+    </xen:foreach>
+    </ol>
+    <div class="sectionFooter overlayOnly"><a class="button primary OverlayCloser">{xen:phrase close}</a></div>
 </div>]]></template>
     <template title="sv_report_view_warning" version_id="4" version_string="0.0.4"><![CDATA[<xen:if is="{$comment.operation_type}">
 <p class="warningLog">
@@ -561,15 +561,15 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 <dl><dt>{xen:phrase warning_log_operation_type}</dt>
 <dd class="warning_{$comment.operation_type}">
 <xen:if is="{$comment.operation_type} == 'new'" >
-	{xen:phrase sv_ri_operation_type_new}
+    {xen:phrase sv_ri_operation_type_new}
 <xen:elseif  is="{$comment.operation_type} == 'delete'" />
-	{xen:phrase sv_ri_operation_type_delete}
+    {xen:phrase sv_ri_operation_type_delete}
 <xen:elseif  is="{$comment.operation_type} == 'expire'" />
-	{xen:phrase sv_ri_operation_type_expire}
+    {xen:phrase sv_ri_operation_type_expire}
 <xen:elseif  is="{$comment.operation_type} == 'edit'" />
-	{xen:phrase sv_ri_operation_type_edit}
+    {xen:phrase sv_ri_operation_type_edit}
 <xen:else />
-	{$comment.operation_type}
+    {$comment.operation_type}
 </xen:if>
 </dd></dl>
 <dl><dt>{xen:phrase warning}</dt><dd>{$comment.title}</dd></dl>
@@ -578,9 +578,9 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 <xen:if is="{$comment.warning_id}">
 <dl><dt>{xen:phrase warning}</dt><dd><a href="{xen:link warnings, $comment}" class="OverlayTrigger secondaryContent">{xen:phrase view}</a></dd></dl>
 </xen:if>
-	<xen:if is="{$comment.notes}">
-		{xen:phrase notes}:<br/>{xen:helper bodytext, $comment.notes}
-	</xen:if>
+    <xen:if is="{$comment.notes}">
+        {xen:phrase notes}:<br/>{xen:helper bodytext, $comment.notes}
+    </xen:if>
 </div>
 </p>
 </xen:if>
