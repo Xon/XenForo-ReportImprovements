@@ -147,6 +147,7 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <phrase title="sv_x_state_change_report_open" version_id="1010100" version_string="1.1.1"><![CDATA[{name} reopened the report {report}.]]></phrase>
     <phrase title="sv_x_state_change_report_rejected" version_id="1010000" version_string="1.1.0"><![CDATA[{name} rejected the report {report}.]]></phrase>
     <phrase title="sv_x_state_change_report_resolved" version_id="1010000" version_string="1.1.0"><![CDATA[{name} resolved the report {report}.]]></phrase>
+    <phrase title="sv_x_warning_points_for_y" version_id="1010200" version_string="1.1.2"><![CDATA[{points} points for {reason}]]></phrase>
     <phrase title="sv_you_sure_you_want_to_like_this_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Are you sure you want to like this comment?]]></phrase>
     <phrase title="sv_you_sure_you_want_to_unlike_this_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Are you sure you want to unlike this comment?]]></phrase>
     <phrase title="warning_log_operation_type" version_id="1" version_string="0.0.1"><![CDATA[Operation Type]]></phrase>
@@ -451,14 +452,36 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 		</div>
 
 		<blockquote class="snippet">
-			<a href="{xen:link reports/comment, $report, 'report_comment_id={$comment.report_comment_id}'}">{xen:helper snippet, $comment.message, 150, {xen:array 'term={$search.search_query}', 'emClass=highlight', 'stripQuote=1'}}</a>
+			<a href="{xen:link reports/comment, $report, 'report_comment_id={$comment.report_comment_id}'}">
+				{xen:helper snippet, $comment.message, 150, {xen:array 'term={$search.search_query}', 'emClass=highlight', 'stripQuote=1'}}
+				<xen:if is="{$comment.operation_type}" >
+					<xen:if is="{$comment.operation_type} == 'new'" >
+						{xen:phrase sv_ri_operation_type_new}
+					<xen:elseif  is="{$comment.operation_type} == 'delete'" />
+						{xen:phrase sv_ri_operation_type_delete}
+					<xen:elseif  is="{$comment.operation_type} == 'expire'" />
+						{xen:phrase sv_ri_operation_type_expire}
+					<xen:elseif  is="{$comment.operation_type} == 'edit'" />
+						{xen:phrase sv_ri_operation_type_edit}
+					<xen:else />
+						{$comment.operation_type}
+					</xen:if>
+					{xen:phrase sv_x_warning_points_for_y, 'points={$comment.warning_points}', 'reason={$comment.title}'}					
+
+					<xen:if is="{$comment.notes}">
+						{$comment.notes}
+					</xen:if>
+					<xen:if is="{$comment.state_change} && {$comment.state_change} != {$report.report_state}">
+						{$comment.stateChange}
+					</xen:if>
+				</xen:if>
+			</a>
 		</blockquote>
 
 		<div class="meta">
 			<xen:if is="{$enableInlineMod} AND {$comment.canInlineMod}"><input type="checkbox" name="report_comment[]" value="{$comment.report_comment_id}" class="InlineModCheck" data-target="#message-{$comment.report_comment_id}" title="{xen:phrase sv_select_this_report_comment_by_x, 'name={$report_comment.username}'}" /></xen:if>
 			{xen:if $comment.is_report, {xen:phrase sv_user_report_by}, {xen:phrase sv_report_comment_by}}: <xen:username user="$comment" />,
-			
-			<xen:datetime time="{$comment.comment_date}" />
+			<xen:datetime time="{$comment.comment_date}" />, {$report.reportState}
 		</div>
 	</div>
 </li>]]></template>
