@@ -61,6 +61,10 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
 
         $warningLogDw = XenForo_DataWriter::create('SV_ReportImprovements_DataWriter_WarningLog');
         $warningLogDw->bulkSet($warning);
+        if ($ImporterMode)
+        {
+            $warningLogDw->setImportMode(true);
+        }
         $warningLogDw->save();
         $warning['warning_log_id'] = $warningLogDw->get('warning_log_id');
 
