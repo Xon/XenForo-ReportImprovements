@@ -152,9 +152,12 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
 
         $alertedUserIds = array();
 
-        // alert users who are tagged
-        $alertedUserIds = $this->_tagUsers($alertedUserIds, $report, $reportComment);
-        $alertedUserIds = $this->_alertWatchers($handler, $alertedUserIds, $report, $reportComment);
+        if ($this->getOption(self::OPTION_SEND_ALERTS))
+        {
+            // alert users who are tagged
+            $alertedUserIds = $this->_tagUsers($alertedUserIds, $report, $reportComment);
+            $alertedUserIds = $this->_alertWatchers($handler, $alertedUserIds, $report, $reportComment);
+        }
     }
 
     protected function _tagUsers(array $alertedUserIds, array $report, array $reportComment)
