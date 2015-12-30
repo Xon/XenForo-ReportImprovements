@@ -28,7 +28,7 @@ class SV_ReportImprovements_DataWriter_WarningLog extends XenForo_DataWriter
                 'warning_date'          => array('type' => self::TYPE_UINT,    'default' => XenForo_Application::$time),
                 'warning_user_id'       => array('type' => self::TYPE_UINT,    'required' => true),
                 'warning_definition_id' => array('type' => self::TYPE_UINT,    'required' => true),
-                'title'                 => array('type' => self::TYPE_STRING,  'required' => true,
+                'title'                 => array('type' => self::TYPE_STRING,  'default' => '', 'required' => SV_ReportImprovements_Globals::$RequireWarningLogTitle,
                     'requiredError' => 'please_enter_valid_title', 'maxLength' => 255
                 ),
                 'notes'                 => array('type' => self::TYPE_STRING,  'default' => ''),

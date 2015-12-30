@@ -9,6 +9,7 @@ class SV_ReportImprovements_XenForo_Model_Warning extends XFCP_SV_ReportImprovem
         SV_ReportImprovements_Globals::$OverrideReportUsername = null;
         SV_ReportImprovements_Globals::$ResolveReport = true;
         SV_ReportImprovements_Globals::$AssignReport = false;
+        SV_ReportImprovements_Globals::$RequireWarningLogTitle = false;
         if (!$options->sv_ri_log_to_report_natural_warning_expire)
         {
             SV_ReportImprovements_Globals::$SupressLoggingWarningToReport = true;

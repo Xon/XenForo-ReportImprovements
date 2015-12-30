@@ -12,6 +12,7 @@ class SV_ReportImprovements_Globals
     public static $ResolveReport = false;
     public static $AssignReport = false;
     public static $UserReportAlertComment = null;
+    public static $RequireWarningLogTitle = true;
 
     private function __construct() {}
 }
