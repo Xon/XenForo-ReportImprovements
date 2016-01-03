@@ -626,8 +626,8 @@ $0
     </modification>
     <modification template="report_view" modification_key="SV_ReportImprovements_report_view1" description="Add anchor tags" execution_order="10" enabled="1" action="preg_replace">
       <find><![CDATA[#(<li class="primaryContent reportComment)([^"]+")#si]]></find>
-      <replace><![CDATA[<xen:require css="message.css" />
-$1 message $2 id="reportComment-{$comment.report_comment_id}"]]></replace>
+      <replace><![CDATA[<xen:require css="message_simple.css" />
+$1 messageSimple $2 id="reportComment-{$comment.report_comment_id}"]]></replace>
     </modification>
     <modification template="report_view" modification_key="SV_ReportImprovements_report_view2" description="Add User Tagging support" execution_order="20" enabled="1" action="preg_replace">
       <find><![CDATA[#(<textarea name="comment" .*? class=".*?)(")#si]]></find>
