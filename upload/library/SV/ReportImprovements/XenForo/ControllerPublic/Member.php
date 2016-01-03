@@ -17,6 +17,7 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Member extends XFCP_SV_Repo
             $reportModel = $this->_getReportModel();
             if ($reportModel->canViewReports())
             {
+                $response->params['canViewReporterUsername'] = $reportModel->canViewReporterUsername();
                 $content_type = $response->params['contentType'];
                 $content_id = $response->params['contentId'];
 

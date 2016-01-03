@@ -11,6 +11,7 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Warning extends XFCP_SV_Rep
             $reportModel = $this->_getReportModel();
             if ($reportModel->canViewReports() && isset($response->params['warning']['content_type']) && isset($response->params['warning']['content_id']))
             {
+                $response->params['canViewReporterUsername'] = $reportModel->canViewReporterUsername();
                 $content_type = $response->params['warning']['content_type'];
                 $content_id = $response->params['warning']['content_id'];
 
