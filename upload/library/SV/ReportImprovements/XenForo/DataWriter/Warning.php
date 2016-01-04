@@ -4,15 +4,13 @@ class SV_ReportImprovements_XenForo_DataWriter_Warning extends XFCP_SV_ReportImp
 {
     protected function _postDelete()
     {
-        parent::_postDelete();
         $operationType = SV_ReportImprovements_Model_WarningLog::Operation_DeleteWarning;
         $this->_logOperation($operationType);
+        parent::_postDelete();
     }
 
     protected function _postSave()
     {
-        parent::_postSave();
-
         $operationType = '';
 
         if ($this->isInsert())
@@ -29,6 +27,7 @@ class SV_ReportImprovements_XenForo_DataWriter_Warning extends XFCP_SV_ReportImp
         }
 
         $this->_logOperation($operationType);
+        parent::_postSave();
     }
 
     protected function _getLogData()
