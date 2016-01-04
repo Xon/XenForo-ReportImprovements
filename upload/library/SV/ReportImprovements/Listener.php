@@ -31,8 +31,16 @@ class SV_ReportImprovements_Listener
         }
 
         $reportModel = $controller->getModelFromCache('XenForo_Model_Report');
-        if (!$reportModel->canViewReports())
+        try
         {
+            if (!$reportModel->canViewReports())
+            {
+                return;
+            }
+        }
+        catch(Exception $e)
+        {
+            XenForo_Error::logException($e);
             return;
         }
 
