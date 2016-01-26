@@ -61,6 +61,11 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
 
     public function getReportCommentsByIds($ids)
     {
+        if (empty($ids))
+        {
+            return array();
+        }
+
         return $this->fetchAllKeyed('
             SELECT report_comment.*, user.*, IF(user.username IS NULL, report_comment.username, user.username) AS username
                 ,warning.warning_id
@@ -145,6 +150,11 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
 
     public function getReportsByIds($reportIds)
     {
+        if (empty($reportIds))
+        {
+            return array();
+        }
+
         return $this->fetchAllKeyed('
             SELECT report.*,
                 user.*,
