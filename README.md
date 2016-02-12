@@ -3,6 +3,8 @@ XenForo-ReportImprovements
 
 A Collection of improvements to XF's reporting system.
 
+Note; when reports are sent to a forum, the warning<->report links can not be created!
+
 - User tagging in report comments.
 - Adds Spam Cleaner links in AdminCP (under actions) and to the Moderation Queue front-end.
 - Sends an Alert to moderators who have commented/reported on a report.

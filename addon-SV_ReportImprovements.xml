@@ -263,20 +263,25 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 }
 
 ]]></template>
-    <template title="ir_resolve_report" version_id="10020" version_string="1.0.20"><![CDATA[<dl class="ctrlUnit">
-    <dt>{xen:phrase report_options}:</dt>
-    <dd>
-        <ul>
-            <li><label><input type="checkbox" id="resolveLinkedReport" name="resolve_linked_report" value="1" class="Disabler" {xen:if $xenOptions.sv_default_resolve_report_on_warning, 'checked="checked"' } /> {xen:phrase resolve_linked_report} </label></li>
-            <xen:if is="!{$report}">
-<xen:if is="{$CanCreateReport}">
-    <li>{xen:phrase a_report_will_be_created}</li>
-<xen:else />
-    <li>{xen:phrase a_report_can_not_be_created, 'content_type={$ContentType}'}</li>
-</xen:if>
-            </xen:if>
-        </ul>
-    </dd>
+    <template title="ir_resolve_report" version_id="1010800" version_string="1.1.8"><![CDATA[<dl class="ctrlUnit">
+    <xen:if is="{$CanCreateReport}">
+        <dt>{xen:phrase report_options}:</dt>
+        <dd>
+            <ul>
+                <li><label><input type="checkbox" id="resolveLinkedReport" name="resolve_linked_report" value="1" class="Disabler" {xen:if $xenOptions.sv_default_resolve_report_on_warning, 'checked="checked"' } /> {xen:phrase resolve_linked_report} </label></li>
+                <xen:if is="!{$report}">
+                <li>{xen:phrase a_report_will_be_created}</li>
+                </xen:if>
+            </ul>
+        </dd>    
+    <xen:elseif is="{$ContentType}" />
+        <dt></dt>
+        <dd>
+            <ul>
+                <li>{xen:phrase a_report_can_not_be_created, 'content_type={$ContentType}'}</li>
+            </ul>
+        </dd>
+    </xen:if>
 </dl>]]></template>
     <template title="member_warn_ir_options" version_id="10020" version_string="1.0.20"><![CDATA[<fieldset>
 <xen:include template="ir_resolve_report" />
