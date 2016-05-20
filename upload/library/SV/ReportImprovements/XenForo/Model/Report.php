@@ -110,17 +110,32 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         $reportIds = array_unique(XenForo_Application::arrayColumn($comments, 'report_id'));
         $reports = $this->getReportsByIds($reportIds);
 
-        foreach($reports as $reportId => &$report)
+        // group reports to make getVisibleReportsForUser more efficient
+        $reportsGrouped = array();
+        foreach ($reports AS $reportId => $report)
         {
-            $handler = $this->getReportHandlerCached($report['content_type']);
-            $visibleReport = $handler->getVisibleReportsForUser(array($report), $viewingUser);
-            if (empty($visibleReport))
-            {
-                unset($reports[$reportId]);
-                continue;
-            }
-            $report = $handler->prepareReport($report);
+            $reportsGrouped[$report['content_type']][$reportId] = $report;
         }
+
+        if (!$reportsGrouped)
+        {
+            return array();
+        }
+
+        $reportHandlers = $this->getReportHandlers();
+
+        $userReports = array();
+        foreach ($reportsGrouped AS $contentType => $typeReports)
+        {
+            if (!empty($reportHandlers[$contentType]))
+            {
+                $handler = $reportHandlers[$contentType];
+
+                $typeReports = $handler->getVisibleReportsForUser($typeReports, $viewingUser);
+                $userReports += $handler->prepareReports($typeReports);
+            }
+        }
+        $reports = $userReports;
 
         foreach($comments as $commentId => &$comment)
         {
