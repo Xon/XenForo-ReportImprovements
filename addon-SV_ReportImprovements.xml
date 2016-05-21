@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.2.0" version_id="1020013" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.2.1" version_id="1020100" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -97,6 +97,8 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
   <phrases>
     <phrase title="a_report_can_not_be_created" version_id="4" version_string="0.0.4"><![CDATA[A report can not be created for the content type: {content_type}.]]></phrase>
     <phrase title="a_report_will_be_created" version_id="4" version_string="0.0.4"><![CDATA[A report will be created.]]></phrase>
+    <phrase title="likes_your_report_comment" version_id="1020100" version_string="1.2.1"><![CDATA[Likes your report comment]]></phrase>
+    <phrase title="new_report_comment" version_id="1020100" version_string="1.2.1"><![CDATA[New report comment]]></phrase>
     <phrase title="option_group_sv_report_improvements" version_id="3" version_string="0.0.3b"><![CDATA[Report Improvements]]></phrase>
     <phrase title="option_group_sv_report_improvements_description" version_id="1" version_string="0.0.1"><![CDATA[]]></phrase>
     <phrase title="option_sv_default_resolve_report_on_warning" version_id="4" version_string="0.0.4"><![CDATA[Resolve Report on Warning]]></phrase>
@@ -133,12 +135,16 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <phrase title="search_include_user_reports" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Include user reports]]></phrase>
     <phrase title="search_reports_only" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Search reports only]]></phrase>
     <phrase title="search_report_comments" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Search Report Comments]]></phrase>
+    <phrase title="someone_likes_one_of_your_report_comment" version_id="1020100" version_string="1.2.1"><![CDATA[Someone likes one of your report comments]]></phrase>
+    <phrase title="someone_posts_a_new_report_comment" version_id="1020100" version_string="1.2.1"><![CDATA[Someone posts a new report comment]]></phrase>
+    <phrase title="someone_tags_you_in_report_comment" version_id="1020100" version_string="1.2.1"><![CDATA[Someone mentions you in a report comment]]></phrase>
     <phrase title="sv_like_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Like report comment]]></phrase>
     <phrase title="sv_members_who_liked_this_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Members Who Liked This Report Comment]]></phrase>
     <phrase title="sv_no_one_has_liked_this_report_comment_yet" version_id="1010000" version_string="1.1.0"><![CDATA[No one has liked this report comment yet.]]></phrase>
     <phrase title="sv_reports_alert_moderators_always" version_id="1010100" version_string="1.1.1"><![CDATA[Alert all moderators]]></phrase>
     <phrase title="sv_reports_alert_moderators_new" version_id="1010100" version_string="1.1.1"><![CDATA[Alert watchers on reply and all moderators for new alerts.]]></phrase>
     <phrase title="sv_reports_alert_watchers" version_id="1010100" version_string="1.1.1"><![CDATA[Alert watchers on reply ]]></phrase>
+    <phrase title="sv_report_center" version_id="1020100" version_string="1.2.1"><![CDATA[Report Center]]></phrase>
     <phrase title="sv_report_comment_by" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Report comment by]]></phrase>
     <phrase title="sv_report_comment_by_x" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Report comment By {username}]]></phrase>
     <phrase title="sv_ri_migrating" version_id="11" version_string="0.0.11"><![CDATA[Linking Warnings and Reports]]></phrase>
@@ -163,6 +169,7 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <phrase title="sv_x_warning_points_for_y" version_id="1010200" version_string="1.1.2"><![CDATA[{points} points for {reason}]]></phrase>
     <phrase title="sv_you_sure_you_want_to_like_this_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Are you sure you want to like this comment?]]></phrase>
     <phrase title="sv_you_sure_you_want_to_unlike_this_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Are you sure you want to unlike this comment?]]></phrase>
+    <phrase title="tags_you_in_report_comment" version_id="1020100" version_string="1.2.1"><![CDATA[Mentions you in a report comment]]></phrase>
     <phrase title="warning_log_operation_type" version_id="1" version_string="0.0.1"><![CDATA[Operation Type]]></phrase>
     <phrase title="warning_points_lower_bound" version_id="1010003" version_string="1.1.0 RC3"><![CDATA[Lower bound]]></phrase>
     <phrase title="warning_points_upper_bound" version_id="1010003" version_string="1.1.0 RC3"><![CDATA[Upper bound]]></phrase>
@@ -503,6 +510,26 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
         </div>
     </div>
 </li>]]></template>
+    <template title="sv_reportimprovements_alert_preferences" version_id="1020100" version_string="1.2.1"><![CDATA[<h3 class="sectionHeader">{xen:phrase sv_report_center}</h3>
+<dl class="ctrlUnit">
+	<dt>{xen:phrase receive_alert_when_you_receive}...</dt>
+	<dd>
+		<ul>
+			<li><input type="hidden" name="alertSet[report_comment_insert]" value="1" />
+				<label><input type="checkbox" value="1" name="alert[report_comment_insert]" {xen:checked "!{$alertOptOuts.report_comment_insert}"} /> {xen:phrase new_report_comment}</label>
+				<p class="hint">{xen:phrase someone_posts_a_new_report_comment}</p>
+			</li>
+			<li><input type="hidden" name="alertSet[report_comment_tag]" value="1" />
+				<label><input type="checkbox" value="1" name="alert[report_comment_tag]" {xen:checked "!{$alertOptOuts.report_comment_tag}"} /> {xen:phrase tags_you_in_report_comment}</label>
+				<p class="hint">{xen:phrase someone_tags_you_in_report_comment}</p>
+			</li>
+			<li><input type="hidden" name="alertSet[report_comment_like]" value="1" />
+				<label><input type="checkbox" value="1" name="alert[report_comment_like]" {xen:checked "!{$alertOptOuts.report_comment_like}"} /> {xen:phrase likes_your_report_comment}</label>
+				<p class="hint">{xen:phrase someone_likes_one_of_your_report_comment}</p>
+			</li>
+		</ul>
+	</dd>
+</dl>]]></template>
     <template title="sv_report_comment_aftercontent" version_id="1010001" version_string="1.1.0 RC1"><![CDATA[<div class="messageMeta ToggleTriggerAnchor">
     <div class="privateControls">
     </div>
@@ -728,6 +755,11 @@ $0]]></replace>
       <find><![CDATA[#(<form\s+action="{xen:link\s+warnings/.*?)(\s*)(<dl)#msi]]></find>
       <replace><![CDATA[$1$2<xen:include template="ir_resolve_report" />
 $2$3]]></replace>
+    </modification>
+    <modification template="account_alert_preferences" modification_key="sv_reportimpro_account_alert_preferences" description="" execution_order="4345" enabled="1" action="str_replace">
+      <find><![CDATA[<xen:hook name="account_alerts_extra" />]]></find>
+      <replace><![CDATA[$0
+<xen:include template="sv_reportimprovements_alert_preferences" />]]></replace>
     </modification>
   </public_template_modifications>
   <bb_code_media_sites/>

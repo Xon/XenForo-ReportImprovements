@@ -188,6 +188,7 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         // alert users interacting with this report
         $reportModel = $this->_getReportModel();
         $otherCommenters = $reportModel->getUsersForReportCommentAlerts($report);
+        $alertType = 'insert';
 
         $db = XenForo_Application::getDb();
 
@@ -222,7 +223,7 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
                           and alert.action = ?
                           and report_comment.report_id = ?
                     LIMIT 1
-                ", array($otherCommenter['user_id'], 'report_comment', 'insert', $report['report_id']));
+                ", array($otherCommenter['user_id'], 'report_comment', $alertType, $report['report_id']));
 
                 if (!empty($hasUnviewedReport))
                 {
@@ -243,14 +244,19 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
                         $user_id = 0;
                         $username = 'Guest';
                     }
-                    XenForo_Model_Alert::alert(
-                        $otherCommenter['user_id'],
-                        $user_id,
-                        $username,
-                        'report_comment',
-                        $reportComment['report_comment_id'],
-                        'insert');
-                    $alertedUserIds[$otherCommenter['user_id']] = true;
+
+                    if (XenForo_Model_Alert::userReceivesAlert($otherCommenter, 'report_comment', $alertType))
+                    {
+                        XenForo_Model_Alert::alert(
+                            $otherCommenter['user_id'],
+                            $user_id,
+                            $username,
+                            'report_comment',
+                            $reportComment['report_comment_id'],
+                            $alertType);
+
+                        $alertedUserIds[$otherCommenter['user_id']] = true;
+                    }
                 }
             }
         }

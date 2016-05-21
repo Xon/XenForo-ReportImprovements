@@ -251,18 +251,20 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
                 {
                     continue;
                 }
-
-                $reports = $handler->getVisibleReportsForUser(array($report['report_id'] => $report), $user);
-
-                if (!empty($reports))
+                if (XenForo_Model_Alert::userReceivesAlert($user, 'report_comment', 'tag'))
                 {
-                    $alertedUserIds[$user['user_id']] = true;
+                    $reports = $handler->getVisibleReportsForUser(array($report['report_id'] => $report), $user);
 
-                    XenForo_Model_Alert::alert($user['user_id'],
-                        $taggingUser['user_id'], $taggingUser['username'],
-                        'report_comment', $reportComment['report_comment_id'],
-                        'tag'
-                    );
+                    if (!empty($reports))
+                    {
+                        $alertedUserIds[$user['user_id']] = true;
+
+                        XenForo_Model_Alert::alert($user['user_id'],
+                            $taggingUser['user_id'], $taggingUser['username'],
+                            'report_comment', $reportComment['report_comment_id'],
+                            'tag'
+                        );
+                    }
                 }
             }
         }
