@@ -510,7 +510,8 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
         </div>
     </div>
 </li>]]></template>
-    <template title="sv_reportimprovements_alert_preferences" version_id="1020100" version_string="1.2.1"><![CDATA[<h3 class="sectionHeader">{xen:phrase sv_report_center}</h3>
+    <template title="sv_reportimprovements_alert_preferences" version_id="1020100" version_string="1.2.1"><![CDATA[<xen:if is="{$visitor.permissions.general.viewReports}">
+<h3 class="sectionHeader">{xen:phrase sv_report_center}</h3>
 <dl class="ctrlUnit">
 	<dt>{xen:phrase receive_alert_when_you_receive}...</dt>
 	<dd>
@@ -529,7 +530,8 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 			</li>
 		</ul>
 	</dd>
-</dl>]]></template>
+</dl>
+</xen:if>]]></template>
     <template title="sv_report_comment_aftercontent" version_id="1010001" version_string="1.1.0 RC1"><![CDATA[<div class="messageMeta ToggleTriggerAnchor">
     <div class="privateControls">
     </div>
