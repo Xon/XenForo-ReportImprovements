@@ -3,6 +3,17 @@
 class SV_ReportImprovements_Installer
 {
     const AddonNameSpace = 'SV_ReportImprovements';
+    public static $extraMappings = array(
+            'report_comment' => array(
+                "properties" => array(
+                    "report" => array("type" => "long"),
+                    "state_change" => array("type" => "long"),
+                    "is_report" => array("type" => "boolean"),
+                    "points" => array("type" => "long"),
+                    "expiry_date" => array("type" => "long"),
+                )
+            ),
+        );
 
     public static function install($installedAddon, array $addonData, SimpleXMLElement $xml)
     {
@@ -144,21 +155,12 @@ class SV_ReportImprovements_Installer
         }
 
         // if Elastic Search is installed, determine if we need to push optimized mappings for the search types
-        SV_Utils_Install::updateXenEsMapping($requireIndexing, array(
-            'report_comment' => array(
-                "properties" => array(
-                    "report" => array("type" => "long"),
-                    "state_change" => array("type" => "long"),
-                    "is_report" => array("type" => "boolean"),
-                    "points" => array("type" => "long"),
-                    "expiry_date" => array("type" => "long"),
-                )
-            ),
-        ));
+        SV_Utils_Install::updateXenEsMapping($requireIndexing, self::$extraMappings);
 
         XenForo_Model::create('XenForo_Model_ContentType')->rebuildContentTypeCache();
+        XenForo_Application::defer('Permission', array(), 'Permission', true);
         // migration code which gets to run each install
-        XenForo_Application::defer(self::AddonNameSpace.'_Deferred_WarningLogMigration', array('warning_id' => -1));
+        XenForo_Application::defer(self::AddonNameSpace.'_Deferred_WarningLogMigration', array('warning_id' => -1));        
     }
 
     public static function uninstall()
