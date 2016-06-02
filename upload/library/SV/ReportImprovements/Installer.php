@@ -156,7 +156,7 @@ class SV_ReportImprovements_Installer
 
         if ($version < 1020200)
         {
-            $globalReportPerms = array('assignReport','replyReport','replyReportClosed','updateReport','viewReporterUsername','viewReports');
+            $globalReportPerms = array('assignReport','replyReport','replyReportClosed','updateReport','viewReporterUsername','viewReports','reportLike');
             foreach($globalReportPerms as $perm)
             {
                 $db->query("insert ignore into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
