@@ -154,13 +154,26 @@ class SV_ReportImprovements_Installer
             }
         }
 
+        if ($version < 1020200)
+        {
+            $globalReportPerms = array('assignReport','replyReport','replyReportClosed','updateReport','viewReporterUsername','viewReports');
+            foreach($globalReportPerms as $perm)
+            {
+                $db->query("insert ignore into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
+                    select distinct user_group_id, user_id, convert(permission_group_id using utf8), ?, permission_value, permission_value_int
+                    from xf_permission_entry
+                    where permission_group_id = 'general' and permission_id in ('warn','editBasicProfile')
+                ", $perm);
+            }
+        }
+
         // if Elastic Search is installed, determine if we need to push optimized mappings for the search types
         SV_Utils_Install::updateXenEsMapping($requireIndexing, self::$extraMappings);
 
         XenForo_Model::create('XenForo_Model_ContentType')->rebuildContentTypeCache();
         XenForo_Application::defer('Permission', array(), 'Permission', true);
         // migration code which gets to run each install
-        XenForo_Application::defer(self::AddonNameSpace.'_Deferred_WarningLogMigration', array('warning_id' => -1));        
+        XenForo_Application::defer(self::AddonNameSpace.'_Deferred_WarningLogMigration', array('warning_id' => -1));
     }
 
     public static function uninstall()
@@ -181,16 +194,28 @@ class SV_ReportImprovements_Installer
 
         $db->query("delete from xf_report_comment where warning_log_id is not null and warning_log_id <> 0");
 
-        $db->delete('xf_permission_entry', "permission_id = 'viewReportConversation'");
-        $db->delete('xf_permission_entry', "permission_id = 'viewReportPost'");
-        $db->delete('xf_permission_entry', "permission_id = 'viewReportProfilePost'");
-        $db->delete('xf_permission_entry', "permission_id = 'viewReportUser'");
-        $db->delete('xf_permission_entry', "permission_id = 'reportLike'");
-        $db->delete('xf_permission_entry_content', "permission_id = 'viewReportConversation'");
-        $db->delete('xf_permission_entry_content', "permission_id = 'viewReportPost'");
-        $db->delete('xf_permission_entry_content', "permission_id = 'viewReportProfilePost'");
-        $db->delete('xf_permission_entry_content', "permission_id = 'viewReportUser'");
-        $db->delete('xf_permission_entry_content', "permission_id = 'reportLike'");
+
+        $db->query("
+            delete from xf_permission_entry
+            where permission_id in (
+                'viewReportConversation',
+                'viewReportPost',
+                'assignReport',
+                'replyReport',
+                'replyReportClosed',
+                'reportLike',
+                'updateReport',
+                'viewReportUser',
+                'viewReporterUsername',
+                'viewReports',
+                'viewReportProfilePost'
+        )");
+
+        $db->query("
+            delete from xf_permission_entry_content
+            where permission_id in (
+                'viewReportPost'
+        )");
 
         XenForo_Db::commit($db);
 
