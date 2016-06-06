@@ -259,6 +259,10 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
                 }
             }
         }
+        if (!$this->_getReportModel()->canViewReporterUsername())
+        {
+            $constraints['is_report'] = false;
+        }
 
         $warningPoints = $input->filterSingle('warning_points', XenForo_Input::ARRAY_SIMPLE);
 
