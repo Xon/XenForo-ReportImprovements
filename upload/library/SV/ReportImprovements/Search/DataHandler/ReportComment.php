@@ -219,6 +219,19 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
     }
 
     /**
+     * Allows a content type to opt-out of general search based off the viewing user
+     *
+     * @param array $viewingUser
+     *
+     * @return boolean
+     */
+    public function allowInGeneralSearch(array $viewingUser)
+    {
+        if (!($this->enabled)) return false;
+        return $this->_getReportModel()->canViewReports($viewingUser);
+    }
+
+    /**
      * Get type-specific constraints from input.
      *
      * @param XenForo_Input $input
@@ -245,10 +258,6 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
                     $constraints['is_report'] = false;
                 }
             }
-        }
-        else
-        {
-            throw new XenForo_Exception(new XenForo_Phrase('please_select_a_report_comment_search_type'), true);
         }
 
         $warningPoints = $input->filterSingle('warning_points', XenForo_Input::ARRAY_SIMPLE);
