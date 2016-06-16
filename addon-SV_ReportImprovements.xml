@@ -44,7 +44,7 @@
       <relation group_id="sv_report_improvements" display_order="110"/>
     </option>
     <option option_id="sv_moderators_respect_view_node" edit_format="onoff" data_type="boolean" can_backup="1">
-      <default_value>0</default_value>
+      <default_value>1</default_value>
       <edit_format_params></edit_format_params>
       <sub_options></sub_options>
       <relation group_id="sv_report_improvements" display_order="210"/>
