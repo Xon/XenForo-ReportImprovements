@@ -32,6 +32,17 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         return $fields;
     }
 
+    protected function _getReport()
+    {
+        $report = $this->getOption(self::OPTION_WARNINGLOG_REPORT);
+        if (empty($report))
+        {
+            $report = $this->_getReportModel()->getReportById($this->get('report_id'));
+            $this->getOption(self::OPTION_WARNINGLOG_REPORT, $report);
+        }
+        return $report;
+    }
+
     protected function _preSave()
     {
         if (SV_ReportImprovements_Globals::$UserReportAlertComment)
@@ -44,7 +55,7 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         }
 
         $warning = $this->getOption(self::OPTION_WARNINGLOG_WARNING);
-        $report = $this->getOption(self::OPTION_WARNINGLOG_REPORT);
+        $report = $this->_getReport();
         if ($warning && $report)
         {
             $this->set('warning_log_id', $warning['warning_log_id']);
@@ -136,12 +147,12 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
             return;
         }
 
-        $reportModel = $this->_getReportModel();
-        $report = $reportModel->getReportById($this->get('report_id'));
+        $report = $this->_getReport();
         if (empty($report))
         {
             return;
         }
+        $reportModel = $this->_getReportModel();
         $handler = $reportModel->getReportHandler($report['content_type']);
         if (empty($handler))
         {
@@ -278,9 +289,9 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
             return;
         }
 
-        $viewingUser = XenForo_Visitor::getInstance()->toArray();
+        $report = $this->_getReport();
         $indexer = new XenForo_Search_Indexer();
-        $dataHandler->insertIntoIndex($indexer, $this->getMergedData(), array());
+        $dataHandler->insertIntoIndex($indexer, $this->getMergedData(), $report);
     }
 
     protected function _deleteFromSearchIndex()

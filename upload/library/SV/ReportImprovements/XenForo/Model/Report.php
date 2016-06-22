@@ -165,6 +165,18 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         ', $limit), $start);
     }
 
+    public function getReportIdsInRange($start, $limit)
+    {
+        $db = $this->_getDb();
+
+        return $db->fetchCol($db->limit('
+            SELECT report_id
+            FROM xf_report
+            WHERE report_id > ?
+            ORDER BY report_id
+        ', $limit), $start);
+    }
+
     public function getReportsByIds($reportIds)
     {
         if (empty($reportIds))
@@ -410,6 +422,25 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
             $db->quote('i:' . $oldUserId . ';s:8:"username";s:' . strlen($oldUsername) . ':"' . $oldUsername . '";') . ', ' .
             $db->quote('i:' . $newUserId . ';s:8:"username";s:' . strlen($newUsername) . ':"' . $newUsername . '";') . ')
         ', $newUserId);
+    }
+
+    public function mapReportState($reportState)
+    {
+        switch($reportState)
+        {
+            case '':
+                return 0;
+            case 'open':
+                return 1;
+            case 'assigned':
+                return 2;
+            case 'resolved':
+                return 3;
+            case 'rejected':
+                return 4;
+            default:
+                return null;
+        }
     }
 
     protected function _getUserModel()

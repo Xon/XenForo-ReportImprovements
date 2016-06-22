@@ -106,6 +106,12 @@ class SV_ReportImprovements_Installer
             INSERT IGNORE INTO xf_content_type
                 (content_type, addon_id, fields)
             VALUES
+                ('report', '".self::AddonNameSpace."', '')
+        ");
+        $db->query("
+            INSERT IGNORE INTO xf_content_type
+                (content_type, addon_id, fields)
+            VALUES
                 ('report_comment', '".self::AddonNameSpace."', '')
         ");
 
@@ -113,6 +119,7 @@ class SV_ReportImprovements_Installer
             INSERT IGNORE INTO xf_content_type_field
                 (content_type, field_name, field_value)
             VALUES
+                ('report', 'search_handler_class', '".self::AddonNameSpace."_Search_DataHandler_Report'),
                 ('report_comment', 'like_handler_class', '".self::AddonNameSpace."_LikeHandler_ReportComment'),
                 ('report_comment', 'alert_handler_class', '".self::AddonNameSpace."_AlertHandler_ReportComment'),
                 ('report_comment', 'search_handler_class', '".self::AddonNameSpace."_Search_DataHandler_ReportComment')
@@ -134,6 +141,7 @@ class SV_ReportImprovements_Installer
 
         if ($version < 1010006)
         {
+            $requireIndexing['report'] = true;
             $requireIndexing['report_comment'] = true;
             if ($version >= 1010000)
             {

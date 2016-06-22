@@ -29,23 +29,11 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
             $metadata['prefix'] = $data['prefix_id'];
         }
 
-        switch($data['state_change'])
+        $reportModel = $this->_getReportModel();
+        $metadata['state_change'] = $reportModel->mapReportState($data['state_change']);
+        if ($metadata['state_change'] === null)
         {
-            case '':
-                $metadata['state_change'] = 0;
-                break;
-            case 'open':
-                $metadata['state_change'] = 1;
-                break;
-            case 'assigned':
-                $metadata['state_change'] = 2;
-                break;
-            case 'resolved':
-                $metadata['state_change'] = 3;
-                break;
-            case 'rejected':
-                $metadata['state_change'] = 4;
-                break;
+            unset($metadata['state_change']);
         }
         $metadata['is_report'] = $data['is_report'] ? true : false;
 
@@ -135,10 +123,16 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         if (!($this->enabled)) return false;
         $reportModel = $this->_getReportModel();
         $reportComments = $reportModel->getReportCommentsByIds($contentIds);
+        $reportIds = array_unique(XenForo_Application::arrayColumn($reportComments, 'report_id'));
+        $reports = $reportModel->getReportsByIds($reportIds);
 
         foreach ($reportComments AS $reportCommentId => &$reportComment)
         {
-            $this->insertIntoIndex($indexer, $reportComment);
+            if (empty($reports[$reportComment['report_id']]))
+            {
+                continue;
+            }
+            $this->insertIntoIndex($indexer, $reportComment, $reports[$reportComment['report_id']]);
         }
 
         return true;
@@ -215,7 +209,12 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
 
     public function getSearchContentTypes()
     {
-        return array('report_comment');
+        return array('report_comment', 'report');
+    }
+
+    public function getGroupByType()
+    {
+        return 'report';
     }
 
     /**
@@ -367,6 +366,15 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         }
 
         $viewParams['search']['range_query'] = class_exists('XFCP_SV_SearchImprovements_XenES_Search_SourceHandler_ElasticSearch', false);
+
+        if (!empty($params['report_for']))
+        {
+            $user = $this->_getUserModel()->getUserById($params['report_for']);
+            if (isset($user['username']))
+            {
+                $viewParams['search']['report_for'] = $user['username'];
+            }
+        }
 
         return $controller->responseView('XenForo_ViewPublic_Search_Form_Post', 'search_form_report_comment', $viewParams);
     }
