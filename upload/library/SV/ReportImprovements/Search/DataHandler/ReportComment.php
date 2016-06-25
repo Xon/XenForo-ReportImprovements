@@ -219,13 +219,13 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
     }
 
     /**
-     * Allows a content type to opt-out of general search based off the viewing user
+     * Allows a content type to opt-out of search based off the viewing user
      *
      * @param array $viewingUser
      *
      * @return boolean
      */
-    public function allowInGeneralSearch(array $viewingUser)
+    public function allowInSearch(array $viewingUser)
     {
         if (!($this->enabled)) return false;
         return $this->_getReportModel()->canViewReports($viewingUser);
@@ -259,10 +259,6 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
                 }
             }
         }
-        if (!$this->_getReportModel()->canViewReporterUsername())
-        {
-            $constraints['is_report'] = false;
-        }
 
         $warningPoints = $input->filterSingle('warning_points', XenForo_Input::ARRAY_SIMPLE);
 
@@ -289,6 +285,16 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
             unset($constraints['warning_points']);
         }
 
+        return $constraints;
+    }
+
+    public function filterConstraints(XenForo_Search_SourceHandler_Abstract $sourceHandler, array $constraints)
+    {
+        $constraints = parent::filterConstraints($sourceHandler, $constraints);
+        if (!$this->_getReportModel()->canViewReporterUsername())
+        {
+            $constraints['is_report'] = false;
+        }
         return $constraints;
     }
 
