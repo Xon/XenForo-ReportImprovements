@@ -729,6 +729,10 @@ $3]]></replace>
 <xen:include template="report_list_item_report_node" />
 $2$3]]></replace>
     </modification>
+    <modification template="conversation_message_report" modification_key="sv_report_improvements_conversation_message_report" description="Add User Tagging support" execution_order="20" enabled="1" action="preg_replace">
+      <find><![CDATA[#(<textarea name="message" .*? class=".*?)(")#si]]></find>
+      <replace><![CDATA[$1 UserTagger$2]]></replace>
+    </modification>
     <modification template="member_report" modification_key="sv_report_improvements_member_report" description="Add User Tagging support" execution_order="20" enabled="1" action="preg_replace">
       <find><![CDATA[#(<textarea name="message" .*? class=".*?)(")#si]]></find>
       <replace><![CDATA[$1 UserTagger$2]]></replace>
