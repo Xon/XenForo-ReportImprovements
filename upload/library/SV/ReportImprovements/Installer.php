@@ -141,7 +141,6 @@ class SV_ReportImprovements_Installer
 
         if ($version < 1010006)
         {
-            $requireIndexing['report'] = true;
             $requireIndexing['report_comment'] = true;
             if ($version >= 1010000)
             {
@@ -162,6 +161,11 @@ class SV_ReportImprovements_Installer
                     where permission_group_id = 'general' and permission_id in ('warn','editBasicProfile')
                 ", $perm);
             }
+        }
+
+        if ($version < 1030000)
+        {
+            $requireIndexing['report'] = true;
         }
 
         // if Elastic Search is installed, determine if we need to push optimized mappings for the search types
