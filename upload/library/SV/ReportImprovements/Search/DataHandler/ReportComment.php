@@ -46,10 +46,17 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         if (!empty($data['warning_log_id']) && !empty($data['title']))
         {
             if (empty($data['title']))
+            {
                 throw new Exception(var_export($data, true));
-            $text = $data['title'] . ' '. $data['notes']. ' '. $text;
-
+            }
             $title = $data['title'];
+            if ($title instanceof XenForo_Phrase)
+            {
+                $title->setInsertParamsEscaped(false);
+            }
+            $title = (string)$title;
+            $text = $title . ' '. $data['notes']. ' '. $text;
+
             $metadata['points'] = $data['points'];
             $metadata['expiry_date'] = $data['expiry_date'];
         }

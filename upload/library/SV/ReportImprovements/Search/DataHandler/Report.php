@@ -43,6 +43,10 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
         $title = $handler->getContentTitle($data, $contentInfo);
         $threadData = $handler->getContentForThread($data, $contentInfo );
         $text = $threadData['message'];
+        if ($title instanceof XenForo_Phrase)
+        {
+            $title->setInsertParamsEscaped(false);
+        }
 
         $metadata['report_state'] = $reportModel->mapReportState($data['report_state']);
         if ($metadata['report_state'] === null)
