@@ -217,6 +217,19 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
         return array('report');
     }
 
+    /**
+     * Allows a content type to opt-out of search based off the viewing user
+     *
+     * @param array $viewingUser
+     *
+     * @return boolean
+     */
+    public function allowInSearch(array $viewingUser)
+    {
+        if (!($this->enabled)) return false;
+        return $this->_getReportModel()->canViewReports($viewingUser);
+    }
+
     protected function _getReportModel()
     {
         if (!$this->_reportModel)
