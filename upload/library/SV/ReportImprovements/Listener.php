@@ -6,15 +6,12 @@ class SV_ReportImprovements_Listener
 
     public static function load_class($class, array &$extend)
     {
-        switch ($class)
-        {
-            case 'XenForo_Model_Report':
-                if (XenForo_Application::$versionId <= 1040370)
-                    $extend[] = self::AddonNameSpace.$class.'Patch';
-                break;
-
-        }
         $extend[] = self::AddonNameSpace.$class;
+    }
+
+    public static function load_class_patch($class, array &$extend)
+    {
+        $extend[] = self::AddonNameSpace.$class.'Patch';
     }
 
     public static function controller_pre_dispatch(XenForo_Controller $controller, $action, $controllerName)

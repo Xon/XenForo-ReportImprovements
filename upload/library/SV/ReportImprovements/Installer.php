@@ -168,6 +168,19 @@ class SV_ReportImprovements_Installer
             $requireIndexing['report'] = true;
         }
 
+        if (XenForo_Application::$versionId <= 1040370)
+        {
+            // enable the patch for older versions of XF
+            $xmlListeners = XenForo_Helper_DevelopmentXml::fixPhpBug50670($xml->code_event_listeners->listener);
+            foreach ($xmlListeners AS $event)
+            {
+                if ((string)$event['callback_method'] == 'load_class_patch')
+                {
+                    $event['active'] = 1;
+                }
+            }
+        }
+
         // if Elastic Search is installed, determine if we need to push optimized mappings for the search types
         // requires overriding XenES_Model_Elasticsearch
         SV_Utils_Deferred_Search::SchemaUpdates($requireIndexing);
