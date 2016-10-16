@@ -38,6 +38,7 @@ class SV_ReportImprovements_XenForo_DataWriter_Warning extends XFCP_SV_ReportImp
 
     protected function getOperationType()
     {
+        $operationType = '';
         if ($this->isInsert())
         {
             $operationType = SV_ReportImprovements_Model_WarningLog::Operation_NewWarning;
@@ -55,6 +56,7 @@ class SV_ReportImprovements_XenForo_DataWriter_Warning extends XFCP_SV_ReportImp
                 $operationType = SV_ReportImprovements_Model_WarningLog::Operation_ExpireWarning;
             }
         }
+        return $operationType;
     }
 
     protected function _logOperation($operationType)
