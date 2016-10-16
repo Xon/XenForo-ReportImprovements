@@ -80,17 +80,12 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         return parent::_preSave();
     }
 
-    protected function sv_linkWarning(array $warning, array $report)
+    protected function sv_getNewReportState($assigned_user_id, array $warning, array $report)
     {
         $newReportState = '';
-        $assigned_user_id = 0;
         if(SV_ReportImprovements_Globals::$ResolveReport)
         {
             $newReportState = 'resolved';
-        }
-        if(SV_ReportImprovements_Globals::$AssignReport)
-        {
-            $assigned_user_id = $this->get('user_id');
         }
 
         // don't re-open the report when a warning expires naturally.
@@ -112,6 +107,17 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         {
             $newReportState = '';
         }
+        return array($newReportState, $assigned_user_id);
+    }
+
+    protected function sv_linkWarning(array $warning, array $report)
+    {
+        $assigned_user_id = 0;
+        if(SV_ReportImprovements_Globals::$AssignReport)
+        {
+            $assigned_user_id = $this->get('user_id');
+        }
+        list($newReportState, $assigned_user_id) = $this->sv_getNewReportState($assigned_user_id, $warning, $report);
 
         if ($this->get('message') == '.')
         {

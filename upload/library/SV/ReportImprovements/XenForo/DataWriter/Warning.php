@@ -11,26 +11,7 @@ class SV_ReportImprovements_XenForo_DataWriter_Warning extends XFCP_SV_ReportImp
 
     protected function _postSave()
     {
-        $operationType = '';
-
-        if ($this->isInsert())
-        {
-            $operationType = SV_ReportImprovements_Model_WarningLog::Operation_NewWarning;
-        }
-        else if ($this->isUpdate())
-        {
-            $operationType = SV_ReportImprovements_Model_WarningLog::Operation_EditWarning;
-
-            if ($this->isChanged('sv_acknowledgement') && $this->get('sv_acknowledgement') == 'completed') {
-                $operationType = SV_ReportImprovements_Model_WarningLog::Operation_AcknowledgeWarning;
-            }
-
-            if (!$this->isChanged('expiry_date') && ($this->get('is_expired') == 1 && $this->getExisting('is_expired') == 0))
-            {
-                $operationType = SV_ReportImprovements_Model_WarningLog::Operation_ExpireWarning;
-            }
-        }
-
+        $operationType = $this->getOperationType();
         $this->_logOperation($operationType);
         parent::_postSave();
     }
@@ -53,6 +34,27 @@ class SV_ReportImprovements_XenForo_DataWriter_Warning extends XFCP_SV_ReportImp
             'is_expired'            => $this->get('is_expired'),
             'extra_user_group_ids'  => $this->get('extra_user_group_ids'),
         );
+    }
+
+    protected function getOperationType()
+    {
+        if ($this->isInsert())
+        {
+            $operationType = SV_ReportImprovements_Model_WarningLog::Operation_NewWarning;
+        }
+        else if ($this->isUpdate())
+        {
+            $operationType = SV_ReportImprovements_Model_WarningLog::Operation_EditWarning;
+
+            if ($this->isChanged('sv_acknowledgement') && $this->get('sv_acknowledgement') == 'completed') {
+                $operationType = SV_ReportImprovements_Model_WarningLog::Operation_AcknowledgeWarning;
+            }
+
+            if (!$this->isChanged('expiry_date') && ($this->get('is_expired') == 1 && $this->getExisting('is_expired') == 0))
+            {
+                $operationType = SV_ReportImprovements_Model_WarningLog::Operation_ExpireWarning;
+            }
+        }
     }
 
     protected function _logOperation($operationType)
