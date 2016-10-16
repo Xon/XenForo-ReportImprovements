@@ -16,7 +16,7 @@ class SV_ReportImprovements_DataWriter_WarningLog extends XenForo_DataWriter
             'xf_sv_warning_log' => array(
                 'warning_log_id'        => array('type' => self::TYPE_UINT,    'autoIncrement' => true),
                 'operation_type'        => array('type' => self::TYPE_STRING,  'default' => 'new',
-                        'allowedValues' => array('new', 'edit', 'delete', 'expire')
+                        'allowedValues' => array('new', 'edit', 'delete', 'expire', 'acknowledge')
                 ),
 
                 'warning_edit_date'     => array('type' => self::TYPE_UINT,    'default' => XenForo_Application::$time),

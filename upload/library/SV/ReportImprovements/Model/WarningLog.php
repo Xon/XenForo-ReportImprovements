@@ -6,6 +6,7 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
     const Operation_DeleteWarning = 'delete';
     const Operation_ExpireWarning = 'expire';
     const Operation_NewWarning = 'new';
+    const Operation_AcknowledgeWarning = 'acknowledge';
 
     /**
      * Gets the specified Warning Log if it exists.
