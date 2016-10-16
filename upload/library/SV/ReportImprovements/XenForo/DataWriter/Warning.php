@@ -20,6 +20,11 @@ class SV_ReportImprovements_XenForo_DataWriter_Warning extends XFCP_SV_ReportImp
         else if ($this->isUpdate())
         {
             $operationType = SV_ReportImprovements_Model_WarningLog::Operation_EditWarning;
+
+            if ($this->isChanged('sv_acknowledgement') && $this->get('sv_acknowledgement') == 'completed') {
+                $operationType = SV_ReportImprovements_Model_WarningLog::Operation_AcknowledgeWarning;
+            }
+
             if (!$this->isChanged('expiry_date') && ($this->get('is_expired') == 1 && $this->getExisting('is_expired') == 0))
             {
                 $operationType = SV_ReportImprovements_Model_WarningLog::Operation_ExpireWarning;

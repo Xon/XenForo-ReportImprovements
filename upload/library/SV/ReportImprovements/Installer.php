@@ -14,7 +14,7 @@ class SV_ReportImprovements_Installer
             CREATE TABLE IF NOT EXISTS `xf_sv_warning_log` (
               `warning_log_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
               `warning_edit_date` int(10) unsigned NOT NULL,
-              `operation_type` enum('new','edit','expire','delete') NOT NULL,
+              `operation_type` enum('new','edit','expire','delete','acknowledge') NOT NULL,
               `warning_id` int(10) unsigned NOT NULL,
               `content_type` varbinary(25) NOT NULL,
               `content_id` int(10) unsigned NOT NULL,
@@ -166,6 +166,11 @@ class SV_ReportImprovements_Installer
         if ($version < 1030000)
         {
             $requireIndexing['report'] = true;
+        }
+
+        if ($version < 1030400)
+        {
+            SV_Utils_Install::modifyColumn('xf_sv_warning_log', 'operation_type', false, "enum('new','edit','expire','delete','acknowledge') NOT NULL");
         }
 
         if (XenForo_Application::$versionId <= 1040370)

@@ -94,7 +94,10 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         }
 
         // don't re-open the report when a warning expires naturally.
-        if ($warning['operation_type'] != SV_ReportImprovements_Model_WarningLog::Operation_ExpireWarning)
+        if (
+            $warning['operation_type'] != SV_ReportImprovements_Model_WarningLog::Operation_ExpireWarning &&
+            $warning['operation_type'] != SV_ReportImprovements_Model_WarningLog::Operation_AcknowledgeWarning
+        )
         {
             if ($newReportState == '' && ($report['report_state'] == 'resolved' || $report['report_state'] == 'rejected'))
             {
