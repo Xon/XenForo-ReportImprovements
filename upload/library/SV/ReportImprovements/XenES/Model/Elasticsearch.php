@@ -17,6 +17,14 @@ class SV_ReportImprovements_XenES_Model_Elasticsearch extends XFCP_SV_ReportImpr
                         )
                     );
                 break;
+            case 'report':
+                $mapping = array(
+                        "properties" => array(
+                            "report" => array("type" => "long"),
+                            "report_state" => array("type" => "long"),
+                        )
+                    );
+                break;
             default:
                 $mapping = array();
                 break;
