@@ -163,11 +163,6 @@ class SV_ReportImprovements_Installer
             }
         }
 
-        if ($version < 1030000)
-        {
-            $requireIndexing['report'] = true;
-        }
-
         if ($version < 1030400)
         {
             SV_Utils_Install::modifyColumn('xf_sv_warning_log', 'operation_type', false, "enum('new','edit','expire','delete','acknowledge') NOT NULL");
@@ -184,6 +179,11 @@ class SV_ReportImprovements_Installer
                     $event['active'] = 1;
                 }
             }
+        }
+
+        if ($version < 1030500)
+        {
+            $requireIndexing['report'] = true;
         }
 
         // if Elastic Search is installed, determine if we need to push optimized mappings for the search types
