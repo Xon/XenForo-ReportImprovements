@@ -47,6 +47,7 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
         {
             $title->setInsertParamsEscaped(false);
         }
+        $title = (string)$title;
 
         $metadata['report_state'] = $reportModel->mapReportState($data['report_state']);
         if ($metadata['report_state'] === null)
