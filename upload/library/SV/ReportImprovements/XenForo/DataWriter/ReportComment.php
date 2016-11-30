@@ -317,11 +317,11 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
 
     public function sv_getSearchDataHandler()
     {
-        $dataHandler = $this->_getSearchnModel()->getSearchDataHandler('report_comment');
+        $dataHandler = $this->_getSearchModel()->getSearchDataHandler('report_comment');
         return ($dataHandler instanceof SV_ReportImprovements_Search_DataHandler_ReportComment) ? $dataHandler : null;
     }
 
-    protected function _getSearchnModel()
+    protected function _getSearchModel()
     {
         return $this->getModelFromCache('XenForo_Model_Search');
     }
