@@ -292,7 +292,7 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
 
     protected function _insertIntoSearchIndex()
     {
-        $dataHandler = $this->_getSearchDataHandler();
+        $dataHandler = $this->sv_getSearchDataHandler();
         if (!$dataHandler)
         {
             return;
@@ -305,7 +305,7 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
 
     protected function _deleteFromSearchIndex()
     {
-        $dataHandler = $this->_getSearchDataHandler();
+        $dataHandler = $this->sv_getSearchDataHandler();
         if (!$dataHandler)
         {
             return;
@@ -315,8 +315,14 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         $dataHandler->deleteFromIndex($indexer, $this->getMergedData());
     }
 
-    public function _getSearchDataHandler()
+    public function sv_getSearchDataHandler()
     {
-        return XenForo_Search_DataHandler_Abstract::create('SV_ReportImprovements_Search_DataHandler_ReportComment');
+        $dataHandler = $this->_getSearchnModel()->getSearchDataHandler('report_comment');
+        return ($dataHandler instanceof SV_ReportImprovements_Search_DataHandler_ReportComment) ? $dataHandler : null;
+    }
+
+    protected function _getSearchnModel()
+    {
+        return $this->getModelFromCache('XenForo_Model_Search');
     }
 }
