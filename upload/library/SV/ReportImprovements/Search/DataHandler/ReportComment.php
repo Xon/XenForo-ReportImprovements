@@ -11,6 +11,16 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         $this->enabled = class_exists('XFCP_SV_ReportImprovements_XenForo_Model_Report', false);
     }
 
+    public function getCustomMapping(array $mapping = array())
+    {
+        $mapping['properties']['report'] = array("type" => "long");
+        $mapping['properties']['state_change'] = array("type" => "long");
+        $mapping['properties']['is_report'] = array("type" => "boolean");
+        $mapping['properties']['points'] = array("type" => "long");
+        $mapping['properties']['expiry_date'] = array("type" => "long");
+        return $mapping;
+    }
+
     protected $_reportModel = null;
 
     /**

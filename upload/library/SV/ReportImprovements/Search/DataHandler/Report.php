@@ -11,6 +11,13 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
         $this->enabled = class_exists('XFCP_SV_ReportImprovements_XenForo_Model_Report', false);
     }
 
+    public function getCustomMapping(array $mapping = array())
+    {
+        $mapping['properties']['report'] = array("type" => "long");
+        $mapping['properties']['report_state'] = array("type" => "long");
+        return $mapping;
+    }
+
     protected $_reportModel = null;
 
     /**
