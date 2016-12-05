@@ -126,7 +126,7 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
     {
         if (!($this->enabled)) return false;
         $reportModel = $this->_getReportModel();
-        $reports = $reportModel->getReportsByIds($contentIds);
+        $reports = $reportModel->sv_getReportsByIds($contentIds);
         $handlers = $reportModel->getReportHandlers();
 
         foreach ($reports AS $reportId => &$report)
@@ -160,7 +160,7 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
     {
         if (!($this->enabled)) return array();
         $reportModel = $this->_getReportModel();
-        $reports = $reportModel->getReportsByIds($ids);
+        $reports = $reportModel->sv_getReportsByIds($ids);
         return $reportModel->getVisibleReportsForUser($reports, $viewingUser);
     }
 

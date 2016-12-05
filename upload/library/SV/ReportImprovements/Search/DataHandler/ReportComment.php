@@ -141,7 +141,7 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         $reportModel = $this->_getReportModel();
         $reportComments = $reportModel->getReportCommentsByIds($contentIds);
         $reportIds = array_unique(XenForo_Application::arrayColumn($reportComments, 'report_id'));
-        $reports = $reportModel->getReportsByIds($reportIds);
+        $reports = $reportModel->sv_getReportsByIds($reportIds);
 
         foreach ($reportComments AS $reportCommentId => &$reportComment)
         {

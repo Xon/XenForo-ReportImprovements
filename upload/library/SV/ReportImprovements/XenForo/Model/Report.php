@@ -88,7 +88,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
 
         $comments = $this->getReportCommentsByIds($contentIds);
         $reportIds = array_unique(XenForo_Application::arrayColumn($comments, 'report_id'));
-        $reports = $this->getReportsByIds($reportIds);
+        $reports = $this->sv_getReportsByIds($reportIds);
 
         // group reports to make getVisibleReportsForUser more efficient
         $reportsGrouped = array();
@@ -157,7 +157,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         ', $limit), $start);
     }
 
-    public function getReportsByIds($reportIds)
+    public function sv_getReportsByIds($reportIds)
     {
         if (empty($reportIds))
         {
