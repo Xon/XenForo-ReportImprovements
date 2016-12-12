@@ -760,11 +760,11 @@ $2$3]]></replace>
       <find><![CDATA[#(<textarea name="message" .*? class=".*?)(")#si]]></find>
       <replace><![CDATA[$1 UserTagger$2]]></replace>
     </modification>
-    <modification template="profile_post_report" modification_key="sv_report_improvements_profile_post_report" description="Add User Tagging support" execution_order="20" enabled="1" action="preg_replace">
+    <modification template="profile_post_comment_report" modification_key="sv_report_improvements_profile_post_comment_report" description="Add User Tagging support" execution_order="20" enabled="1" action="preg_replace">
       <find><![CDATA[#(<textarea name="message" .*? class=".*?)(")#si]]></find>
       <replace><![CDATA[$1 UserTagger$2]]></replace>
     </modification>
-    <modification template="report_comment_report" modification_key="sv_report_improvements_report_comment_report" description="Add User Tagging support" execution_order="20" enabled="1" action="preg_replace">
+    <modification template="profile_post_report" modification_key="sv_report_improvements_profile_post_report" description="Add User Tagging support" execution_order="20" enabled="1" action="preg_replace">
       <find><![CDATA[#(<textarea name="message" .*? class=".*?)(")#si]]></find>
       <replace><![CDATA[$1 UserTagger$2]]></replace>
     </modification>
