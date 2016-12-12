@@ -186,6 +186,26 @@ class SV_ReportImprovements_Installer
             $requireIndexing['report'] = true;
         }
 
+        if ($version < 1030900)
+        {
+            $moderatorModel = XenForo_Model::create('XenForo_Model_Moderator');
+            $contentModerators = $moderatorModel->getContentModerators();
+            foreach($contentModerators as $contentModerator)
+            {
+                $permissions = @unserialize($contentModerator['moderator_permissions']);
+                if (empty($permissions))
+                {
+                    continue;
+                }
+                if (!isset($permissions['forums']['viewReportPost']) &&
+                    (!empty($permissions['forums']['editAnyPost']) || !empty($permissions['forums']['deleteAnyPost'])|| !empty($permissions['forums']['warn'])))
+                {
+                    $permissions['forums']['viewReportPost'] = 1;
+                    $moderatorModel->insertOrUpdateContentModerator($contentModerator['user_id'], $contentModerator['content_type'], $contentModerator['content_id'], $permissions);
+                }
+            }
+        }
+
         // if Elastic Search is installed, determine if we need to push optimized mappings for the search types
         // requires overriding XenES_Model_Elasticsearch
         SV_Utils_Deferred_Search::SchemaUpdates($requireIndexing);
