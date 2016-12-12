@@ -186,7 +186,7 @@ class SV_ReportImprovements_Installer
             $requireIndexing['report'] = true;
         }
 
-        if ($version < 1030900)
+        if ($version < 1040001)
         {
             $moderatorModel = XenForo_Model::create('XenForo_Model_Moderator');
             $contentModerators = $moderatorModel->getContentModerators();
@@ -197,10 +197,10 @@ class SV_ReportImprovements_Installer
                 {
                     continue;
                 }
-                if (!isset($permissions['forums']['viewReportPost']) &&
-                    (!empty($permissions['forums']['editAnyPost']) || !empty($permissions['forums']['deleteAnyPost'])|| !empty($permissions['forums']['warn'])))
+                if (!isset($permissions['forum']['viewReportPost']) &&
+                    (!empty($permissions['forum']['editAnyPost']) || !empty($permissions['forum']['deleteAnyPost']) || !empty($permissions['forum']['warn'])))
                 {
-                    $permissions['forums']['viewReportPost'] = 1;
+                    $permissions['forum']['viewReportPost'] = "1";
                     $moderatorModel->insertOrUpdateContentModerator($contentModerator['user_id'], $contentModerator['content_type'], $contentModerator['content_id'], $permissions);
                 }
             }
