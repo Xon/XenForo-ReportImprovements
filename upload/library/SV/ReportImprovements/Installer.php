@@ -186,7 +186,7 @@ class SV_ReportImprovements_Installer
             $requireIndexing['report'] = true;
         }
 
-        if ($version < 1040001)
+        if ($version <= 1040002)
         {
             $moderatorModel = XenForo_Model::create('XenForo_Model_Moderator');
             $contentModerators = $moderatorModel->getContentModerators();
@@ -197,11 +197,85 @@ class SV_ReportImprovements_Installer
                 {
                     continue;
                 }
+                $changes = false;
                 if (!isset($permissions['forum']['viewReportPost']) &&
                     (!empty($permissions['forum']['editAnyPost']) || !empty($permissions['forum']['deleteAnyPost']) || !empty($permissions['forum']['warn'])))
                 {
                     $permissions['forum']['viewReportPost'] = "1";
+                    $changes = true;
+                }
+                if ($changes)
+                {
                     $moderatorModel->insertOrUpdateContentModerator($contentModerator['user_id'], $contentModerator['content_type'], $contentModerator['content_id'], $permissions);
+                }
+            }
+            $moderators = $moderatorModel->getAllGeneralModerators();
+            $globalReportPerms = array(
+                'assignReport' => array('general' => array('warn','editBasicProfile')),
+                'replyReport' => array('general' => array('warn','editBasicProfile')),
+                'replyReportClosed' => array('general' => array('warn','editBasicProfile')),
+                'updateReport' => array('general' => array('warn','editBasicProfile')),
+                'viewReporterUsername' => array('general' => array('warn','editBasicProfile')),
+                'viewReports' => array('general' => array('warn','editBasicProfile')),
+                'reportLike' => array('general' => array('warn','editBasicProfile')),
+                'viewReportPost' => array('forum' => array('warn','editAnyPost','deleteAnyPost')),
+                'viewReportConversation' => array('conversation' => array('alwaysInvite','editAnyPost','viewAny')),
+                'viewReportProfilePost' => array('profilePost' => array('warn','editAnyPost','viewAny')),
+                'viewReportUser' => array('general' => array('warn','editBasicProfile')),
+            );
+
+            foreach($moderators as $moderator)
+            {
+                $userPerms = $db->fetchAll('
+                    select *
+                    from xf_permission_entry
+                    where user_id = ?
+                ', array($moderator['user_id']));
+                if (empty($userPerms))
+                {
+                    continue;
+                }
+
+                $userPermsGrouped = array();
+                foreach($userPerms as $userPerm)
+                {
+                    if ($userPerm['permission_value'] == 'allow')
+                    {
+                        $userPermsGrouped[$userPerm['permission_group_id']][$userPerm['permission_id']] = "1";
+                    }
+                }
+                $permissions = @unserialize($moderator['moderator_permissions']);
+                $changes = false;
+                foreach($globalReportPerms as $perm => $data)
+                {
+                    $keys = array_keys($data);
+                    $category = reset($keys);
+                    if (!isset($permissions[$category][$perm]) && !empty($data[$category]))
+                    {
+                        if (!empty($userPermsGrouped[$category][$perm]))
+                        {
+                            $permissions[$category][$perm] = "1";
+                            $changes = true;
+                            continue;
+                        }
+                        foreach($data[$category] as $permToTest)
+                        {
+                            if (!empty($permissions[$category][$permToTest]) ||
+                                !empty($userPermsGrouped[$category][$permToTest]))
+                            {
+                                $permissions[$category][$perm] = "1";
+                                $changes = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if ($changes)
+                {
+                    $dw = XenForo_DataWriter::create('XenForo_DataWriter_Moderator');
+                    $dw->setExistingData($moderator, true);
+                    $dw->setGeneralPermissions($permissions);
+                    $dw->save();
                 }
             }
         }
