@@ -1,0 +1,6 @@
+<?php
+
+class SV_ReportImprovements_XenForo_ControllerPublic_Attachment extends XFCP_SV_ReportImprovements_XenForo_ControllerPublic_Attachment
+{
+
+}
