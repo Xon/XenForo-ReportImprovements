@@ -6,17 +6,31 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
     {
         $this->standardizeViewingUserReference($viewingUser);
 
-        if (!$viewingUser['user_id'])
+        if (!$viewingUser['user_id'] || !XenForo_Application::isRegistered('session') || !$session->isRegistered('registrationKey'))
         {
             return null;
         }
 
-        // links are only valid for upto an hour
-        $time = XenForo_Application::$time;
-        $time = $time - ($time % 3600);
+        $session =  XenForo_Application::get('session');
 
-        // this must be deterministic, and unique per atttachment-viewer pair
-        return sha1($attachment['attachment_id'] . $attachment['file_hash'] . $viewingUser['user_id'] . $viewingUser['password_date'] . $time);
+        if ($session->get('robotId'))
+        {
+            return null;
+        }
+
+        if (!$this->canViewReports($viewingUser))
+        {
+            return null;
+        }
+
+        // TODO - store this generated key into cache with an expiry, on viewing the attachment if the key doesn't exist fail to allow them to view the attachment
+
+        // links are only valid for upto an 30 minutes
+        $time = XenForo_Application::$time;
+        $time = $time - ($time % 1800);
+
+        // this must be deterministic, and unique per atttachment-viewer pair, and use information the user should not have access to
+        return sha1($attachment['attachment_id'] . $attachment['data_id'] . $attachment['file_hash'] . $viewingUser['user_id'] . $viewingUser['password_date'] . $time);
     }
 
     public function reportContent($contentType, array $content, $message, array $viewingUser = null)
