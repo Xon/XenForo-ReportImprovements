@@ -6,7 +6,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
     {
         $this->standardizeViewingUserReference($viewingUser);
 
-        if (!$viewingUser['user_id'] || !XenForo_Application::isRegistered('session') || !$session->isRegistered('registrationKey'))
+        if (!$viewingUser['user_id'] || !XenForo_Application::isRegistered('session'))
         {
             return null;
         }

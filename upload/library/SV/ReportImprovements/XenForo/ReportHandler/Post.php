@@ -45,10 +45,9 @@ class SV_ReportImprovements_XenForo_ReportHandler_Post extends XFCP_SV_ReportImp
         {
             /* @var $conversationModel XenForo_Model_Conversation */
             $reportModel = XenForo_Model::create('XenForo_Model_Report');
-            $reportKey = $reportModel->getAttachmentReportKey();
             foreach($message['attachments'] as &$attachment)
             {
-                $attachment['reportKey'] = $reportKey;
+                $attachment['reportKey'] = $reportModel->getAttachmentReportKey($attachment);
             }
             $contentInfo['attachments'] = $message['attachments'];
             $contentInfo['attachments_count'] = count($message['attachments']);
