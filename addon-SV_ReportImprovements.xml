@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.5.0" version_id="1050000" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.5.1" version_id="1050100" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -341,9 +341,11 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <template title="report_list_item_report_node" version_id="8" version_string="0.0.8"><![CDATA[<xen:if is="{$report.extraContent.node_title} AND {$report.extraContent.node_id}">
 , <a href="{xen:link forums, $report.extraContent}" class="forumLink">{$report.extraContent.node_title}</a>
 </xen:if>]]></template>
-    <template title="report_view_attachments_all" version_id="1050000" version_string="1.5.0"><![CDATA[<xen:include template="attached_files">
+    <template title="report_view_attachments_all" version_id="1050100" version_string="1.5.1"><![CDATA[<xen:if is="{$content.attachments_count}">
+<xen:include template="attached_files">
 	<xen:map from="$content" to="$post" />
-</xen:include>]]></template>
+</xen:include>
+</xen:if>]]></template>
     <template title="report_view_attachments_summary" version_id="1050000" version_string="1.5.0"><![CDATA[<xen:if is="{$content.attachments_count}">
 <dl class="pairsRows">
 <dt>{xen:phrase attachments}:</dt> <dd>{$content.attachments_count}</dd>
