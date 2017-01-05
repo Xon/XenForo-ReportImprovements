@@ -14,5 +14,7 @@ class SV_ReportImprovements_Globals
     public static $UserReportAlertComment = null;
     public static $RequireWarningLogTitle = true;
 
+    public static $attachmentReportKey = null;
+
     private function __construct() {}
 }

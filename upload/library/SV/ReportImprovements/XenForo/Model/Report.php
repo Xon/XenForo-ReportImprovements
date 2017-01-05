@@ -2,6 +2,23 @@
 
 class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImprovements_XenForo_Model_Report
 {
+    public function getAttachmentReportKey(array $attachment, array $viewingUser = null)
+    {
+        $this->standardizeViewingUserReference($viewingUser);
+
+        if (!$viewingUser['user_id'])
+        {
+            return null;
+        }
+
+        // links are only valid for upto an hour
+        $time = XenForo_Application::$time;
+        $time = $time - ($time % 3600);
+
+        // this must be deterministic, and unique per atttachment-viewer pair
+        return sha1($attachment['attachment_id'] . $attachment['file_hash'] . $viewingUser['user_id'] . $viewingUser['password_date'] . $time);
+    }
+
     public function reportContent($contentType, array $content, $message, array $viewingUser = null)
     {
         $this->standardizeViewingUserReference($viewingUser);
@@ -15,7 +32,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
     {
         $db = $this->_getDb();
         return $this->fetchAllKeyed("
-            SELECT report_comment.*, 
+            SELECT report_comment.*,
                 warning.warning_id, warningLog.*, warning.is_expired,
                 liked_content.like_date,
                 user.*, IF(user.username IS NULL, report_comment.username, user.username) AS username
@@ -34,7 +51,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
     public function getReportCommentById($id)
     {
         return $this->_getDb()->fetchRow('
-            SELECT report_comment.*, 
+            SELECT report_comment.*,
                 warning.warning_id, warningLog.*, warning.is_expired,
                 user.*, IF(user.username IS NULL, report_comment.username, user.username) AS username
             FROM xf_report_comment AS report_comment
@@ -53,7 +70,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         }
 
         return $this->fetchAllKeyed('
-            SELECT report_comment.*, 
+            SELECT report_comment.*,
                 warning.warning_id, warningLog.*, warning.is_expired,
                 user.*, IF(user.username IS NULL, report_comment.username, user.username) AS username
             FROM xf_report_comment AS report_comment

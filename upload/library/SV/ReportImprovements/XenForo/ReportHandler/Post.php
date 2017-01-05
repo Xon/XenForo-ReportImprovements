@@ -37,19 +37,26 @@ class SV_ReportImprovements_XenForo_ReportHandler_Post extends XFCP_SV_ReportImp
         /* @var $conversationModel XenForo_Model_Post */
         $postModel = XenForo_Model::create('XenForo_Model_Post');
 
-        $post = $postModel->getPostById($report['content_id']);
-        $posts = $postModel->getAndMergeAttachmentsIntoPosts(array($post['post_id'] => $post));
-        $post = reset($posts);
+        $message = $postModel->getPostById($report['content_id']);
+        $posts = $postModel->getAndMergeAttachmentsIntoPosts(array($message['post_id'] => $message));
+        $message = reset($posts);
 
-        if (!empty($post['attachments']))
+        if (!empty($message['attachments']))
         {
-            $contentInfo['attachments'] = $post['attachments'];
-            $contentInfo['attachments_count'] = count($post['attachments']);
+            /* @var $conversationModel XenForo_Model_Conversation */
+            $reportModel = XenForo_Model::create('XenForo_Model_Report');
+            $reportKey = $reportModel->getAttachmentReportKey();
+            foreach($message['attachments'] as &$attachment)
+            {
+                $attachment['reportKey'] = $reportKey;
+            }
+            $contentInfo['attachments'] = $message['attachments'];
+            $contentInfo['attachments_count'] = count($message['attachments']);
         }
 
         $template = parent::viewCallback($view, $report, $contentInfo);
 
-        if (!empty($post['attachments']))
+        if (!empty($message['attachments']))
         {
             $class = XenForo_Application::resolveDynamicClass('SV_ReportImprovements_AttachmentParser');
             $template->setParam('bbCodeParser', new $class($template->getParam('bbCodeParser'), $report, $contentInfo));

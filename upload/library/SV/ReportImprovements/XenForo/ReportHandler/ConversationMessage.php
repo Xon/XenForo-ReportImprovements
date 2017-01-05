@@ -13,6 +13,12 @@ class SV_ReportImprovements_XenForo_ReportHandler_ConversationMessage extends XF
 
         if (!empty($message['attachments']))
         {
+            /* @var $conversationModel XenForo_Model_Conversation */
+            $reportModel = XenForo_Model::create('XenForo_Model_Report');
+            foreach($message['attachments'] as &$attachment)
+            {
+                $attachment['reportKey'] = $reportModel->getAttachmentReportKey($attachment);
+            }
             $contentInfo['attachments'] = $message['attachments'];
             $contentInfo['attachments_count'] = count($message['attachments']);
         }
