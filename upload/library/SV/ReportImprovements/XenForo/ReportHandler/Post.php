@@ -52,6 +52,10 @@ class SV_ReportImprovements_XenForo_ReportHandler_Post extends XFCP_SV_ReportImp
             $contentInfo['attachments'] = $message['attachments'];
             $contentInfo['attachments_count'] = count($message['attachments']);
         }
+        if (isset($message['post_date']))
+        {
+            $contentInfo['content_date'] = $message['post_date'];
+        }
 
         $template = parent::viewCallback($view, $report, $contentInfo);
 

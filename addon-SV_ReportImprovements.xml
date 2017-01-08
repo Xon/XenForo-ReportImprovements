@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.5.1" version_id="1050100" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.5.2" version_id="1050200" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -149,6 +149,7 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <phrase title="someone_likes_one_of_your_report_comment" version_id="1020100" version_string="1.2.1"><![CDATA[Someone likes one of your report comments]]></phrase>
     <phrase title="someone_posts_a_new_report_comment" version_id="1020100" version_string="1.2.1"><![CDATA[Someone posts a new report comment]]></phrase>
     <phrase title="someone_tags_you_in_report_comment" version_id="1020100" version_string="1.2.1"><![CDATA[Someone mentions you in a report comment]]></phrase>
+    <phrase title="sv_content_date" version_id="1050100" version_string="1.5.1"><![CDATA[Content date]]></phrase>
     <phrase title="sv_like_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Like report comment]]></phrase>
     <phrase title="sv_members_who_liked_this_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Members Who Liked This Report Comment]]></phrase>
     <phrase title="sv_no_one_has_liked_this_report_comment_yet" version_id="1010000" version_string="1.1.0"><![CDATA[No one has liked this report comment yet.]]></phrase>
@@ -346,7 +347,12 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 	<xen:map from="$content" to="$post" />
 </xen:include>
 </xen:if>]]></template>
-    <template title="report_view_attachments_summary" version_id="1050000" version_string="1.5.0"><![CDATA[<xen:if is="{$content.attachments_count}">
+    <template title="report_view_attachments_summary" version_id="1050100" version_string="1.5.1"><![CDATA[<xen:if is="{$content.content_date}">
+<dl class="pairsRows">
+<dt>{xen:phrase sv_content_date}:</dt> <dd>{xen:datetime $content.content_date, absolute}</dd>
+</dl>
+</xen:if>
+<xen:if is="{$content.attachments_count}">
 <dl class="pairsRows">
 <dt>{xen:phrase attachments}:</dt> <dd>{$content.attachments_count}</dd>
 </dl>

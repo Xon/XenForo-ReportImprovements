@@ -22,6 +22,10 @@ class SV_ReportImprovements_XenForo_ReportHandler_ConversationMessage extends XF
             $contentInfo['attachments'] = $message['attachments'];
             $contentInfo['attachments_count'] = count($message['attachments']);
         }
+        if (isset($message['message_date']))
+        {
+            $contentInfo['content_date'] = $message['message_date'];
+        }
 
         $template = parent::viewCallback($view, $report, $contentInfo);
 
