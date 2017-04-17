@@ -1,12 +1,15 @@
 <?php
 
+/**
+ * Class SV_ReportImprovements_XenForo_DataWriter_ReportComment
+ */
 class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_ReportImprovements_XenForo_DataWriter_ReportComment
 {
-    const OPTION_MAX_TAGGED_USERS = 'maxTaggedUsers';
-    const OPTION_INDEX_FOR_SEARCH = 'indexForSearch';
+    const OPTION_MAX_TAGGED_USERS   = 'maxTaggedUsers';
+    const OPTION_INDEX_FOR_SEARCH   = 'indexForSearch';
     const OPTION_WARNINGLOG_WARNING = 'warningLog_warning';
-    const OPTION_WARNINGLOG_REPORT = 'warningLog_report';
-    const OPTION_SEND_ALERTS = 'sendAlerts';
+    const OPTION_WARNINGLOG_REPORT  = 'warningLog_report';
+    const OPTION_SEND_ALERTS        = 'sendAlerts';
 
     protected $_taggedUsers = array();
 
@@ -18,17 +21,19 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         $defaultOptions[self::OPTION_WARNINGLOG_WARNING] = false;
         $defaultOptions[self::OPTION_WARNINGLOG_REPORT] = false;
         $defaultOptions[self::OPTION_SEND_ALERTS] = true;
+
         return $defaultOptions;
     }
 
     protected function _getFields()
     {
         $fields = parent::_getFields();
-        $fields['xf_report_comment']['warning_log_id'] = array('type' => self::TYPE_UINT,    'default' => 0);
+        $fields['xf_report_comment']['warning_log_id'] = array('type' => self::TYPE_UINT, 'default' => 0);
         $fields['xf_report_comment']['likes'] = array('type' => self::TYPE_UINT_FORCED, 'default' => 0);
         $fields['xf_report_comment']['like_users'] = array('type' => self::TYPE_SERIALIZED);
         $fields['xf_report_comment']['alertSent'] = array('type' => self::TYPE_UINT, 'default' => 0);
         $fields['xf_report_comment']['alertComment'] = array('type' => self::TYPE_STRING);
+
         return $fields;
     }
 
@@ -40,6 +45,7 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
             $report = $this->_getReportModel()->getReportById($this->get('report_id'));
             $this->getOption(self::OPTION_WARNINGLOG_REPORT, $report);
         }
+
         return $report;
     }
 
@@ -70,6 +76,7 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
             }
         }
 
+        /** @var XenForo_Model_UserTagging $taggingModel */
         $taggingModel = $this->getModelFromCache('XenForo_Model_UserTagging');
 
         $this->_taggedUsers = $taggingModel->getTaggedUsersInMessage(
@@ -77,13 +84,13 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         );
         $this->set('message', $newMessage);
 
-        return parent::_preSave();
+        parent::_preSave();
     }
 
     protected function sv_getNewReportState($assigned_user_id, array $warning, array $report)
     {
         $newReportState = '';
-        if(SV_ReportImprovements_Globals::$ResolveReport)
+        if (SV_ReportImprovements_Globals::$ResolveReport)
         {
             $newReportState = 'resolved';
         }
@@ -98,8 +105,8 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
             {
                 // re-open an existing report
                 $newReportState = empty($report['assigned_user_id']) && empty($assigned_user_id)
-                                    ? 'open'
-                                    : 'assigned';
+                    ? 'open'
+                    : 'assigned';
             }
         }
         // do not change the report state to something it already is
@@ -107,13 +114,14 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         {
             $newReportState = '';
         }
+
         return array($newReportState, $assigned_user_id);
     }
 
     protected function sv_linkWarning(array $warning, array $report)
     {
         $assigned_user_id = 0;
-        if(SV_ReportImprovements_Globals::$AssignReport)
+        if (SV_ReportImprovements_Globals::$AssignReport)
         {
             $assigned_user_id = $this->get('user_id');
         }
@@ -130,13 +138,13 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         {
             $reportDw = XenForo_DataWriter::create('XenForo_DataWriter_Report');
             $reportDw->setExistingData($report['report_id']);
-            if(!empty($newReportState))
+            if (!empty($newReportState))
             {
-                $reportDw->set('report_state',  $newReportState);
+                $reportDw->set('report_state', $newReportState);
             }
-            if(!empty($assigned_user_id))
+            if (!empty($assigned_user_id))
             {
-                $reportDw->set('assigned_user_id',  $assigned_user_id);
+                $reportDw->set('assigned_user_id', $assigned_user_id);
             }
             $reportDw->save();
         }
@@ -194,12 +202,16 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
                 $alertTagged = $this->_taggedUsers;
             }
 
-            $alertedUserIds = array_merge($alertedUserIds, $this->_getReportModel()->alertTaggedMembers($report, $reportComment, $alertTagged, $alertedUserIds, array(
-                    'user_id' => $this->get('user_id'),
-                    'username' => $this->get('username')
-                )
-            ));
+            $alertedUserIds = array_merge($alertedUserIds,
+                                          $this->_getReportModel()
+                                               ->alertTaggedMembers($report, $reportComment, $alertTagged, $alertedUserIds,
+                                                                    array(
+                                                                        'user_id' => $this->get('user_id'),
+                                                                        'username' => $this->get('username')
+                                                                    )
+                                               ));
         }
+
         return $alertedUserIds;
     }
 
@@ -236,12 +248,12 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
                 $hasUnviewedReport = $db->fetchRow("
                     SELECT alert.alert_id
                     FROM xf_user_alert AS alert
-                    JOIN xf_report_comment AS report_comment on report_comment_id = alert.content_id
+                    JOIN xf_report_comment AS report_comment ON report_comment_id = alert.content_id
                     WHERE alert.alerted_user_id = ?
-                          and alert.view_date = 0
-                          and alert.content_type = ?
-                          and alert.action = ?
-                          and report_comment.report_id = ?
+                          AND alert.view_date = 0
+                          AND alert.content_type = ?
+                          AND alert.action = ?
+                          AND report_comment.report_id = ?
                     LIMIT 1
                 ", array($otherCommenter['user_id'], 'report_comment', $alertType, $report['report_id']));
 
@@ -280,6 +292,7 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
                 }
             }
         }
+
         return array_keys($alertedUserIds);
     }
 
@@ -315,14 +328,36 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         $dataHandler->deleteFromIndex($indexer, $this->getMergedData());
     }
 
+    /**
+     * @return XenForo_Search_DataHandler_Abstract|null
+     */
     public function sv_getSearchDataHandler()
     {
+        /* var $dataHandler XenForo_Search_DataHandler_Abstract */
         $dataHandler = $this->_getSearchModel()->getSearchDataHandler('report_comment');
+
         return ($dataHandler instanceof SV_ReportImprovements_Search_DataHandler_ReportComment) ? $dataHandler : null;
     }
 
+    /**
+     * @return SV_ReportImprovements_XenForo_Model_Report
+     */
+    protected function _getReportModel()
+    {
+        return $this->getModelFromCache('XenForo_Model_Report');
+    }
+
+    /**
+     * @return XenForo_Model_Search
+     */
     protected function _getSearchModel()
     {
         return $this->getModelFromCache('XenForo_Model_Search');
     }
+}
+
+// ******************** FOR IDE AUTO COMPLETE ********************
+if (false)
+{
+    class XFCP_SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XenForo_DataWriter_ReportComment {}
 }

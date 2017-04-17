@@ -53,13 +53,25 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Warning extends XFCP_SV_Rep
         return parent::actionDelete();
     }
 
+    /**
+     * @return SV_ReportImprovements_XenForo_Model_Report
+     */
     protected function _getReportModel()
     {
         return $this->getModelFromCache('XenForo_Model_Report');
     }
 
+    /**
+     * @return SV_ReportImprovements_Model_WarningLog
+     */
     protected function _getWarningLogModel()
     {
         return $this->getModelFromCache('SV_ReportImprovements_Model_WarningLog');
     }
+}
+
+// ******************** FOR IDE AUTO COMPLETE ********************
+if (false)
+{
+    class XFCP_SV_ReportImprovements_XenForo_ControllerPublic_Warning extends XenForo_ControllerPublic_Warning {}
 }

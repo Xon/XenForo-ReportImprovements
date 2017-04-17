@@ -55,6 +55,7 @@ class SV_ReportImprovements_XenES_Model_Elasticsearch extends XFCP_SV_ReportImpr
     }
 
     protected $hasOptimizedIndex = false;
+
     public function recreateIndex()
     {
         parent::recreateIndex();
@@ -62,7 +63,7 @@ class SV_ReportImprovements_XenES_Model_Elasticsearch extends XFCP_SV_ReportImpr
         {
             $this->hasOptimizedIndex = true;
             $handlers = XenForo_Model::create('XenForo_Model_Search')->getSearchDataHandlers();
-            foreach($handlers as $type => $handler)
+            foreach ($handlers as $type => $handler)
             {
                 if (is_callable(array($handler, 'getCustomMapping')))
                 {
@@ -71,4 +72,10 @@ class SV_ReportImprovements_XenES_Model_Elasticsearch extends XFCP_SV_ReportImpr
             }
         }
     }
+}
+
+// ******************** FOR IDE AUTO COMPLETE ********************
+if (false)
+{
+    class XFCP_SV_ReportImprovements_XenES_Model_Elasticsearch extends XenES_Model_Elasticsearch {}
 }

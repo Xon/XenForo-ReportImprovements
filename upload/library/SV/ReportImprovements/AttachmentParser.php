@@ -2,8 +2,8 @@
 
 class SV_ReportImprovements_AttachmentParser extends XenForo_BbCode_Parser
 {
-    protected $parser = null;
-    protected $report = null;
+    protected $parser      = null;
+    protected $report      = null;
     protected $contentInfo = null;
 
     public function __construct(XenForo_BbCode_Parser $parser, &$report, &$contentInfo)
@@ -22,6 +22,7 @@ class SV_ReportImprovements_AttachmentParser extends XenForo_BbCode_Parser
     {
         $extraStates['viewAttachments'] = true;
         $extraStates['attachments'] = $this->contentInfo['attachments'];
+
         return $this->parser->render($text, $extraStates);
     }
 }

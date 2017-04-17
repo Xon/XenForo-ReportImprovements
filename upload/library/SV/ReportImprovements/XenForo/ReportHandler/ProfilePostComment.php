@@ -21,7 +21,8 @@ class SV_ReportImprovements_XenForo_ReportHandler_ProfilePostComment extends XFC
         foreach ($reportsByUser AS $userId => $userReports)
         {
             if (!isset($users[$userId]) ||
-                !$userProfileModel->canManageReportedMessage($users[$userId], $errorPhraseKey, $viewingUser))
+                !$userProfileModel->canManageReportedMessage($users[$userId], $errorPhraseKey, $viewingUser)
+            )
             {
                 foreach ($userReports AS $reportId)
                 {
@@ -33,7 +34,11 @@ class SV_ReportImprovements_XenForo_ReportHandler_ProfilePostComment extends XFC
         return $reports;
     }
 
-    var $_userModel = null;
+    protected $_userModel = null;
+
+    /**
+     * @return SV_ReportImprovements_XenForo_Model_User
+     */
     protected function _getUserModel()
     {
         if (empty($this->_userModel))
@@ -44,7 +49,11 @@ class SV_ReportImprovements_XenForo_ReportHandler_ProfilePostComment extends XFC
         return $this->_userModel;
     }
 
-    var $_ProfilePostModel = null;
+    protected $_ProfilePostModel = null;
+
+    /**
+     * @return SV_ReportImprovements_XenForo_Model_ProfilePost
+     */
     protected function _getProfilePostModel()
     {
         if (empty($this->_ProfilePostModel))
@@ -54,4 +63,10 @@ class SV_ReportImprovements_XenForo_ReportHandler_ProfilePostComment extends XFC
 
         return $this->_ProfilePostModel;
     }
+}
+
+// ******************** FOR IDE AUTO COMPLETE ********************
+if (false)
+{
+    class XFCP_SV_ReportImprovements_XenForo_ReportHandler_ProfilePostComment extends XenForo_ReportHandler_ProfilePostComment {}
 }

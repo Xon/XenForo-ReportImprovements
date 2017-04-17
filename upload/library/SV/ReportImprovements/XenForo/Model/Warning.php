@@ -17,3 +17,9 @@ class SV_ReportImprovements_XenForo_Model_Warning extends XFCP_SV_ReportImprovem
         parent::processExpiredWarnings();
     }
 }
+
+// ******************** FOR IDE AUTO COMPLETE ********************
+if (false)
+{
+    class XFCP_SV_ReportImprovements_XenForo_Model_Warning extends XenForo_Model_Warning {}
+}

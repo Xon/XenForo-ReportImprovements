@@ -2,7 +2,7 @@
 
 class SV_ReportImprovements_AlertHandler_ReportComment extends XenForo_AlertHandler_Abstract
 {
-    var $_reportModel = null;
+    var $_reportModel  = null;
     var $_handlerCache = array();
 
     public function getContentByIds(array $contentIds, $model, $userId, array $viewingUser)
@@ -22,6 +22,7 @@ class SV_ReportImprovements_AlertHandler_ReportComment extends XenForo_AlertHand
                 $item['content']['report'] = $handler->prepareReport($item['content']['report']);
             }
         }
+
         return $item;
     }
 
@@ -35,9 +36,13 @@ class SV_ReportImprovements_AlertHandler_ReportComment extends XenForo_AlertHand
         {
             $handler = $this->_handlerCache[$content_type] = $this->_getReportModel()->getReportHandler($content_type);
         }
+
         return $handler;
     }
 
+    /**
+     * @return SV_ReportImprovements_XenForo_Model_Report
+     */
     protected function _getReportModel()
     {
         if (empty($this->_reportModel))

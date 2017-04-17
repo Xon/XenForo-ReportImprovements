@@ -14,3 +14,9 @@ class SV_ReportImprovements_XenForo_Route_Prefix_Reports extends XFCP_SV_ReportI
         return parent::buildLink($originalPrefix, $outputPrefix, $action, $extension, $data, $extraParams) . $hash;
     }
 }
+
+// ******************** FOR IDE AUTO COMPLETE ********************
+if (false)
+{
+    class XFCP_SV_ReportImprovements_XenForo_Route_Prefix_Reports extends XenForo_Route_Prefix_Reports {}
+}

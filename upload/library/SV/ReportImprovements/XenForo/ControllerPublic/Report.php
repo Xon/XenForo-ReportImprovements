@@ -18,6 +18,7 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
         {
             $response->params['canViewReporterUsername'] = $this->_getReportModel()->canViewReporterUsername();
         }
+
         return $response;
     }
 
@@ -29,6 +30,7 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
         {
             $response->params['canViewReporterUsername'] = $this->_getReportModel()->canViewReporterUsername();
         }
+
         return $response;
     }
 
@@ -40,6 +42,7 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
         {
             $response->params['canViewReporterUsername'] = $this->_getReportModel()->canViewReporterUsername();
         }
+
         return $response;
     }
 
@@ -51,6 +54,7 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
         {
             $response->params['canCommentReport'] = $this->_getReportModel()->canCommentReport($response->params['report']);
         }
+
         return $response;
     }
 
@@ -68,9 +72,10 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
 
         if (!isset($comment['likes']))
         {
-            throw $this->getErrorOrNoPermissionResponseException();
+            throw $this->getErrorOrNoPermissionResponseException('');
         }
 
+        /** @var XenForo_Model_Like $likeModel */
         $likeModel = $this->getModelFromCache('XenForo_Model_Like');
 
         $existingLike = $likeModel->getContentLikeByLikeUser('report_comment', $commentId, XenForo_Visitor::getUserId());
@@ -105,8 +110,8 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
             else
             {
                 return $this->responseRedirect(
-                        XenForo_ControllerResponse_Redirect::SUCCESS,
-                        XenForo_Link::buildPublicLink('reports', $report, array('report_comment_id' => $comment['report_comment_id']))
+                    XenForo_ControllerResponse_Redirect::SUCCESS,
+                    XenForo_Link::buildPublicLink('reports', $report, array('report_comment_id' => $comment['report_comment_id']))
                 );
             }
         }
@@ -169,13 +174,14 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
             list($report, $comment) = $this->_getReportCommentOrError($reportId, $commentId);
 
             return $this->responseRedirect(
-                    XenForo_ControllerResponse_Redirect::RESOURCE_CANONICAL,
-                    XenForo_Link::buildPublicLink('reports', $report, array('report_comment_id' => $comment['report_comment_id']))
+                XenForo_ControllerResponse_Redirect::RESOURCE_CANONICAL,
+                XenForo_Link::buildPublicLink('reports', $report, array('report_comment_id' => $comment['report_comment_id']))
             );
         }
 
         $visitor = XenForo_Visitor::getInstance();
         SV_ReportImprovements_Globals::$Report_MaxAlertCount = $visitor->hasPermission('general', 'maxTaggedUsers');
+
         return parent::actionComment();
     }
 
@@ -184,13 +190,14 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
         $visitor = XenForo_Visitor::getInstance();
         SV_ReportImprovements_Globals::$Report_MaxAlertCount = $visitor->hasPermission('general', 'maxTaggedUsers');
         $input = $this->_input->filter(array(
-            'send_alert' => XenForo_Input::UINT,
-            'alert_comment' => XenForo_Input::STRING,
-        ));
+                                           'send_alert' => XenForo_Input::UINT,
+                                           'alert_comment' => XenForo_Input::STRING,
+                                       ));
         if ($input['send_alert'])
         {
             SV_ReportImprovements_Globals::$UserReportAlertComment = $input['alert_comment'];
         }
+
         return parent::actionUpdate();
     }
 
@@ -208,4 +215,18 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
 
         return array($report, $comment);
     }
+
+    /**
+     * @return SV_ReportImprovements_XenForo_Model_Report
+     */
+    protected function _getReportModel()
+    {
+        return $this->getModelFromCache('XenForo_Model_Report');
+    }
+}
+
+// ******************** FOR IDE AUTO COMPLETE ********************
+if (false)
+{
+    class XFCP_SV_ReportImprovements_XenForo_ControllerPublic_Report extends XenForo_ControllerPublic_Report {}
 }

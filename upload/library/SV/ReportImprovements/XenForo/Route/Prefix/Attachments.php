@@ -12,3 +12,9 @@ class SV_ReportImprovements_XenForo_Route_Prefix_Attachments extends XFCP_SV_Rep
         return parent::buildLink($originalPrefix, $outputPrefix, $action, $extension, $data, $extraParams);
     }
 }
+
+// ******************** FOR IDE AUTO COMPLETE ********************
+if (false)
+{
+    class XFCP_SV_ReportImprovements_XenForo_Route_Prefix_Attachments extends XenForo_Route_Prefix_Attachments {}
+}

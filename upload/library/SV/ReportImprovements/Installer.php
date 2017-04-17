@@ -12,23 +12,23 @@ class SV_ReportImprovements_Installer
 
         $db->query("
             CREATE TABLE IF NOT EXISTS `xf_sv_warning_log` (
-              `warning_log_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-              `warning_edit_date` int(10) unsigned NOT NULL,
-              `operation_type` enum('new','edit','expire','delete','acknowledge') NOT NULL,
-              `warning_id` int(10) unsigned NOT NULL,
-              `content_type` varbinary(25) NOT NULL,
-              `content_id` int(10) unsigned NOT NULL,
-              `content_title` varchar(255) NOT NULL,
-              `user_id` int(10) unsigned NOT NULL,
-              `warning_date` int(10) unsigned NOT NULL,
-              `warning_user_id` int(10) unsigned NOT NULL,
-              `warning_definition_id` int(10) unsigned NOT NULL,
-              `title` varchar(255) NOT NULL,
-              `notes` text NOT NULL,
-              `points` smallint(5) unsigned NOT NULL,
-              `expiry_date` int(10) unsigned NOT NULL,
-              `is_expired` tinyint(3) unsigned NOT NULL,
-              `extra_user_group_ids` varbinary(255) NOT NULL,
+              `warning_log_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+              `warning_edit_date` INT(10) UNSIGNED NOT NULL,
+              `operation_type` ENUM('new','edit','expire','delete','acknowledge') NOT NULL,
+              `warning_id` INT(10) UNSIGNED NOT NULL,
+              `content_type` VARBINARY(25) NOT NULL,
+              `content_id` INT(10) UNSIGNED NOT NULL,
+              `content_title` VARCHAR(255) NOT NULL,
+              `user_id` INT(10) UNSIGNED NOT NULL,
+              `warning_date` INT(10) UNSIGNED NOT NULL,
+              `warning_user_id` INT(10) UNSIGNED NOT NULL,
+              `warning_definition_id` INT(10) UNSIGNED NOT NULL,
+              `title` VARCHAR(255) NOT NULL,
+              `notes` TEXT NOT NULL,
+              `points` SMALLINT(5) UNSIGNED NOT NULL,
+              `expiry_date` INT(10) UNSIGNED NOT NULL,
+              `is_expired` TINYINT(3) UNSIGNED NOT NULL,
+              `extra_user_group_ids` VARBINARY(255) NOT NULL,
               PRIMARY KEY (`warning_log_id`),
               KEY (`warning_id`),
               KEY `content_type_id` (`content_type`,`content_id`),
@@ -50,31 +50,31 @@ class SV_ReportImprovements_Installer
 
         if ($version == 0)
         {
-            $db->query("insert ignore into xf_permission_entry_content (content_type, content_id, user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
-                select distinct content_type, content_id, user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportPost', permission_value, permission_value_int
-                from xf_permission_entry_content
-                where permission_group_id = 'forum' and permission_id in ('warn','editAnyPost','deleteAnyPost')
+            $db->query("INSERT IGNORE INTO xf_permission_entry_content (content_type, content_id, user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
+                SELECT DISTINCT content_type, content_id, user_group_id, user_id, convert(permission_group_id USING utf8), 'viewReportPost', permission_value, permission_value_int
+                FROM xf_permission_entry_content
+                WHERE permission_group_id = 'forum' AND permission_id IN ('warn','editAnyPost','deleteAnyPost')
             ");
 
-            $db->query("insert ignore into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
-                select distinct user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportPost', permission_value, permission_value_int
-                from xf_permission_entry
-                where permission_group_id = 'forum' and permission_id in ('warn','editAnyPost','deleteAnyPost')
+            $db->query("INSERT IGNORE INTO xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
+                SELECT DISTINCT user_group_id, user_id, convert(permission_group_id USING utf8), 'viewReportPost', permission_value, permission_value_int
+                FROM xf_permission_entry
+                WHERE permission_group_id = 'forum' AND permission_id IN ('warn','editAnyPost','deleteAnyPost')
             ");
-            $db->query("insert ignore into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
-                select distinct user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportConversation', permission_value, permission_value_int
-                from xf_permission_entry
-                where permission_group_id = 'conversation' and permission_id in ('alwaysInvite','editAnyPost','viewAny')
+            $db->query("INSERT IGNORE INTO xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
+                SELECT DISTINCT user_group_id, user_id, convert(permission_group_id USING utf8), 'viewReportConversation', permission_value, permission_value_int
+                FROM xf_permission_entry
+                WHERE permission_group_id = 'conversation' AND permission_id IN ('alwaysInvite','editAnyPost','viewAny')
             ");
-            $db->query("insert ignore into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
-                select distinct user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportProfilePost', permission_value, permission_value_int
-                from xf_permission_entry
-                where permission_group_id = 'profilePost' and permission_id in ('warn','editAny','deleteAny')
+            $db->query("INSERT IGNORE INTO xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
+                SELECT DISTINCT user_group_id, user_id, convert(permission_group_id USING utf8), 'viewReportProfilePost', permission_value, permission_value_int
+                FROM xf_permission_entry
+                WHERE permission_group_id = 'profilePost' AND permission_id IN ('warn','editAny','deleteAny')
             ");
-            $db->query("insert ignore into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
-                select distinct user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportUser', permission_value, permission_value_int
-                from xf_permission_entry
-                where permission_group_id = 'general' and  permission_id in ('warn','editBasicProfile')
+            $db->query("INSERT IGNORE INTO xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
+                SELECT DISTINCT user_group_id, user_id, convert(permission_group_id USING utf8), 'viewReportUser', permission_value, permission_value_int
+                FROM xf_permission_entry
+                WHERE permission_group_id = 'general' AND  permission_id IN ('warn','editBasicProfile')
             ");
         }
 
@@ -84,21 +84,21 @@ class SV_ReportImprovements_Installer
             {
                 $db->query("
                     DELETE FROM xf_content_type_field
-                    WHERE xf_content_type_field.field_value like '".self::AddonNameSpace."%'
+                    WHERE xf_content_type_field.field_value LIKE '" . self::AddonNameSpace . "%'
                 ");
 
                 $db->query("
                     DELETE FROM xf_content_type
-                    WHERE xf_content_type.addon_id = '".self::AddonNameSpace."'
+                    WHERE xf_content_type.addon_id = '" . self::AddonNameSpace . "'
                 ");
 
-                XenForo_Application::defer(self::AddonNameSpace.'_Deferred_AlertMigration', array('alert_id' => -1));
+                XenForo_Application::defer(self::AddonNameSpace . '_Deferred_AlertMigration', array('alert_id' => -1));
             }
 
-            $db->query("insert ignore into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
-                select distinct user_group_id, user_id, convert(permission_group_id using utf8), 'viewReportUser', permission_value, permission_value_int
-                from xf_permission_entry
-                where permission_group_id = 'general' and  permission_id in ('reportLike')
+            $db->query("INSERT IGNORE INTO xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
+                SELECT DISTINCT user_group_id, user_id, convert(permission_group_id USING utf8), 'viewReportUser', permission_value, permission_value_int
+                FROM xf_permission_entry
+                WHERE permission_group_id = 'general' AND  permission_id IN ('reportLike')
             ");
         }
 
@@ -106,23 +106,23 @@ class SV_ReportImprovements_Installer
             INSERT IGNORE INTO xf_content_type
                 (content_type, addon_id, fields)
             VALUES
-                ('report', '".self::AddonNameSpace."', '')
+                ('report', '" . self::AddonNameSpace . "', '')
         ");
         $db->query("
             INSERT IGNORE INTO xf_content_type
                 (content_type, addon_id, fields)
             VALUES
-                ('report_comment', '".self::AddonNameSpace."', '')
+                ('report_comment', '" . self::AddonNameSpace . "', '')
         ");
 
         $db->query("
             INSERT IGNORE INTO xf_content_type_field
                 (content_type, field_name, field_value)
             VALUES
-                ('report', 'search_handler_class', '".self::AddonNameSpace."_Search_DataHandler_Report'),
-                ('report_comment', 'like_handler_class', '".self::AddonNameSpace."_LikeHandler_ReportComment'),
-                ('report_comment', 'alert_handler_class', '".self::AddonNameSpace."_AlertHandler_ReportComment'),
-                ('report_comment', 'search_handler_class', '".self::AddonNameSpace."_Search_DataHandler_ReportComment')
+                ('report', 'search_handler_class', '" . self::AddonNameSpace . "_Search_DataHandler_Report'),
+                ('report_comment', 'like_handler_class', '" . self::AddonNameSpace . "_LikeHandler_ReportComment'),
+                ('report_comment', 'alert_handler_class', '" . self::AddonNameSpace . "_AlertHandler_ReportComment'),
+                ('report_comment', 'search_handler_class', '" . self::AddonNameSpace . "_Search_DataHandler_ReportComment')
         ");
 
         XenForo_Db::commit($db);
@@ -136,7 +136,7 @@ class SV_ReportImprovements_Installer
 
         if ($version < 1010001)
         {
-            XenForo_Application::defer(self::AddonNameSpace.'_Deferred_AlertMigration', array('alert_id' => -1));
+            XenForo_Application::defer(self::AddonNameSpace . '_Deferred_AlertMigration', array('alert_id' => -1));
         }
 
         if ($version < 1010006)
@@ -152,13 +152,13 @@ class SV_ReportImprovements_Installer
 
         if ($version < 1020200)
         {
-            $globalReportPerms = array('assignReport','replyReport','replyReportClosed','updateReport','viewReporterUsername','viewReports','reportLike');
-            foreach($globalReportPerms as $perm)
+            $globalReportPerms = array('assignReport', 'replyReport', 'replyReportClosed', 'updateReport', 'viewReporterUsername', 'viewReports', 'reportLike');
+            foreach ($globalReportPerms as $perm)
             {
-                $db->query("insert ignore into xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
-                    select distinct user_group_id, user_id, convert(permission_group_id using utf8), ?, permission_value, permission_value_int
-                    from xf_permission_entry
-                    where permission_group_id = 'general' and permission_id in ('warn','editBasicProfile')
+                $db->query("INSERT IGNORE INTO xf_permission_entry (user_group_id, user_id, permission_group_id, permission_id, permission_value, permission_value_int)
+                    SELECT DISTINCT user_group_id, user_id, convert(permission_group_id USING utf8), ?, permission_value, permission_value_int
+                    FROM xf_permission_entry
+                    WHERE permission_group_id = 'general' AND permission_id IN ('warn','editBasicProfile')
                 ", $perm);
             }
         }
@@ -190,7 +190,7 @@ class SV_ReportImprovements_Installer
         {
             $moderatorModel = XenForo_Model::create('XenForo_Model_Moderator');
             $contentModerators = $moderatorModel->getContentModerators();
-            foreach($contentModerators as $contentModerator)
+            foreach ($contentModerators as $contentModerator)
             {
                 $permissions = @unserialize($contentModerator['moderator_permissions']);
                 if (empty($permissions))
@@ -199,7 +199,8 @@ class SV_ReportImprovements_Installer
                 }
                 $changes = false;
                 if (!isset($permissions['forum']['viewReportPost']) &&
-                    (!empty($permissions['forum']['editAnyPost']) || !empty($permissions['forum']['deleteAnyPost']) || !empty($permissions['forum']['warn'])))
+                    (!empty($permissions['forum']['editAnyPost']) || !empty($permissions['forum']['deleteAnyPost']) || !empty($permissions['forum']['warn']))
+                )
                 {
                     $permissions['forum']['viewReportPost'] = "1";
                     $changes = true;
@@ -211,25 +212,25 @@ class SV_ReportImprovements_Installer
             }
             $moderators = $moderatorModel->getAllGeneralModerators();
             $globalReportPerms = array(
-                'assignReport' => array('general' => array('warn','editBasicProfile')),
-                'replyReport' => array('general' => array('warn','editBasicProfile')),
-                'replyReportClosed' => array('general' => array('warn','editBasicProfile')),
-                'updateReport' => array('general' => array('warn','editBasicProfile')),
-                'viewReporterUsername' => array('general' => array('warn','editBasicProfile')),
-                'viewReports' => array('general' => array('warn','editBasicProfile')),
-                'reportLike' => array('general' => array('warn','editBasicProfile')),
-                'viewReportPost' => array('forum' => array('warn','editAnyPost','deleteAnyPost')),
-                'viewReportConversation' => array('conversation' => array('alwaysInvite','editAnyPost','viewAny')),
-                'viewReportProfilePost' => array('profilePost' => array('warn','editAnyPost','viewAny')),
-                'viewReportUser' => array('general' => array('warn','editBasicProfile')),
+                'assignReport' => array('general' => array('warn', 'editBasicProfile')),
+                'replyReport' => array('general' => array('warn', 'editBasicProfile')),
+                'replyReportClosed' => array('general' => array('warn', 'editBasicProfile')),
+                'updateReport' => array('general' => array('warn', 'editBasicProfile')),
+                'viewReporterUsername' => array('general' => array('warn', 'editBasicProfile')),
+                'viewReports' => array('general' => array('warn', 'editBasicProfile')),
+                'reportLike' => array('general' => array('warn', 'editBasicProfile')),
+                'viewReportPost' => array('forum' => array('warn', 'editAnyPost', 'deleteAnyPost')),
+                'viewReportConversation' => array('conversation' => array('alwaysInvite', 'editAnyPost', 'viewAny')),
+                'viewReportProfilePost' => array('profilePost' => array('warn', 'editAnyPost', 'viewAny')),
+                'viewReportUser' => array('general' => array('warn', 'editBasicProfile')),
             );
 
-            foreach($moderators as $moderator)
+            foreach ($moderators as $moderator)
             {
                 $userPerms = $db->fetchAll('
-                    select *
-                    from xf_permission_entry
-                    where user_id = ?
+                    SELECT *
+                    FROM xf_permission_entry
+                    WHERE user_id = ?
                 ', array($moderator['user_id']));
                 if (empty($userPerms))
                 {
@@ -237,7 +238,7 @@ class SV_ReportImprovements_Installer
                 }
 
                 $userPermsGrouped = array();
-                foreach($userPerms as $userPerm)
+                foreach ($userPerms as $userPerm)
                 {
                     if ($userPerm['permission_value'] == 'allow')
                     {
@@ -246,7 +247,7 @@ class SV_ReportImprovements_Installer
                 }
                 $permissions = @unserialize($moderator['moderator_permissions']);
                 $changes = false;
-                foreach($globalReportPerms as $perm => $data)
+                foreach ($globalReportPerms as $perm => $data)
                 {
                     $keys = array_keys($data);
                     $category = reset($keys);
@@ -258,10 +259,11 @@ class SV_ReportImprovements_Installer
                             $changes = true;
                             continue;
                         }
-                        foreach($data[$category] as $permToTest)
+                        foreach ($data[$category] as $permToTest)
                         {
                             if (!empty($permissions[$category][$permToTest]) ||
-                                !empty($userPermsGrouped[$category][$permToTest]))
+                                !empty($userPermsGrouped[$category][$permToTest])
+                            )
                             {
                                 $permissions[$category][$perm] = "1";
                                 $changes = true;
@@ -287,7 +289,7 @@ class SV_ReportImprovements_Installer
         XenForo_Model::create('XenForo_Model_ContentType')->rebuildContentTypeCache();
         XenForo_Application::defer('Permission', array(), 'Permission', true);
         // migration code which gets to run each install
-        XenForo_Application::defer(self::AddonNameSpace.'_Deferred_WarningLogMigration', array('warning_id' => -1));
+        XenForo_Application::defer(self::AddonNameSpace . '_Deferred_WarningLogMigration', array('warning_id' => -1));
     }
 
     public static function uninstall()
@@ -298,20 +300,20 @@ class SV_ReportImprovements_Installer
 
         $db->query("
             DELETE FROM xf_content_type_field
-            WHERE xf_content_type_field.field_value like '".self::AddonNameSpace."%'
+            WHERE xf_content_type_field.field_value LIKE '" . self::AddonNameSpace . "%'
         ");
 
         $db->query("
             DELETE FROM xf_content_type
-            WHERE xf_content_type.addon_id = '".self::AddonNameSpace."'
+            WHERE xf_content_type.addon_id = '" . self::AddonNameSpace . "'
         ");
 
-        $db->query("delete from xf_report_comment where warning_log_id is not null and warning_log_id <> 0");
+        $db->query("DELETE FROM xf_report_comment WHERE warning_log_id IS NOT NULL AND warning_log_id <> 0");
 
 
         $db->query("
-            delete from xf_permission_entry
-            where permission_id in (
+            DELETE FROM xf_permission_entry
+            WHERE permission_id IN (
                 'viewReportConversation',
                 'viewReportPost',
                 'assignReport',
@@ -326,15 +328,15 @@ class SV_ReportImprovements_Installer
         )");
 
         $db->query("
-            delete from xf_permission_entry_content
-            where permission_id in (
+            DELETE FROM xf_permission_entry_content
+            WHERE permission_id IN (
                 'viewReportPost'
         )");
 
         XenForo_Db::commit($db);
 
         SV_Utils_Install::dropColumn('xf_report_comment', 'warning_log_id');
-        $db->query("drop table if exists xf_sv_warning_log");
+        $db->query("DROP TABLE IF EXISTS xf_sv_warning_log");
 
         XenForo_Model::create('XenForo_Model_ContentType')->rebuildContentTypeCache();
         XenForo_Application::defer('Permission', array(), 'Permission');

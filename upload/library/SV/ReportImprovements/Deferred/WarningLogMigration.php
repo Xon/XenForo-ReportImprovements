@@ -10,15 +10,15 @@ class SV_ReportImprovements_Deferred_WarningLogMigration extends XenForo_Deferre
         $db = XenForo_Application::getDb();
 
         $warningQuery = $db->query("
-            select max(warning_id) as max_warning_id
-            from xf_warning
-            where warning_id > ? and warning_id < (? + ?)
-        ", array($min_warning_id,$min_warning_id, $increment));
+            SELECT max(warning_id) AS max_warning_id
+            FROM xf_warning
+            WHERE warning_id > ? AND warning_id < (? + ?)
+        ", array($min_warning_id, $min_warning_id, $increment));
         $warningRows = $warningQuery->fetchAll();
 
         if (empty($warningRows) || empty($warningRows[0]) || empty($warningRows[0]['max_warning_id']))
         {
-           return false;
+            return false;
         }
 
         $max_warning_id = $warningRows[0]['max_warning_id'];
@@ -26,6 +26,7 @@ class SV_ReportImprovements_Deferred_WarningLogMigration extends XenForo_Deferre
 
         $status = sprintf('%s... %s', $actionPhrase, str_repeat(' . ', $max_warning_id / 10));
 
+        /** @var SV_ReportImprovements_Model_WarningLog $warningLogModel */
         $warningLogModel = XenForo_Model::create("SV_ReportImprovements_Model_WarningLog");
 
         // Except for the sub-select, this list must match SV_ReportImprovements_Model_WarningLog::_getLogData()
@@ -46,11 +47,11 @@ class SV_ReportImprovements_Deferred_WarningLogMigration extends XenForo_Deferre
                 is_expired,
                 extra_user_group_ids,
 
-                (select username from xf_user where xf_user.user_id = xf_warning.warning_user_id) as warning_username
+                (SELECT username FROM xf_user WHERE xf_user.user_id = xf_warning.warning_user_id) AS warning_username
             FROM xf_warning
-            where
-                warning_id not in (select warning_id from xf_sv_warning_log)
-                and warning_id >= ? and warning_id <= ?
+            WHERE
+                warning_id NOT IN (SELECT warning_id FROM xf_sv_warning_log)
+                AND warning_id >= ? AND warning_id <= ?
         ", array($min_warning_id, $max_warning_id));
 
         $warningRows = $warningQuery->fetchAll();
@@ -58,13 +59,13 @@ class SV_ReportImprovements_Deferred_WarningLogMigration extends XenForo_Deferre
         {
             // make sure the add-on is enabled
             XenForo_DataWriter::create('XenForo_DataWriter_ReportComment');
-            if (!class_exists('XFCP_SV_ReportImprovements_XenForo_DataWriter_ReportComment',false))
+            if (!class_exists('XFCP_SV_ReportImprovements_XenForo_DataWriter_ReportComment', false))
             {
                 throw new Exception('Please enable the Report Improvements add-on and install/upgrade it again to migrate warnings');
             }
 
             XenForo_Db::beginTransaction($db);
-            foreach($warningRows as $warning)
+            foreach ($warningRows as $warning)
             {
                 SV_ReportImprovements_Globals::$OverrideReportUserId = $warning['warning_user_id'];
                 SV_ReportImprovements_Globals::$OverrideReportUsername = $warning['warning_username'];

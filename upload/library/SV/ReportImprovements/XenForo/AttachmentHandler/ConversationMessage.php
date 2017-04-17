@@ -22,3 +22,9 @@ class SV_ReportImprovements_XenForo_AttachmentHandler_ConversationMessage extend
         return $canView;
     }
 }
+
+// ******************** FOR IDE AUTO COMPLETE ********************
+if (false)
+{
+    class XFCP_SV_ReportImprovements_XenForo_AttachmentHandler_ConversationMessage extends XenForo_AttachmentHandler_ConversationMessage {}
+}

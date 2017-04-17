@@ -72,8 +72,17 @@ class SV_ReportImprovements_XenForo_DataWriter_Warning extends XFCP_SV_ReportImp
         }
     }
 
+    /**
+     * @return SV_ReportImprovements_Model_WarningLog
+     */
     protected function _getWarningLogModel()
     {
         return $this->getModelFromCache('SV_ReportImprovements_Model_WarningLog');
     }
+}
+
+// ******************** FOR IDE AUTO COMPLETE ********************
+if (false)
+{
+    class XFCP_SV_ReportImprovements_XenForo_DataWriter_Warning extends XenForo_DataWriter_Warning {}
 }

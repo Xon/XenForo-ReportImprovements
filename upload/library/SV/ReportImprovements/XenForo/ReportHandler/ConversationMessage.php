@@ -13,9 +13,9 @@ class SV_ReportImprovements_XenForo_ReportHandler_ConversationMessage extends XF
 
         if (!empty($message['attachments']))
         {
-            /* @var $conversationModel XenForo_Model_Conversation */
+            /* @var $reportModel SV_ReportImprovements_XenForo_Model_Report */
             $reportModel = XenForo_Model::create('XenForo_Model_Report');
-            foreach($message['attachments'] as &$attachment)
+            foreach ($message['attachments'] as &$attachment)
             {
                 $attachment['reportKey'] = $reportModel->getAttachmentReportKey($attachment);
             }
@@ -53,4 +53,10 @@ class SV_ReportImprovements_XenForo_ReportHandler_ConversationMessage extends XF
 
         return $template;
     }
+}
+
+// ******************** FOR IDE AUTO COMPLETE ********************
+if (false)
+{
+    class XFCP_SV_ReportImprovements_XenForo_ReportHandler_ConversationMessage extends XenForo_ReportHandler_ConversationMessage {}
 }

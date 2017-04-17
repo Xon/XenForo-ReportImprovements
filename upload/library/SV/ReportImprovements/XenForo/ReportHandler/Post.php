@@ -20,7 +20,8 @@ class SV_ReportImprovements_XenForo_ReportHandler_Post extends XFCP_SV_ReportImp
         foreach ($reportsByForum AS $forumId => $forumReports)
         {
             if (!isset($forums[$forumId]) ||
-                !$forumModel->canManageReportedMessage($forums[$forumId], $errorPhraseKey, $viewingUser))
+                !$forumModel->canManageReportedMessage($forums[$forumId], $errorPhraseKey, $viewingUser)
+            )
             {
                 foreach ($forumReports AS $reportId)
                 {
@@ -34,7 +35,7 @@ class SV_ReportImprovements_XenForo_ReportHandler_Post extends XFCP_SV_ReportImp
 
     public function viewCallback(XenForo_View $view, array &$report, array &$contentInfo)
     {
-        /* @var $conversationModel XenForo_Model_Post */
+        /* @var $postModel XenForo_Model_Post */
         $postModel = XenForo_Model::create('XenForo_Model_Post');
 
         $message = $postModel->getPostById($report['content_id']);
@@ -43,9 +44,9 @@ class SV_ReportImprovements_XenForo_ReportHandler_Post extends XFCP_SV_ReportImp
 
         if (!empty($message['attachments']))
         {
-            /* @var $conversationModel XenForo_Model_Conversation */
+            /* @var $reportModel SV_ReportImprovements_XenForo_Model_Report */
             $reportModel = XenForo_Model::create('XenForo_Model_Report');
-            foreach($message['attachments'] as &$attachment)
+            foreach ($message['attachments'] as &$attachment)
             {
                 $attachment['reportKey'] = $reportModel->getAttachmentReportKey($attachment);
             }
@@ -84,7 +85,11 @@ class SV_ReportImprovements_XenForo_ReportHandler_Post extends XFCP_SV_ReportImp
         return $template;
     }
 
-    var $_forumModel = null;
+    protected $_forumModel = null;
+
+    /**
+     * @return SV_ReportImprovements_XenForo_Model_Forum
+     */
     protected function _getForumModel()
     {
         if (empty($this->_forumModel))
@@ -94,4 +99,10 @@ class SV_ReportImprovements_XenForo_ReportHandler_Post extends XFCP_SV_ReportImp
 
         return $this->_forumModel;
     }
+}
+
+// ******************** FOR IDE AUTO COMPLETE ********************
+if (false)
+{
+    class XFCP_SV_ReportImprovements_XenForo_ReportHandler_Post extends XenForo_ReportHandler_Post {}
 }

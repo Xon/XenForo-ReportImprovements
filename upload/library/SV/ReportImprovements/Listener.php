@@ -6,12 +6,12 @@ class SV_ReportImprovements_Listener
 
     public static function load_class($class, array &$extend)
     {
-        $extend[] = self::AddonNameSpace.$class;
+        $extend[] = self::AddonNameSpace . $class;
     }
 
     public static function load_class_patch($class, array &$extend)
     {
-        $extend[] = self::AddonNameSpace.$class.'Patch';
+        $extend[] = self::AddonNameSpace . $class . 'Patch';
     }
 
     public static function controller_pre_dispatch(XenForo_Controller $controller, $action, $controllerName)
@@ -27,6 +27,7 @@ class SV_ReportImprovements_Listener
             return;
         }
 
+        /** @var XenForo_Model_Report $reportModel */
         $reportModel = $controller->getModelFromCache('XenForo_Model_Report');
         try
         {
@@ -35,9 +36,10 @@ class SV_ReportImprovements_Listener
                 return;
             }
         }
-        catch(Exception $e)
+        catch (Exception $e)
         {
             XenForo_Error::logException($e);
+
             return;
         }
 

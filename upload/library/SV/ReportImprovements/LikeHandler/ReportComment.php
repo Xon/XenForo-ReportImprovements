@@ -2,7 +2,8 @@
 
 class SV_ReportImprovements_LikeHandler_ReportComment extends XenForo_LikeHandler_Abstract
 {
-    var $_reportModel = null;
+    protected $_reportModel = null;
+
     public function incrementLikeCounter($contentId, array $latestLikes, $adjustAmount = 1)
     {
         $dw = XenForo_DataWriter::create('XenForo_DataWriter_ReportComment');
@@ -24,6 +25,9 @@ class SV_ReportImprovements_LikeHandler_ReportComment extends XenForo_LikeHandle
         $this->_getReportModel()->batchUpdateLikeUser($oldUserId, $newUserId, $oldUsername, $newUsername);
     }
 
+    /**
+     * @return SV_ReportImprovements_XenForo_Model_Report
+     */
     protected function _getReportModel()
     {
         if (empty($this->_reportModel))

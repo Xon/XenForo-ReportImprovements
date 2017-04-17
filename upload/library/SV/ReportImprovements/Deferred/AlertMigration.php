@@ -10,29 +10,29 @@ class SV_ReportImprovements_Deferred_AlertMigration extends XenForo_Deferred_Abs
         $db = XenForo_Application::getDb();
 
         $alertQuery = $db->query("
-            select max(alert_id) as max_alert_id
-            from xf_user_alert
-            where content_type = 'report' and alert_id > ?
+            SELECT max(alert_id) AS max_alert_id
+            FROM xf_user_alert
+            WHERE content_type = 'report' AND alert_id > ?
         ", array($min_alert_id));
         $alertRows = $alertQuery->fetchAll();
 
         if (empty($alertRows) || empty($alertRows[0]) || empty($alertRows[0]['max_alert_id']))
         {
-           return false;
+            return false;
         }
 
         $alertQuery = $db->query("
             SELECT *
             FROM xf_user_alert
-            where content_type = 'report' and alert_id >= ?
-            LIMIT ".$increment."
+            WHERE content_type = 'report' AND alert_id >= ?
+            LIMIT " . $increment . "
         ", array($min_alert_id));
 
         $last_alert_id = false;
         $alertRows = $alertQuery->fetchAll();
         if (!empty($alertRows))
         {
-            foreach($alertRows as &$alert)
+            foreach ($alertRows as &$alert)
             {
                 if ($alert['action'] != 'comment' && $alert['action'] != 'tag')
                 {

@@ -15,6 +15,7 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
     {
         $mapping['properties']['report'] = array("type" => "long");
         $mapping['properties']['report_state'] = array("type" => "long");
+
         return $mapping;
     }
 
@@ -27,7 +28,10 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
      */
     protected function _insertIntoIndex(XenForo_Search_Indexer $indexer, array $data, array $parentData = null)
     {
-        if (!($this->enabled)) return;
+        if (!($this->enabled))
+        {
+            return;
+        }
 
         $metadata = array();
         $metadata['report'] = $data['report_id'];
@@ -48,7 +52,7 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
 
         $contentInfo = @unserialize($data['content_info']);
         $title = $handler->getContentTitle($data, $contentInfo);
-        $threadData = $handler->getContentForThread($data, $contentInfo );
+        $threadData = $handler->getContentForThread($data, $contentInfo);
         $text = $threadData['message'];
         if ($title instanceof XenForo_Phrase)
         {
@@ -77,7 +81,10 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
      */
     protected function _updateIndex(XenForo_Search_Indexer $indexer, array $data, array $fieldUpdates)
     {
-        if (!($this->enabled)) return;
+        if (!($this->enabled))
+        {
+            return;
+        }
         $indexer->updateIndex('report', $data['report_id'], $fieldUpdates);
     }
 
@@ -88,7 +95,10 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
      */
     protected function _deleteFromIndex(XenForo_Search_Indexer $indexer, array $dataList)
     {
-        if (!($this->enabled)) return;
+        if (!($this->enabled))
+        {
+            return;
+        }
         $reportIds = array();
         foreach ($dataList AS $data)
         {
@@ -105,7 +115,10 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
      */
     public function rebuildIndex(XenForo_Search_Indexer $indexer, $lastId, $batchSize)
     {
-        if (!($this->enabled)) return false;
+        if (!($this->enabled))
+        {
+            return false;
+        }
         $reportIds = $this->_getReportModel()->getReportIdsInRange($lastId, $batchSize);
         if (!$reportIds)
         {
@@ -119,12 +132,14 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
 
     /**
      * Rebuilds the index for the specified content.
-
      * @see XenForo_Search_DataHandler_Abstract::quickIndex()
      */
     public function quickIndex(XenForo_Search_Indexer $indexer, array $contentIds)
     {
-        if (!($this->enabled)) return false;
+        if (!($this->enabled))
+        {
+            return false;
+        }
         $reportModel = $this->_getReportModel();
         $reports = $reportModel->sv_getReportsByIds($contentIds);
         $handlers = $reportModel->getReportHandlers();
@@ -158,9 +173,13 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
      */
     public function getDataForResults(array $ids, array $viewingUser, array $resultsGrouped)
     {
-        if (!($this->enabled)) return array();
+        if (!($this->enabled))
+        {
+            return array();
+        }
         $reportModel = $this->_getReportModel();
         $reports = $reportModel->sv_getReportsByIds($ids);
+
         return $reportModel->getVisibleReportsForUser($reports, $viewingUser);
     }
 
@@ -171,7 +190,11 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
      */
     public function canViewResult(array $result, array $viewingUser)
     {
-        if (!($this->enabled)) return false;
+        if (!($this->enabled))
+        {
+            return false;
+        }
+
         return true;
     }
 
@@ -182,7 +205,10 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
      */
     public function prepareResult(array $result, array $viewingUser)
     {
-        if (!($this->enabled)) return $result;
+        if (!($this->enabled))
+        {
+            return $result;
+        }
         $reportModel = $this->_getReportModel();
 
         $handler = $reportModel->getReportHandlerCached($result['content_type']);
@@ -216,7 +242,11 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
      */
     public function renderResult(XenForo_View $view, array $result, array $search)
     {
-        if (!($this->enabled)) return null;
+        if (!($this->enabled))
+        {
+            return null;
+        }
+
         return $view->createTemplateObject('search_result_report', array(
             'report' => $result,
             'search' => $search,
@@ -233,21 +263,28 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
      * Allows a content type to opt-out of search based off the viewing user
      *
      * @param array $viewingUser
-     *
      * @return boolean
      */
     public function allowInSearch(array $viewingUser)
     {
-        if (!($this->enabled)) return false;
+        if (!($this->enabled))
+        {
+            return false;
+        }
+
         return $this->_getReportModel()->canViewReports($viewingUser);
     }
 
+    /**
+     * @return SV_ReportImprovements_XenForo_Model_Report
+     */
     protected function _getReportModel()
     {
         if (!$this->_reportModel)
         {
             $this->_reportModel = XenForo_Model::create('XenForo_Model_Report');
         }
+
         return $this->_reportModel;
     }
 }

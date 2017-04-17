@@ -2,10 +2,10 @@
 
 class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
 {
-    const Operation_EditWarning = 'edit';
-    const Operation_DeleteWarning = 'delete';
-    const Operation_ExpireWarning = 'expire';
-    const Operation_NewWarning = 'new';
+    const Operation_EditWarning        = 'edit';
+    const Operation_DeleteWarning      = 'delete';
+    const Operation_ExpireWarning      = 'expire';
+    const Operation_NewWarning         = 'new';
     const Operation_AcknowledgeWarning = 'acknowledge';
 
     /**
@@ -32,6 +32,7 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
         }
         $WarningHandler = $this->_getWarningModel()->getWarningHandler($contentType);
         $ReportHandler = $this->_getReportModel()->getReportHandler($contentType);
+
         return !empty($WarningHandler) && !empty($ReportHandler);
     }
 
@@ -44,6 +45,7 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
         {
             return false;
         }
+
         return $handler->getContent($contentId);
     }
 
@@ -58,7 +60,9 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
     public function LogOperation($operationType, array $warning, $ImporterMode = false)
     {
         if (@$operationType == '')
+        {
             throw new Exception("Unknown operation type when logging warning");
+        }
 
         unset($warning['warning_log_id']);
         $warning['operation_type'] = $operationType;
@@ -103,7 +107,7 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
         $commentToUpdate = null;
 
         $report = $reportModel->getReportByContent($warning['content_type'], $warning['content_id']);
-        if($report || $options->sv_report_new_warnings)
+        if ($report || $options->sv_report_new_warnings)
         {
             $content = $this->getContentForReportFromWarning($warning);
             if (!empty($content))
@@ -140,11 +144,11 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
         {
             $reportDw = XenForo_DataWriter::create('XenForo_DataWriter_Report');
             $reportDw->bulkSet(array(
-                'content_type' => $contentType,
-                'content_id' => $contentId,
-                'content_user_id' => $contentUserId,
-                'content_info' => $contentInfo
-            ));
+                                   'content_type' => $contentType,
+                                   'content_id' => $contentId,
+                                   'content_user_id' => $contentUserId,
+                                   'content_info' => $contentInfo
+                               ));
             $reportDw->save();
             $report = $reportDw->getMergedData();
         }
@@ -175,26 +179,35 @@ class SV_ReportImprovements_Model_WarningLog extends XenForo_Model
             $reasonDw->setOption(SV_ReportImprovements_XenForo_DataWriter_ReportComment::OPTION_SEND_ALERTS, false);
         }
         $reasonDw->bulkSet(array(
-            'report_id' => $report['report_id'],
-            'user_id' => $viewingUser['user_id'],
-            'username' => $viewingUser['username'],
-            'warning_log_id' => $warning['warning_log_id'],
-        ));
+                               'report_id' => $report['report_id'],
+                               'user_id' => $viewingUser['user_id'],
+                               'username' => $viewingUser['username'],
+                               'warning_log_id' => $warning['warning_log_id'],
+                           ));
         $reasonDw->save();
 
         return $report['report_id'];
     }
 
+    /**
+     * @return SV_ReportImprovements_XenForo_Model_User
+     */
     protected function _getUserModel()
     {
         return $this->getModelFromCache('XenForo_Model_User');
     }
 
+    /**
+     * @return SV_ReportImprovements_XenForo_Model_Report
+     */
     protected function _getReportModel()
     {
         return $this->getModelFromCache('XenForo_Model_Report');
     }
 
+    /**
+     * @return SV_ReportImprovements_XenForo_Model_Warning
+     */
     protected function _getWarningModel()
     {
         return $this->getModelFromCache('XenForo_Model_Warning');

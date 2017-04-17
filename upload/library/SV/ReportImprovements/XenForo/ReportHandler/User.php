@@ -12,7 +12,8 @@ class SV_ReportImprovements_XenForo_ReportHandler_User extends XFCP_SV_ReportImp
 
             if (!$info
                 || empty($info['user'])
-                || !$userModel->canManageReportedMessage($info['user'], $errorPhraseKey, $viewingUser))
+                || !$userModel->canManageReportedMessage($info['user'], $errorPhraseKey, $viewingUser)
+            )
             {
                 unset($reports[$reportId]);
             }
@@ -21,7 +22,11 @@ class SV_ReportImprovements_XenForo_ReportHandler_User extends XFCP_SV_ReportImp
         return $reports;
     }
 
-    var $_userModel = null;
+    protected $_userModel = null;
+
+    /**
+     * @return SV_ReportImprovements_XenForo_Model_User
+     */
     protected function _getUserModel()
     {
         if (empty($this->_userModel))
@@ -31,4 +36,10 @@ class SV_ReportImprovements_XenForo_ReportHandler_User extends XFCP_SV_ReportImp
 
         return $this->_userModel;
     }
+}
+
+// ******************** FOR IDE AUTO COMPLETE ********************
+if (false)
+{
+    class XFCP_SV_ReportImprovements_XenForo_ReportHandler_User extends XenForo_ReportHandler_User {}
 }

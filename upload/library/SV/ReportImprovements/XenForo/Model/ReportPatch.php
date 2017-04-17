@@ -19,3 +19,9 @@ class SV_ReportImprovements_XenForo_Model_ReportPatch extends XFCP_SV_ReportImpr
         return $handlers;
     }
 }
+
+// ******************** FOR IDE AUTO COMPLETE ********************
+if (false)
+{
+    class XFCP_SV_ReportImprovements_XenForo_Model_ReportPatch extends XenForo_Model_Report {}
+}

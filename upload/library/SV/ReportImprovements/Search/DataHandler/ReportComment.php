@@ -18,10 +18,12 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         $mapping['properties']['is_report'] = array("type" => "boolean");
         $mapping['properties']['points'] = array("type" => "long");
         $mapping['properties']['expiry_date'] = array("type" => "long");
+
         return $mapping;
     }
 
     protected $_reportModel = null;
+    protected $_userModel   = null;
 
     /**
      * Inserts into (or replaces a record) in the index.
@@ -30,7 +32,10 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
      */
     protected function _insertIntoIndex(XenForo_Search_Indexer $indexer, array $data, array $parentData = null)
     {
-        if (!($this->enabled)) return;
+        if (!($this->enabled))
+        {
+            return;
+        }
 
         $metadata = array();
         $metadata['report'] = $data['report_id'];
@@ -65,7 +70,7 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
                 $title->setInsertParamsEscaped(false);
             }
             $title = (string)$title;
-            $text = $title . ' '. $data['notes']. ' '. $text;
+            $text = $title . ' ' . $data['notes'] . ' ' . $text;
 
             $metadata['points'] = $data['points'];
             $metadata['expiry_date'] = $data['expiry_date'];
@@ -90,7 +95,10 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
      */
     protected function _updateIndex(XenForo_Search_Indexer $indexer, array $data, array $fieldUpdates)
     {
-        if (!($this->enabled)) return;
+        if (!($this->enabled))
+        {
+            return;
+        }
         $indexer->updateIndex('report_comment', $data['report_comment_id'], $fieldUpdates);
     }
 
@@ -101,7 +109,10 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
      */
     protected function _deleteFromIndex(XenForo_Search_Indexer $indexer, array $dataList)
     {
-        if (!($this->enabled)) return;
+        if (!($this->enabled))
+        {
+            return;
+        }
         $reportCommentIds = array();
         foreach ($dataList AS $data)
         {
@@ -118,7 +129,10 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
      */
     public function rebuildIndex(XenForo_Search_Indexer $indexer, $lastId, $batchSize)
     {
-        if (!($this->enabled)) return false;
+        if (!($this->enabled))
+        {
+            return false;
+        }
         $reportCommentIds = $this->_getReportModel()->getReportCommentsIdsInRange($lastId, $batchSize);
         if (!$reportCommentIds)
         {
@@ -132,12 +146,14 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
 
     /**
      * Rebuilds the index for the specified content.
-
      * @see XenForo_Search_DataHandler_Abstract::quickIndex()
      */
     public function quickIndex(XenForo_Search_Indexer $indexer, array $contentIds)
     {
-        if (!($this->enabled)) return false;
+        if (!($this->enabled))
+        {
+            return false;
+        }
         $reportModel = $this->_getReportModel();
         $reportComments = $reportModel->getReportCommentsByIds($contentIds);
         $reportIds = array_unique(XenForo_Application::arrayColumn($reportComments, 'report_id'));
@@ -167,7 +183,11 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
      */
     public function getDataForResults(array $ids, array $viewingUser, array $resultsGrouped)
     {
-        if (!($this->enabled)) return array();
+        if (!($this->enabled))
+        {
+            return array();
+        }
+
         return $this->_getReportModel()->getReportCommentsByIdsForUser($ids, $viewingUser);
     }
 
@@ -178,7 +198,11 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
      */
     public function canViewResult(array $result, array $viewingUser)
     {
-        if (!($this->enabled)) return false;
+        if (!($this->enabled))
+        {
+            return false;
+        }
+
         return $this->_getReportModel()->canViewReporterUsername($result, $viewingUser);
     }
 
@@ -215,7 +239,11 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
      */
     public function renderResult(XenForo_View $view, array $result, array $search)
     {
-        if (!($this->enabled)) return null;
+        if (!($this->enabled))
+        {
+            return null;
+        }
+
         return $view->createTemplateObject('search_result_report_comment', array(
             'report' => $result['report'],
             'comment' => $result,
@@ -243,7 +271,11 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
      */
     public function allowInSearch(array $viewingUser)
     {
-        if (!($this->enabled)) return false;
+        if (!($this->enabled))
+        {
+            return false;
+        }
+
         return $this->_getReportModel()->canViewReports($viewingUser);
     }
 
@@ -256,7 +288,10 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
      */
     public function getTypeConstraintsFromInput(XenForo_Input $input)
     {
-        if (!($this->enabled)) return array();
+        if (!($this->enabled))
+        {
+            return array();
+        }
         $constraints = array();
 
         $includeUserReports = $input->filterSingle('include_user_reports', XenForo_Input::UINT);
@@ -311,6 +346,7 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         {
             $constraints['is_report'] = false;
         }
+
         return $constraints;
     }
 
@@ -321,7 +357,10 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
      */
     public function processConstraint(XenForo_Search_SourceHandler_Abstract $sourceHandler, $constraint, $constraintInfo, array $constraints)
     {
-        if (!($this->enabled)) return array();
+        if (!($this->enabled))
+        {
+            return array();
+        }
         switch ($constraint)
         {
             case 'is_report':
@@ -335,7 +374,8 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
                     return array(
                         'range_query' => array('points',
                                                isset($constraintInfo[0]) ? array('>=', intval($constraintInfo[0])) : array(),
-                                               isset($constraintInfo[1]) ? array('<=', intval($constraintInfo[1])) : array())
+                                               isset($constraintInfo[1]) ? array('<=', intval($constraintInfo[1])) : array()
+                        )
                     );
                 }
         }
@@ -350,9 +390,15 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
      */
     public function getSearchFormControllerResponse(XenForo_ControllerPublic_Abstract $controller, XenForo_Input $input, array $viewParams)
     {
-        if (!($this->enabled)) return null;
+        if (!($this->enabled))
+        {
+            return null;
+        }
 
-        if (!$this->_getReportModel()->canViewReports()) return null;
+        if (!$this->_getReportModel()->canViewReports())
+        {
+            return null;
+        }
 
         $params = $input->filterSingle('c', XenForo_Input::ARRAY_SIMPLE);
 
@@ -396,12 +442,29 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         return $controller->responseView('XenForo_ViewPublic_Search_Form_Post', 'search_form_report_comment', $viewParams);
     }
 
+    /**
+     * @return SV_ReportImprovements_XenForo_Model_Report
+     */
     protected function _getReportModel()
     {
         if (!$this->_reportModel)
         {
             $this->_reportModel = XenForo_Model::create('XenForo_Model_Report');
         }
+
         return $this->_reportModel;
+    }
+
+    /**
+     * @return SV_ReportImprovements_XenForo_Model_User
+     */
+    protected function _getUserModel()
+    {
+        if (!$this->_userModel)
+        {
+            $this->_userModel = XenForo_Model::create('XenForo_Model_User');
+        }
+
+        return $this->_userModel;
     }
 }
