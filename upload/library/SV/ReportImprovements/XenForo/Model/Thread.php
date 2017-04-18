@@ -4,6 +4,7 @@ class SV_ReportImprovements_XenForo_Model_Thread extends XFCP_SV_ReportImproveme
 {
     public function _getReplyBanLogData(array $thread, array $replyBan, $expired = false)
     {
+        $link = XenForo_Link::buildPublicLink('full:threads', $thread);
         return array(
             'content_type'          => 'user',
             'content_id'            => $replyBan['user_id'],
@@ -13,7 +14,7 @@ class SV_ReportImprovements_XenForo_Model_Thread extends XFCP_SV_ReportImproveme
             'warning_user_id'       => $replyBan['ban_user_id'],
             'title'                 => (string)new XenForo_Phrase('SV_Reply_Banned_From_Thread_title', array('thread' => $thread['title'])),
             'reply_ban_thread_id'   => $thread['thread_id'],
-            'notes'                 => XenForo_Link::buildPublicLink('full:threads', $thread) . "\n" . $replyBan['reason'],
+            'notes'                 => (string)new XenForo_Phrase('SV_Reply_Banned_notes', array('link' => $link, 'reason' => $replyBan['reason'])),
             'points'                => 0,
             'expiry_date'           => $replyBan['expiry_date'],
             'is_expired'            => $expired,
