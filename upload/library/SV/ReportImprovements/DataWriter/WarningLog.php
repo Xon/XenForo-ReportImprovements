@@ -20,14 +20,14 @@ class SV_ReportImprovements_DataWriter_WarningLog extends XenForo_DataWriter
                 ),
 
                 'warning_edit_date' => array('type' => self::TYPE_UINT, 'default' => XenForo_Application::$time),
-                'warning_id' => array('type' => self::TYPE_UINT, 'required' => true),
+                'warning_id' => array('type' => self::TYPE_UINT, 'default' => 0),
                 'content_type' => array('type' => self::TYPE_STRING, 'required' => true, 'maxLength' => 25),
                 'content_id' => array('type' => self::TYPE_UINT, 'required' => true),
                 'content_title' => array('type' => self::TYPE_STRING, 'default' => '', 'maxLength' => 255),
                 'user_id' => array('type' => self::TYPE_UINT, 'required' => true),
                 'warning_date' => array('type' => self::TYPE_UINT, 'default' => XenForo_Application::$time),
                 'warning_user_id' => array('type' => self::TYPE_UINT, 'required' => true),
-                'warning_definition_id' => array('type' => self::TYPE_UINT, 'required' => true),
+                'warning_definition_id' => array('type' => self::TYPE_UINT, 'default' => 0),
                 'title' => array('type' => self::TYPE_STRING, 'default' => '', 'required' => SV_ReportImprovements_Globals::$RequireWarningLogTitle,
                                  'requiredError' => 'please_enter_valid_title', 'maxLength' => 255
                 ),
@@ -37,7 +37,8 @@ class SV_ReportImprovements_DataWriter_WarningLog extends XenForo_DataWriter
                 'is_expired' => array('type' => self::TYPE_BOOLEAN, 'default' => 0),
                 'extra_user_group_ids' => array('type' => self::TYPE_UNKNOWN, 'default' => '',
                                                 'verification' => array('XenForo_DataWriter_Helper_User', 'verifyExtraUserGroupIds')
-                )
+                ),
+                'reply_ban_thread_id' => array('type' => self::TYPE_UINT, 'default' => 0),
             )
         );
     }

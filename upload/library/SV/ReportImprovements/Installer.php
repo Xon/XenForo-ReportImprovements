@@ -10,35 +10,40 @@ class SV_ReportImprovements_Installer
 
         $db = XenForo_Application::getDb();
 
-        $db->query("
-            CREATE TABLE IF NOT EXISTS `xf_sv_warning_log` (
-              `warning_log_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-              `warning_edit_date` INT(10) UNSIGNED NOT NULL,
-              `operation_type` ENUM('new','edit','expire','delete','acknowledge') NOT NULL,
-              `warning_id` INT(10) UNSIGNED NOT NULL,
-              `content_type` VARBINARY(25) NOT NULL,
-              `content_id` INT(10) UNSIGNED NOT NULL,
-              `content_title` VARCHAR(255) NOT NULL,
-              `user_id` INT(10) UNSIGNED NOT NULL,
-              `warning_date` INT(10) UNSIGNED NOT NULL,
-              `warning_user_id` INT(10) UNSIGNED NOT NULL,
-              `warning_definition_id` INT(10) UNSIGNED NOT NULL,
-              `title` VARCHAR(255) NOT NULL,
-              `notes` TEXT NOT NULL,
-              `points` SMALLINT(5) UNSIGNED NOT NULL,
-              `expiry_date` INT(10) UNSIGNED NOT NULL,
-              `is_expired` TINYINT(3) UNSIGNED NOT NULL,
-              `extra_user_group_ids` VARBINARY(255) NOT NULL,
-              PRIMARY KEY (`warning_log_id`),
-              KEY (`warning_id`),
-              KEY `content_type_id` (`content_type`,`content_id`),
-              KEY `user_id_date` (`user_id`,`warning_date`),
-              KEY `expiry` (`expiry_date`),
-              KEY `operation_type` (`operation_type`),
-              KEY `warning_edit_date` (`warning_edit_date`)
-            ) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci
-        ");
+        if (!$db->fetchRow("show tables like 'xf_sv_warning_log'"))
+        {
+            $db->query("
+                CREATE TABLE IF NOT EXISTS `xf_sv_warning_log` (
+                  `warning_log_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+                  `warning_edit_date` INT(10) UNSIGNED NOT NULL,
+                  `operation_type` ENUM('new','edit','expire','delete','acknowledge') NOT NULL,
+                  `warning_id` INT(10) UNSIGNED NOT NULL,
+                  `content_type` VARBINARY(25) NOT NULL,
+                  `content_id` INT(10) UNSIGNED NOT NULL,
+                  `content_title` VARCHAR(255) NOT NULL,
+                  `user_id` INT(10) UNSIGNED NOT NULL,
+                  `warning_date` INT(10) UNSIGNED NOT NULL,
+                  `warning_user_id` INT(10) UNSIGNED NOT NULL,
+                  `warning_definition_id` INT(10) UNSIGNED NOT NULL,
+                  `title` VARCHAR(255) NOT NULL,
+                  `notes` TEXT NOT NULL,
+                  `points` SMALLINT(5) UNSIGNED NOT NULL,
+                  `expiry_date` INT(10) UNSIGNED NOT NULL,
+                  `is_expired` TINYINT(3) UNSIGNED NOT NULL,
+                  `extra_user_group_ids` VARBINARY(255) NOT NULL,
+                  `reply_ban_thread_id` INT(10) UNSIGNED DEFAULT 0,
+                  PRIMARY KEY (`warning_log_id`),
+                  KEY (`warning_id`),
+                  KEY `content_type_id` (`content_type`,`content_id`),
+                  KEY `user_id_date` (`user_id`,`warning_date`),
+                  KEY `expiry` (`expiry_date`),
+                  KEY `operation_type` (`operation_type`),
+                  KEY `warning_edit_date` (`warning_edit_date`)
+                ) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci
+            ");
+        }
 
+        SV_Utils_Install::addColumn('xf_sv_warning_log', 'reply_ban_thread_id', 'INT(10) UNSIGNED DEFAULT 0');
         SV_Utils_Install::addColumn('xf_report_comment', 'warning_log_id', 'int unsigned default 0');
 
         SV_Utils_Install::addColumn('xf_report_comment', 'likes', 'INT UNSIGNED NOT NULL DEFAULT 0');
