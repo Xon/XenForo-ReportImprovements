@@ -291,22 +291,8 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
         }
         $constraints = array();
 
-        $includeUserReports = $input->filterSingle('include_user_reports', XenForo_Input::UINT);
-        $includeReportComments = $input->filterSingle('include_report_comments', XenForo_Input::UINT);
-        if ($includeUserReports || $includeReportComments)
-        {
-            if (!$includeUserReports || !$includeReportComments)
-            {
-                if ($includeUserReports)
-                {
-                    $constraints['is_report'] = true;
-                }
-                else if ($includeReportComments)
-                {
-                    $constraints['is_report'] = false;
-                }
-            }
-        }
+        // COME BACK TO THIS
+        $constraints['is_report'] = true;
 
         $warningPoints = $input->filterSingle('warning_points', XenForo_Input::ARRAY_SIMPLE);
 
