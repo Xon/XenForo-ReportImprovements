@@ -275,6 +275,170 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
         return $this->_getReportModel()->canViewReports($viewingUser);
     }
 
+
+    /**
+     * Get type-specific constraints from input.
+     *
+     * @param XenForo_Input $input
+     *
+     * @return array
+     */
+    public function getTypeConstraintsFromInput(XenForo_Input $input)
+    {
+        if (!($this->enabled))
+        {
+            return array();
+        }
+        $constraints = array();
+
+        $includeUserReports = $input->filterSingle('include_user_reports', XenForo_Input::UINT);
+        $includeReportComments = $input->filterSingle('include_report_comments', XenForo_Input::UINT);
+        if ($includeUserReports || $includeReportComments)
+        {
+            if (!$includeUserReports || !$includeReportComments)
+            {
+                if ($includeUserReports)
+                {
+                    $constraints['is_report'] = true;
+                }
+                else if ($includeReportComments)
+                {
+                    $constraints['is_report'] = false;
+                }
+            }
+        }
+
+        $warningPoints = $input->filterSingle('warning_points', XenForo_Input::ARRAY_SIMPLE);
+
+        if (isset($warningPoints['lower']) && $warningPoints['lower'] !== '')
+        {
+            $constraints['warning_points'][0] = intval($warningPoints['lower']);
+            if ($constraints['warning_points'][0] < 0)
+            {
+                unset($constraints['warning_points'][0]);
+            }
+        }
+
+        if (isset($warningPoints['upper']) && $warningPoints['upper'] !== '')
+        {
+            $constraints['warning_points'][1] = intval($warningPoints['upper']);
+            if ($constraints['warning_points'][1] < 0)
+            {
+                unset($constraints['warning_points'][1]);
+            }
+        }
+
+        if (empty($constraints['warning_points']))
+        {
+            unset($constraints['warning_points']);
+        }
+
+        return $constraints;
+    }
+
+    public function filterConstraints(XenForo_Search_SourceHandler_Abstract $sourceHandler, array $constraints)
+    {
+        $constraints = parent::filterConstraints($sourceHandler, $constraints);
+        if (!$this->_getReportModel()->canViewReporterUsername())
+        {
+            $constraints['is_report'] = false;
+        }
+
+        return $constraints;
+    }
+
+    /**
+     * Process a type-specific constraint.
+     *
+     * @see XenForo_Search_DataHandler_Abstract::processConstraint()
+     */
+    public function processConstraint(XenForo_Search_SourceHandler_Abstract $sourceHandler, $constraint, $constraintInfo, array $constraints)
+    {
+        if (!($this->enabled))
+        {
+            return array();
+        }
+        switch ($constraint)
+        {
+            case 'is_report':
+                if (isset($constraintInfo))
+                {
+                    return array('metadata' => array('is_report', $constraintInfo));
+                }
+            case 'warning_points':
+                if (isset($constraintInfo))
+                {
+                    return array(
+                        'range_query' => array('points',
+                                               isset($constraintInfo[0]) ? array('>=', intval($constraintInfo[0])) : array(),
+                                               isset($constraintInfo[1]) ? array('<=', intval($constraintInfo[1])) : array()
+                        )
+                    );
+                }
+        }
+
+        return false;
+    }
+
+    /**
+     * Gets the search form controller response for this type.
+     *
+     * @see XenForo_Search_DataHandler_Abstract::getSearchFormControllerResponse()
+     */
+    public function getSearchFormControllerResponse(XenForo_ControllerPublic_Abstract $controller, XenForo_Input $input, array $viewParams)
+    {
+        if (!($this->enabled))
+        {
+            return null;
+        }
+
+        if (!$this->_getReportModel()->canViewReports())
+        {
+            return null;
+        }
+
+        $params = $input->filterSingle('c', XenForo_Input::ARRAY_SIMPLE);
+
+        if (!isset($params['is_report']))
+        {
+            $viewParams['search']['include_user_reports'] = true;
+            $viewParams['search']['include_report_comments'] = true;
+        }
+        else if (!$params['is_report'])
+        {
+
+            $viewParams['search']['include_user_reports'] = false;
+            $viewParams['search']['include_report_comments'] = true;
+        }
+        else if ($params['is_report'])
+        {
+            $viewParams['search']['include_user_reports'] = true;
+            $viewParams['search']['include_report_comments'] = false;
+        }
+
+        if (isset($params['warning_points'][0]))
+        {
+            $viewParams['search']['warning_points']['lower'] = $params['warning_points'][0];
+        }
+        if (isset($params['warning_points'][1]))
+        {
+            $viewParams['search']['warning_points']['upper'] = $params['warning_points'][1];
+        }
+
+        $viewParams['search']['range_query'] = class_exists('XFCP_SV_SearchImprovements_XenES_Search_SourceHandler_ElasticSearch', false);
+
+        if (!empty($params['report_for']))
+        {
+            $user = $this->_getUserModel()->getUserById($params['report_for']);
+            if (isset($user['username']))
+            {
+                $viewParams['search']['report_for'] = $user['username'];
+            }
+        }
+
+        return $controller->responseView('XenForo_ViewPublic_Search_Form_Post', 'search_form_report', $viewParams);
+    }
+
     /**
      * @return SV_ReportImprovements_XenForo_Model_Report
      */
@@ -286,5 +450,18 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
         }
 
         return $this->_reportModel;
+    }
+
+    /**
+     * @return SV_ReportImprovements_XenForo_Model_User
+     */
+    protected function _getUserModel()
+    {
+        if (!$this->_userModel)
+        {
+            $this->_userModel = XenForo_Model::create('XenForo_Model_User');
+        }
+
+        return $this->_userModel;
     }
 }
