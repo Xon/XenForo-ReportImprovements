@@ -18,6 +18,7 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         $mapping['properties']['is_report'] = array("type" => "boolean");
         $mapping['properties']['points'] = array("type" => "long");
         $mapping['properties']['expiry_date'] = array("type" => "long");
+        $mapping['properties']['reply_ban_thread'] = array("type" => "long");
 
         return $mapping;
     }
@@ -58,12 +59,9 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         {
             $text = $data['state_change'] . ' ' . $text;
         }
-        if (!empty($data['warning_log_id']) && !empty($data['title']))
+
+        if (!empty($data['title']))
         {
-            if (empty($data['title']))
-            {
-                throw new Exception(var_export($data, true));
-            }
             $title = $data['title'];
             if ($title instanceof XenForo_Phrase)
             {
@@ -71,7 +69,14 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
             }
             $title = (string)$title;
             $text = $title . ' ' . $data['notes'] . ' ' . $text;
+        }
 
+        if (!empty($data['reply_ban_thread_id']))
+        {
+            $metadata['reply_ban_thread'] = $data['reply_ban_thread_id'];
+        }
+        if (!empty($data['warning_log_id']))
+        {
             $metadata['points'] = $data['points'];
             $metadata['expiry_date'] = $data['expiry_date'];
         }

@@ -312,8 +312,14 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         }
 
         $report = $this->_getReport();
+        $data = $this->getMergedData();
+        $warning = $this->getOption(self::OPTION_WARNINGLOG_WARNING);
+        if ($warning)
+        {
+            $data = array_merge($warning, $data);
+        }
         $indexer = new XenForo_Search_Indexer();
-        $dataHandler->insertIntoIndex($indexer, $this->getMergedData(), $report);
+        $dataHandler->insertIntoIndex($indexer, $data, $report);
     }
 
     protected function _deleteFromSearchIndex()
@@ -325,7 +331,13 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         }
 
         $indexer = new XenForo_Search_Indexer();
-        $dataHandler->deleteFromIndex($indexer, $this->getMergedData());
+        $data = $this->getMergedData();
+        $warning = $this->getOption(self::OPTION_WARNINGLOG_WARNING);
+        if ($warning)
+        {
+            $data = array_merge($warning, $data);
+        }
+        $dataHandler->deleteFromIndex($indexer, $data);
     }
 
     /**
