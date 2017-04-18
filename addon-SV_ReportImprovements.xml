@@ -155,6 +155,8 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <phrase title="sv_members_who_liked_this_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Members Who Liked This Report Comment]]></phrase>
     <phrase title="sv_no_one_has_liked_this_report_comment_yet" version_id="1010000" version_string="1.1.0"><![CDATA[No one has liked this report comment yet.]]></phrase>
     <phrase title="SV_Reply_Banned_From_Thread_title" version_id="1060000" version_string="1.6.0"><![CDATA[Reply Banned]]></phrase>
+    <phrase title="SV_Reply_Banned_notes" version_id="1060000" version_string="1.6.0"><![CDATA[{link}
+{reason}]]></phrase>
     <phrase title="sv_reports_alert_moderators_always" version_id="1010100" version_string="1.1.1"><![CDATA[Alert all moderators]]></phrase>
     <phrase title="sv_reports_alert_moderators_new" version_id="1010100" version_string="1.1.1"><![CDATA[Alert watchers on reply and all moderators for new alerts.]]></phrase>
     <phrase title="sv_reports_alert_watchers" version_id="1010100" version_string="1.1.1"><![CDATA[Alert watchers on reply ]]></phrase>
