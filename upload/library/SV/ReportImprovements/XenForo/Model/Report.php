@@ -440,6 +440,23 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
      * @param array|null $viewingUser
      * @return bool
      */
+    public function canResolveReplyBanReports(array $viewingUser = null)
+    {
+        $this->standardizeViewingUserReference($viewingUser);
+
+        if (empty($viewingUser['user_id']))
+        {
+            return false;
+        }
+
+        return XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'viewReports') &&
+               XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'updateReport');
+    }
+
+    /**
+     * @param array|null $viewingUser
+     * @return bool
+     */
     public function canViewReports(array $viewingUser = null)
     {
         $this->standardizeViewingUserReference($viewingUser);
