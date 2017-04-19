@@ -104,9 +104,13 @@ class SV_ReportImprovements_XenForo_Model_Thread extends XFCP_SV_ReportImproveme
 			LEFT JOIN xf_user ON xf_user.user_id = xf_thread_reply_ban.user_id
 			WHERE expiry_date <= ?
 		", $expiryDate);
+        if (empty($replyBans))
+        {
+            return;
+        }
         $operationType = SV_ReportImprovements_Model_WarningLog::Operation_ExpireWarning;
         $threadIds = XenForo_Application::arrayColumn($replyBans, 'thread_id');
-        $threads = $this->fetchAllKeyed("SELECT * FROM xf_thread WHERE thread_id IN (" . $db->quote($threadIds) . ")");
+        $threads = empty($threadIds) ? array() :$this->fetchAllKeyed("SELECT * FROM xf_thread WHERE thread_id IN (" . $db->quote($threadIds) . ")", 'thread_id');
 
         foreach ($replyBans as $replyBan)
         {
