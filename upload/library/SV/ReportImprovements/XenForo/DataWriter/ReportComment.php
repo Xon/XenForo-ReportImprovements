@@ -306,6 +306,7 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
     protected function _insertIntoSearchIndex()
     {
         $dataHandler = $this->sv_getSearchDataHandler();
+
         if (!$dataHandler)
         {
             return;
@@ -319,12 +320,24 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
             $data = array_merge($warning, $data);
         }
         $indexer = new XenForo_Search_Indexer();
+
         $dataHandler->insertIntoIndex($indexer, $data, $report);
+
+        // Reports proper
+        $dataHandler = $this->sv_getReportSearchDataHandler();
+
+        if (!$dataHandler)
+        {
+            return;
+        }
+
+        $dataHandler->insertIntoIndex($indexer, $this->getMergedData(), null);
     }
 
     protected function _deleteFromSearchIndex()
     {
         $dataHandler = $this->sv_getSearchDataHandler();
+
         if (!$dataHandler)
         {
             return;
@@ -338,6 +351,17 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
             $data = array_merge($warning, $data);
         }
         $dataHandler->deleteFromIndex($indexer, $data);
+
+
+        // Report handling
+        $dataHandler = $this->sv_getReportSearchDataHandler();
+
+        if (!$dataHandler)
+        {
+            return;
+        }
+
+        $dataHandler->deleteFromIndex($indexer, $this->getMergedData());
     }
 
     /**
@@ -349,6 +373,18 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         $dataHandler = $this->_getSearchModel()->getSearchDataHandler('report_comment');
 
         return ($dataHandler instanceof SV_ReportImprovements_Search_DataHandler_ReportComment) ? $dataHandler : null;
+    }
+    }
+
+    /**
+     * @return XenForo_Search_DataHandler_Abstract|null
+     */
+    public function sv_getReportSearchDataHandler()
+    {
+        /* var $dataHandler XenForo_Search_DataHandler_Abstract */
+        $dataHandler = $this->_getSearchModel()->getSearchDataHandler('report');
+
+        return ($dataHandler instanceof SV_ReportImprovements_Search_DataHandler_Report) ? $dataHandler : null;
     }
 
     /**

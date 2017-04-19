@@ -367,65 +367,6 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
     }
 
     /**
-     * Gets the search form controller response for this type.
-     *
-     * @see XenForo_Search_DataHandler_Abstract::getSearchFormControllerResponse()
-     */
-    public function getSearchFormControllerResponse(XenForo_ControllerPublic_Abstract $controller, XenForo_Input $input, array $viewParams)
-    {
-        if (!($this->enabled))
-        {
-            return null;
-        }
-
-        if (!$this->_getReportModel()->canViewReports())
-        {
-            return null;
-        }
-
-        $params = $input->filterSingle('c', XenForo_Input::ARRAY_SIMPLE);
-
-        if (!isset($params['is_report']))
-        {
-            $viewParams['search']['include_user_reports'] = true;
-            $viewParams['search']['include_report_comments'] = true;
-        }
-        else if (!$params['is_report'])
-        {
-
-            $viewParams['search']['include_user_reports'] = false;
-            $viewParams['search']['include_report_comments'] = true;
-        }
-        else if ($params['is_report'])
-        {
-            $viewParams['search']['include_user_reports'] = true;
-            $viewParams['search']['include_report_comments'] = false;
-        }
-
-        if (isset($params['warning_points'][0]))
-        {
-            $viewParams['search']['warning_points']['lower'] = $params['warning_points'][0];
-        }
-        if (isset($params['warning_points'][1]))
-        {
-            $viewParams['search']['warning_points']['upper'] = $params['warning_points'][1];
-        }
-
-        $viewParams['search']['range_query'] = class_exists('XFCP_SV_SearchImprovements_XenES_Search_SourceHandler_ElasticSearch', false);
-
-        if (!empty($params['report_for']))
-        {
-            $user = $this->_getUserModel()->getUserById($params['report_for']);
-            if (isset($user['username']))
-            {
-                $viewParams['search']['report_for'] = $user['username'];
-            }
-        }
-
-        return $controller->responseView('XenForo_ViewPublic_Search_Form_Post', 'search_form_report', $viewParams);
-    }
-
-    /**
      * @return SV_ReportImprovements_XenForo_Model_Report
      */
     protected function _getReportModel()

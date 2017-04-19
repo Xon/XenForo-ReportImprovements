@@ -143,6 +143,7 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <phrase title="report_options" version_id="4" version_string="0.0.4"><![CDATA[Report Options]]></phrase>
     <phrase title="resolve_linked_report" version_id="4" version_string="0.0.4"><![CDATA[Resolve linked report]]></phrase>
     <phrase title="search_include_report_comments" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Include report comments]]></phrase>
+    <phrase title="search_include_report_contents" version_id="1050200" version_string="1.5.2"><![CDATA[Include reported content]]></phrase>
     <phrase title="search_include_user_reports" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Include user reports]]></phrase>
     <phrase title="search_reports_only" version_id="1050200" version_string="1.5.2"><![CDATA[Search Reports Only]]></phrase>
     <phrase title="search_report_comments" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Search Report Comments]]></phrase>
@@ -366,7 +367,7 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
             id="search_bar_include_user_reports" class="AutoChecker"
             /> {xen:phrase search_include_user_reports}</label></li>
     </ul>]]></template>
-    <template title="search_form_report" version_id="1050200" version_string="1.5.2"><![CDATA[<xen:title>{xen:phrase search_reports_only}</xen:title>
+    <template title="search_form_report_comment" version_id="1050200" version_string="1.5.2"><![CDATA[<xen:title>{xen:phrase search_report_comments}</xen:title>
 
 <xen:navigation>
     <xen:breadcrumb href="{xen:link full:search}">{xen:phrase search}</xen:breadcrumb>
@@ -415,129 +416,10 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
                 <input type="date" name="date" value="{$search.date}" class="textCtrl" id="ctrl_date" />
             </dd>
         </dl>
-        <xen:if is="{$search.range_query}">
         <dl class="ctrlUnit">
-            <dt><label for="ctrl_date">{xen:phrase warning_points}:</label></dt>
+            <dt></dt>
             <dd>
-                <input type="number" placeholder="{xen:phrase warning_points_lower_bound}" name="warning_points[lower]" value="{$search.warning_points.lower}" class="textCtrl" id="ctrl_warning_points_lower" /> -
-                <input type="number" placeholder="{xen:phrase warning_points_upper_bound}" name="warning_points[upper]" value="{$search.warning_points.upper}" class="textCtrl" id="ctrl_warning_points_upper" />
-            </dd>
-        </dl>
-        </xen:if>
-<xen:comment>
-        <dl class="ctrlUnit">
-            <dt><label for="ctrl_reply_count">{xen:phrase minimum_number_of_reports}:</label></dt>
-            <dd>
-                <!-- Chrome does horrible things with input:number -->
-                <input type="number" name="report_count" value="{$search.report_count}" class="textCtrl" id="ctrl_reply_count" min="0" step="5" />
-            </dd>
-        </dl>
-        <dl class="ctrlUnit">
-            <dt><label for="ctrl_reply_count">{xen:phrase minimum_number_of_comments}:</label></dt>
-            <dd>
-                <!-- Chrome does horrible things with input:number -->
-                <input type="number" name="comment_count" value="{$search.comment_count}" class="textCtrl" id="ctrl_comment_count" min="0" step="5" />
-            </dd>
-        </dl>
-        <dl class="ctrlUnit">
-            <dt><label for="ctrl_reply_count">{xen:phrase minimum_number_of_warnings}:</label></dt>
-            <dd>
-                <!-- Chrome does horrible things with input:number -->
-                <input type="number" name="warning_count" value="{$search.warning_count}" class="textCtrl" id="ctrl_warning_count" min="0" step="5" />
-            </dd>
-        </dl>
-</xen:comment>
-    </fieldset>
-
-    <dl class="ctrlUnit">
-        <dt><label>{xen:phrase order_by}:</label></dt>
-        <dd>
-            <ul>
-                <li><label for="ctrl_order_date"><input type="radio" name="order" id="ctrl_order_date" value="date"{xen:checked '{$search.order} == "date"'} /> {xen:phrase most_recent}</label></li>
-<xen:comment>
-                <li><label for="ctrl_order_replies"><input type="radio" name="order" id="ctrl_order_reports" value="replies"{xen:checked '{$search.order} == "replies"'} /> {xen:phrase most_reports}</label></li>
-                <li><label for="ctrl_order_replies"><input type="radio" name="order" id="ctrl_order_comments" value="replies"{xen:checked '{$search.order} == "comments"'} /> {xen:phrase most_comments}</label></li>
-                <li><label for="ctrl_order_replies"><input type="radio" name="order" id="ctrl_order_warnings" value="replies"{xen:checked '{$search.order} == "warnings"'} /> {xen:phrase most_warnings}</label></li>
-</xen:comment>
-                <xen:if is="{$supportsRelevance}"><li><label for="ctrl_order_relevance"><input type="radio" name="order" id="ctrl_order_relevance" value="relevance"{xen:checked '{$search.order} == "relevance"'} /> {xen:phrase relevance}</label></li></xen:if>
-            </ul>
-        </dd>
-    </dl>
-
-<xen:comment>
-    <dl class="ctrlUnit">
-        <dt></dt>
-        <dd><label for="ctrl_group_discussion"><input type="checkbox" name="group_discussion" id="ctrl_group_discussion" value="1"{xen:checked '{$search.group_discussion}'} /> {xen:phrase display_results_as_reports}</label></dd>
-    </dl>
-</xen:comment>
-
-    <dl class="ctrlUnit submitUnit">
-        <dt></dt>
-        <dd><input type="submit" value="{xen:phrase search}" accesskey="s" class="button primary" /></dd>
-    </dl>
-
-    <input type="hidden" name="type" value="report_comment" />
-    <input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
-
-    <script>
-
-    $(function()
-    {
-        $('#TitleRemove').click(function(e)
-        {
-            $(this).closest('dl.ctrlUnit').xfRemove();
-        });
-    });
-
-    </script>
-</form>]]></template>
-    <template title="search_form_report_comment" version_id="1020008" version_string="1.2.0 RC6"><![CDATA[<xen:title>{xen:phrase search_report_comments}</xen:title>
-
-<xen:navigation>
-    <xen:breadcrumb href="{xen:link full:search}">{xen:phrase search}</xen:breadcrumb>
-</xen:navigation>
-
-<form action="{xen:link 'search/search'}" method="post" class="xenForm AutoValidator"
-    data-optInOut="optIn"
-    data-redirect="true">
-
-    <xen:include template="search_form_tabs" />
-
-    <dl class="ctrlUnit">
-        <dt><label for="ctrl_keywords">{xen:phrase keywords}:</label></dt>
-        <dd>
-            <ul>
-                <li><input type="search" name="keywords" value="{$search.keywords}" results="0" class="textCtrl" id="ctrl_keywords" autofocus="true" /></li>
-                <xen:comment>
-                <li><label for="ctrl_title_only"><input type="checkbox" name="title_only" id="ctrl_title_only" value="1" {xen:checked '{$search.title_only}'} /> {xen:phrase search_titles_only}</label></li>
-                </xen:comment>
-            </ul>
-        </dd>
-    </dl>
-
-    <fieldset>
-        <dl class="ctrlUnit">
-            <dt><label for="ctrl_users">{xen:phrase posted_by_member}:</label></dt>
-            <dd>
-                <ul>
-                    <li>
-                        <input type="text" name="users" value="{$search.users}" class="textCtrl AutoComplete" id="ctrl_users" />
-                        <p class="explain">{xen:phrase separate_names_with_comma}</p>
-                    </li>
-                    <xen:comment>
-                        <!-- this doesn't work as expected -->
-                        <li><label><input type="checkbox" name="user_content" value="thread" {xen:checked '{$search.user_content} == "conversation"'} /> {xen:phrase search_conversations_started_by_this_member_only}</label></li>
-                    </xen:comment>
-                </ul>
-            </dd>
-        </dl>
-    </fieldset>
-
-    <fieldset>
-        <dl class="ctrlUnit">
-            <dt><label for="ctrl_date">{xen:phrase newer_than}:</label></dt>
-            <dd>
-                <input type="date" name="date" value="{$search.date}" class="textCtrl" id="ctrl_date" />
+                <label for="ctrl_search_include_report_contents"><input type="checkbox" name="include_report_contents" value="1"{xen:if '{$search.include_report_contents}', ' checked="checked"'} id="ctrl_include_report_contents" /> {xen:phrase search_include_report_contents}</label>
             </dd>
         </dl>
         <dl class="ctrlUnit">
@@ -872,7 +754,6 @@ $2$3$2</xen:if>]]></replace>
       <replace><![CDATA[$1$2
 <xen:if is="{$visitor.is_moderator} || {$visitor.canViewReports}">
 <li{xen:if "{$searchType} == 'report_comment'", ' class="active"'}><a href="{xen:link search, '', 'type=report_comment'}">{xen:phrase search_report_comments}</a></li>
-<li{xen:if "{$searchType} == 'report'", ' class="active"'}><a href="{xen:link search, '', 'type=report'}">{xen:phrase search_reports_only}</a></li>
 </xen:if>
 $3]]></replace>
     </modification>
