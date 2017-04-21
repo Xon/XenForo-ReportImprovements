@@ -43,6 +43,70 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         return parent::reportContent($contentType, $content, $message, $viewingUser);
     }
 
+    public function getReplyBansForReportComments(array $report, array $comments)
+    {
+        $threadIds = array_filter(XenForo_Application::arrayColumn($comments, 'reply_ban_thread_id'));
+        if ($threadIds)
+        {
+            $visitor = XenForo_Visitor::getInstance()->toArray();
+            $threadModel = $this->_getThreadModel();
+            $threads = $threadModel->getThreadsByIds($threadIds, array(
+                'join' =>
+                    XenForo_Model_Thread::FETCH_FORUM,
+                'permissionCombinationId' => $visitor['permission_combination_id'],
+                'replyBanUserId' => $visitor['user_id'],
+            ));
+            foreach ($threads AS $threadId => &$thread)
+            {
+                $thread['permissions'] = XenForo_Permission::unserializePermissions($thread['node_permission_cache']);
+                if (!$threadModel->canViewThreadAndContainer($thread, $thread, $null, $thread['permissions']))
+                {
+                    unset($threads[$threadId]);
+                    continue;
+                }
+
+                $thread = $threadModel->prepareThread($thread, $thread, $thread['permissions']);
+
+                $thread['forum'] = array(
+                    'node_id' => $thread['node_id'],
+                    'node_name' => $thread['node_name'],
+                    'title' => $thread['node_title']
+                );
+            }
+
+            $threadIds = array_filter(XenForo_Application::arrayColumn($threads, 'thread_id'));
+            if ($threadIds)
+            {
+                $db = $this->_getDb();
+                $replyBans = $this->fetchAllKeyed("
+                  SELECT * 
+                  FROM xf_thread_reply_ban
+                  WHERE thread_id IN (" . $db->quote($threadIds) . ") AND user_id = ?
+                ", 'thread_id', array($report['content_user_id']));
+            }
+
+            foreach ($comments as &$comment)
+            {
+                if (empty($comment['reply_ban_thread_id']))
+                {
+                    continue;
+                }
+
+                if (isset($threads[$comment['reply_ban_thread_id']]))
+                {
+                    $comment['reply_ban_thread'] = $threads[$comment['reply_ban_thread_id']];
+                }
+
+                if (isset($replyBans[$comment['reply_ban_thread_id']]))
+                {
+                    $comment['reply_ban'] = $replyBans[$comment['reply_ban_thread_id']];
+                }
+            }
+        }
+
+        return $comments;
+    }
+
     public function getReportComments($reportId, $orderDirection = 'ASC')
     {
         $db = $this->_getDb();
@@ -376,6 +440,23 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
      * @param array|null $viewingUser
      * @return bool
      */
+    public function canResolveReplyBanReports(array $viewingUser = null)
+    {
+        $this->standardizeViewingUserReference($viewingUser);
+
+        if (empty($viewingUser['user_id']))
+        {
+            return false;
+        }
+
+        return XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'viewReports') &&
+               XenForo_Permission::hasPermission($viewingUser['permissions'], 'general', 'updateReport');
+    }
+
+    /**
+     * @param array|null $viewingUser
+     * @return bool
+     */
     public function canViewReports(array $viewingUser = null)
     {
         $this->standardizeViewingUserReference($viewingUser);
@@ -554,6 +635,14 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
     protected function _getUserModel()
     {
         return $this->getModelFromCache('XenForo_Model_User');
+    }
+
+    /**
+     * @return SV_ReportImprovements_XenForo_Model_Thread
+     */
+    protected function _getThreadModel()
+    {
+        return $this->getModelFromCache('XenForo_Model_Thread');
     }
 }
 

@@ -52,7 +52,10 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
 
         if ($response instanceof XenForo_ControllerResponse_View && isset($response->params['report']))
         {
-            $response->params['canCommentReport'] = $this->_getReportModel()->canCommentReport($response->params['report']);
+            $reportModel = $this->_getReportModel();
+            $report = $response->params['report'];
+            $response->params['canCommentReport'] = $reportModel->canCommentReport($report);
+            $response->params['comments'] = $reportModel->getReplyBansForReportComments($report, $response->params['comments']);
         }
 
         return $response;
