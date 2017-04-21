@@ -300,10 +300,9 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         $constraints = array();
 
         $includeUserReports = $input->filterSingle('include_user_reports', XenForo_Input::UINT);
-        $includeReportContents = $input->filterSingle('include_user_contents', XenForo_Input::UINT);
+        $includeReportContents = $input->filterSingle('include_report_contents', XenForo_Input::UINT);
         $includeReportComments = $input->filterSingle('include_report_comments', XenForo_Input::UINT);
 
-        // GET BACK TO THIS, WORK OUT THE MESS
         if ($includeUserReports || $includeReportComments)
         {
             if (!$includeUserReports || !$includeReportComments)

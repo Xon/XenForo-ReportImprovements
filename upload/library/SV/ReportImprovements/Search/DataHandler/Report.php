@@ -67,6 +67,8 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
         }
         $metadata['assigned_user_id'] = $data['assigned_user_id'];
 
+        XenForo_Error::debug($text);
+
         $indexer->insertIntoIndex(
             'report', $data['report_id'],
             $title, $text,
@@ -275,64 +277,6 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
         return $this->_getReportModel()->canViewReports($viewingUser);
     }
 
-
-    /**
-     * Get type-specific constraints from input.
-     *
-     * @param XenForo_Input $input
-     *
-     * @return array
-     */
-    public function getTypeConstraintsFromInput(XenForo_Input $input)
-    {
-        if (!($this->enabled))
-        {
-            return array();
-        }
-        $constraints = array();
-
-        // COME BACK TO THIS
-        $constraints['is_report'] = true;
-
-        $warningPoints = $input->filterSingle('warning_points', XenForo_Input::ARRAY_SIMPLE);
-
-        if (isset($warningPoints['lower']) && $warningPoints['lower'] !== '')
-        {
-            $constraints['warning_points'][0] = intval($warningPoints['lower']);
-            if ($constraints['warning_points'][0] < 0)
-            {
-                unset($constraints['warning_points'][0]);
-            }
-        }
-
-        if (isset($warningPoints['upper']) && $warningPoints['upper'] !== '')
-        {
-            $constraints['warning_points'][1] = intval($warningPoints['upper']);
-            if ($constraints['warning_points'][1] < 0)
-            {
-                unset($constraints['warning_points'][1]);
-            }
-        }
-
-        if (empty($constraints['warning_points']))
-        {
-            unset($constraints['warning_points']);
-        }
-
-        return $constraints;
-    }
-
-    public function filterConstraints(XenForo_Search_SourceHandler_Abstract $sourceHandler, array $constraints)
-    {
-        $constraints = parent::filterConstraints($sourceHandler, $constraints);
-        if (!$this->_getReportModel()->canViewReporterUsername())
-        {
-            $constraints['is_report'] = false;
-        }
-
-        return $constraints;
-    }
-
     /**
      * Process a type-specific constraint.
      *
@@ -346,20 +290,10 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
         }
         switch ($constraint)
         {
-            case 'is_report':
+            case 'report':
                 if (isset($constraintInfo))
                 {
                     return array('metadata' => array('is_report', $constraintInfo));
-                }
-            case 'warning_points':
-                if (isset($constraintInfo))
-                {
-                    return array(
-                        'range_query' => array('points',
-                                               isset($constraintInfo[0]) ? array('>=', intval($constraintInfo[0])) : array(),
-                                               isset($constraintInfo[1]) ? array('<=', intval($constraintInfo[1])) : array()
-                        )
-                    );
                 }
         }
 
