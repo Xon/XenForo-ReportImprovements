@@ -67,8 +67,6 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
         }
         $metadata['assigned_user_id'] = $data['assigned_user_id'];
 
-        XenForo_Error::debug($text);
-
         $indexer->insertIntoIndex(
             'report', $data['report_id'],
             $title, $text,

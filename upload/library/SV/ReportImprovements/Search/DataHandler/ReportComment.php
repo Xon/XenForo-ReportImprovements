@@ -259,7 +259,7 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
 
     public function getSearchContentTypes()
     {
-        return array('report_comment', 'report');
+        return array('report_comment');//, 'report');
     }
 
     public function getGroupByType()
@@ -299,8 +299,8 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         }
         $constraints = array();
 
+
         $includeUserReports = $input->filterSingle('include_user_reports', XenForo_Input::UINT);
-        $includeReportContents = $input->filterSingle('include_report_contents', XenForo_Input::UINT);
         $includeReportComments = $input->filterSingle('include_report_comments', XenForo_Input::UINT);
 
         if ($includeUserReports || $includeReportComments)
@@ -317,6 +317,9 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
                 }
             }
         }
+
+        $includeReportContents = $input->filterSingle('include_report_contents', XenForo_Input::UINT);
+        $constraints["include_report_contents"] = boolval($includeReportContents);
 
         $warningPoints = $input->filterSingle('warning_points', XenForo_Input::ARRAY_SIMPLE);
 
@@ -354,6 +357,11 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
             $constraints['is_report'] = false;
         }
 
+        if (isset($constraints["include_report_contents"]) && $constraints["include_report_contents"])
+        {
+            $constraints["content"][] = "report";
+        }
+
         return $constraints;
     }
 
@@ -385,6 +393,11 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
                         )
                     );
                 }
+            // case 'include_report_contents':
+            //     return array(
+            //             'metadata' => array('content', array("report")),
+            //             'query' => array('search_index', 'content_type', '=', "report")
+            //         );
         }
 
         return false;
@@ -434,6 +447,8 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         {
             $viewParams['search']['warning_points']['upper'] = $params['warning_points'][1];
         }
+
+        $viewParams['search']['include_report_contents'] = true;
 
         $viewParams['search']['range_query'] = class_exists('XFCP_SV_SearchImprovements_XenES_Search_SourceHandler_ElasticSearch', false);
 
