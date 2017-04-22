@@ -370,8 +370,11 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 <dt>{xen:phrase attachments}:</dt> <dd>{$content.attachments_count}</dd>
 </dl>
 </xen:if>]]></template>
-    <template title="search_bar_reports_only" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[<label title="{xen:phrase search_reports_only}"><input type="checkbox" name="type" value="report_comment" id="search_bar_reports" class="Disabler AutoChecker" checked="checked" /> {xen:phrase search_reports_only}</label>
+    <template title="search_bar_reports_only" version_id="1060200" version_string="1.6.2"><![CDATA[<label title="{xen:phrase search_reports_only}"><input type="checkbox" name="type" value="report_comment" id="search_bar_reports" class="Disabler AutoChecker" checked="checked" /> {xen:phrase search_reports_only}</label>
     <ul id="search_bar_reports_Disabler">
+        <li><label><input type="checkbox" name="type[report_comment][include_report_contents]" value="1" checked="checked" 
+            id="search_bar_include_report_contents" 
+            /> {xen:phrase search_include_report_contents}</label></li>
         <li><label><input type="checkbox" name="type[report_comment][include_report_comments]" value="1" checked="checked"
             id="search_bar_include_report_comments" class="AutoChecker"
             /> {xen:phrase  search_include_report_comments}</label></li>
