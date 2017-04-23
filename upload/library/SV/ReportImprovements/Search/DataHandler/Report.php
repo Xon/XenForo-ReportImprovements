@@ -276,29 +276,6 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
     }
 
     /**
-     * Process a type-specific constraint.
-     *
-     * @see XenForo_Search_DataHandler_Abstract::processConstraint()
-     */
-    public function processConstraint(XenForo_Search_SourceHandler_Abstract $sourceHandler, $constraint, $constraintInfo, array $constraints)
-    {
-        if (!($this->enabled))
-        {
-            return array();
-        }
-        switch ($constraint)
-        {
-            case 'report':
-                if (isset($constraintInfo))
-                {
-                    return array('metadata' => array('is_report', $constraintInfo));
-                }
-        }
-
-        return false;
-    }
-
-    /**
      * @return SV_ReportImprovements_XenForo_Model_Report
      */
     protected function _getReportModel()
