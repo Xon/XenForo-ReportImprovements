@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.6.3" version_id="1060300" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.6.4" version_id="1060400" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -32,7 +32,6 @@
     <listener event_id="load_class_controller" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Thread" description="XenForo_ControllerPublic_Thread"/>
     <listener event_id="load_class_datawriter" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_DataWriter_Warning" description="XenForo_DataWriter_Warning"/>
     <listener event_id="load_class_datawriter" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_DataWriter_ReportComment" description="XenForo_DataWriter_ReportComment"/>
-    <listener event_id="load_class_model" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Thread" description="XenForo_Model_Thread"/>
     <listener event_id="load_class_model" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Moderator" description="XenForo_Model_Moderator"/>
     <listener event_id="load_class_model" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenES_Model_Elasticsearch" description="XenES_Model_Elasticsearch"/>
     <listener event_id="load_class_model" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Conversation" description="XenForo_Model_Conversation"/>
@@ -165,7 +164,6 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <phrase title="SV_Reply_Banned_notes" version_id="1060000" version_string="1.6.0"><![CDATA[{link}
 {reason}]]></phrase>
     <phrase title="sv_reply_ban_thread" version_id="1060000" version_string="1.6.0"><![CDATA[Reply Ban Thread]]></phrase>
-    <phrase title="sv_reported_content" version_id="1060300" version_string="1.6.3"><![CDATA[Reported Content]]></phrase>
     <phrase title="sv_reports_alert_moderators_always" version_id="1010100" version_string="1.1.1"><![CDATA[Alert all moderators]]></phrase>
     <phrase title="sv_reports_alert_moderators_new" version_id="1010100" version_string="1.1.1"><![CDATA[Alert watchers on reply and all moderators for new alerts.]]></phrase>
     <phrase title="sv_reports_alert_watchers" version_id="1010100" version_string="1.1.1"><![CDATA[Alert watchers on reply ]]></phrase>
@@ -527,13 +525,13 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 
     </script>
 </form>]]></template>
-    <template title="search_result_report" version_id="1060300" version_string="1.6.3"><![CDATA[<li id="{$report.content-type}-{$report.report_id}" class="searchResult report_comment primaryContent{xen:if $conversation_message.isIgnored, ' ignored'}" data-author="{$conversation_message.username}">
+    <template title="search_result_report" version_id="1060200" version_string="1.6.2"><![CDATA[<li id="{$report.content-type}-{$report.report_id}" class="searchResult report_comment primaryContent{xen:if $conversation_message.isIgnored, ' ignored'}" data-author="{$conversation_message.username}">
     <div class="listBlock posterAvatar"><xen:avatar user="$report" size="s" img="true" /></div>
 
     <div class="listBlock main">
         <div class="titleText">
-            <span class="contentType">{xen:phrase sv_reported_content}</span>
-            <h3 class="title{xen:if {$report.isNew}, ' new'}"><a href="{xen:link {$report.contentLink}}">{xen:helper threadPrefix, $report}{xen:helper highlight, {xen:raw $report.contentTitle}, $search.search_query, 'highlight'}</a></h3>
+            <span class="contentType">{xen:phrase sv_user_report}</span>
+            <h3 class="title{xen:if {$report.isNew}, ' new'}"><a href="{xen:link reports, $report, 'report_id={$report.report_id}'}">{xen:helper threadPrefix, $report}{xen:helper highlight, {xen:raw $report.contentTitle}, $search.search_query, 'highlight'}</a></h3>
         </div>
 
         <blockquote class="snippet">
@@ -549,25 +547,42 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
         </div>
     </div>
 </li>]]></template>
-    <template title="search_result_report_comment" version_id="1060200" version_string="1.6.2"><![CDATA[<li id="{$report.content-type}-{$report.report_id}" class="searchResult report_comment primaryContent{xen:if $conversation_message.isIgnored, ' ignored'}" data-author="{$conversation_message.username}">
-    <div class="listBlock posterAvatar"><xen:avatar user="$report" size="s" img="true" /></div>
-
+    <template title="search_result_report_comment" version_id="1060200" version_string="1.6.2"><![CDATA[<li id="report_comment-{$comment.report_comment_id}" class="searchResult report_comment primaryContent{xen:if $conversation_message.isIgnored, ' ignored'}" data-author="{$conversation_message.username}">
+    <div class="listBlock posterAvatar"><xen:avatar user="$comment" size="s" img="true" /></div>
     <div class="listBlock main">
         <div class="titleText">
-            <span class="contentType">{xen:phrase sv_user_report}</span>
-            <h3 class="title{xen:if {$report.isNew}, ' new'}"><a href="{xen:link {$report.contentLink}}">{xen:helper threadPrefix, $report}{xen:helper highlight, {xen:raw $report.contentTitle}, $search.search_query, 'highlight'}</a></h3>
+            <span class="contentType">{xen:if $comment.is_report, {xen:phrase sv_user_report}, {xen:phrase report_comment}}</span>
+            <h3 class="title{xen:if {$report_comment.isNew}, ' new'}"><a href="{xen:link reports/comment, $report, 'report_comment_id={$comment.report_comment_id}'}">{xen:helper threadPrefix, $report}{xen:helper highlight, {xen:raw $report.contentTitle}, $search.search_query, 'highlight'}</a></h3>
         </div>
-
         <blockquote class="snippet">
-            <a href="{xen:link reports, $report, 'report_id={$report.report_id}'}">
-                {xen:helper snippet, $report.extraContent.message, 150, {xen:array 'term={$search.search_query}', 'emClass=highlight', 'stripQuote=1'}}
+            <a href="{xen:link reports/comment, $report, 'report_comment_id={$comment.report_comment_id}'}">
+                {xen:helper snippet, $comment.message, 150, {xen:array 'term={$search.search_query}', 'emClass=highlight', 'stripQuote=1'}}
+                <xen:if is="{$comment.operation_type}" >
+                    <xen:if is="{$comment.operation_type} == 'new'" >
+                        {xen:phrase sv_ri_operation_type_new}
+                    <xen:elseif  is="{$comment.operation_type} == 'delete'" />
+                        {xen:phrase sv_ri_operation_type_delete}
+                    <xen:elseif  is="{$comment.operation_type} == 'expire'" />
+                        {xen:phrase sv_ri_operation_type_expire}
+                    <xen:elseif  is="{$comment.operation_type} == 'edit'" />
+                        {xen:phrase sv_ri_operation_type_edit}
+                    <xen:else />
+                        {$comment.operation_type}
+                    </xen:if>
+                    {xen:phrase sv_x_warning_points_for_y, 'points={$comment.points}', 'reason={$comment.title}'}
+                    <xen:if is="{$comment.notes}">
+                        {$comment.notes}
+                    </xen:if>
+                    <xen:if is="{$comment.state_change} && {$comment.state_change} != {$report.report_state}">
+                        {$comment.stateChange}
+                    </xen:if>
+                </xen:if>
             </a>
         </blockquote>
-
         <div class="meta">
-            <xen:if is="{$enableInlineMod} AND {$report.canInlineMod}"><input type="checkbox" name="report_comment[]" value="{$report.report_id}" class="InlineModCheck" data-target="#message-{$report.report_id}" title="{xen:phrase sv_select_this_report_by_x, 'name={$report.username}'}" /></xen:if>
-            {xen:phrase sv_user_report_by}: <xen:username user="$report" />,
-            <xen:datetime time="{$report.first_report_date}" />, {$report.reportState}
+            <xen:if is="{$enableInlineMod} AND {$comment.canInlineMod}"><input type="checkbox" name="report_comment[]" value="{$comment.report_comment_id}" class="InlineModCheck" data-target="#message-{$comment.report_comment_id}" title="{xen:phrase sv_select_this_report_comment_by_x, 'name={$report_comment.username}'}" /></xen:if>
+            {xen:if $comment.is_report, {xen:phrase sv_user_report_by}, {xen:phrase sv_report_comment_by}}: <xen:username user="$comment" />,
+            <xen:datetime time="{$comment.comment_date}" />, {$report.reportState}
         </div>
     </div>
 </li>]]></template>
