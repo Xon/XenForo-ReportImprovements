@@ -165,6 +165,7 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <phrase title="SV_Reply_Banned_notes" version_id="1060000" version_string="1.6.0"><![CDATA[{link}
 {reason}]]></phrase>
     <phrase title="sv_reply_ban_thread" version_id="1060000" version_string="1.6.0"><![CDATA[Reply Ban Thread]]></phrase>
+    <phrase title="sv_reported_content" version_id="1060300" version_string="1.6.3"><![CDATA[Reported Content]]></phrase>
     <phrase title="sv_reports_alert_moderators_always" version_id="1010100" version_string="1.1.1"><![CDATA[Alert all moderators]]></phrase>
     <phrase title="sv_reports_alert_moderators_new" version_id="1010100" version_string="1.1.1"><![CDATA[Alert watchers on reply and all moderators for new alerts.]]></phrase>
     <phrase title="sv_reports_alert_watchers" version_id="1010100" version_string="1.1.1"><![CDATA[Alert watchers on reply ]]></phrase>
@@ -526,12 +527,12 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 
     </script>
 </form>]]></template>
-    <template title="search_result_report" version_id="1060200" version_string="1.6.2"><![CDATA[<li id="{$report.content-type}-{$report.report_id}" class="searchResult report_comment primaryContent{xen:if $conversation_message.isIgnored, ' ignored'}" data-author="{$conversation_message.username}">
+    <template title="search_result_report" version_id="1060300" version_string="1.6.3"><![CDATA[<li id="{$report.content-type}-{$report.report_id}" class="searchResult report_comment primaryContent{xen:if $conversation_message.isIgnored, ' ignored'}" data-author="{$conversation_message.username}">
     <div class="listBlock posterAvatar"><xen:avatar user="$report" size="s" img="true" /></div>
 
     <div class="listBlock main">
         <div class="titleText">
-            <span class="contentType">{xen:phrase sv_user_report}</span>
+            <span class="contentType">{xen:phrase sv_reported_content}</span>
             <h3 class="title{xen:if {$report.isNew}, ' new'}"><a href="{xen:link {$report.contentLink}}">{xen:helper threadPrefix, $report}{xen:helper highlight, {xen:raw $report.contentTitle}, $search.search_query, 'highlight'}</a></h3>
         </div>
 
