@@ -361,15 +361,16 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
            // only search reports (and thus reported users)
             $constraints["content"] = array("report");
         }
-
-        if (isset($constraints["include_report_contents"]) && $constraints["include_report_contents"])
+        else 
         {
-            $constraints["content"][] = "report";
-        }
-
-        if (!$this->_getReportModel()->canViewReporterUsername())
-        {
-            $constraints['is_report'] = false;
+            if (!$this->_getReportModel()->canViewReporterUsername())
+            {
+                $constraints['is_report'] = false;
+            }
+            if (isset($constraints["include_report_contents"]) && $constraints["include_report_contents"])
+            {
+                $constraints["content"][] = "report";
+            }
         }
 
         return $constraints;
