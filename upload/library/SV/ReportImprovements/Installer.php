@@ -186,7 +186,7 @@ class SV_ReportImprovements_Installer
             }
         }
 
-        if ($version < 1030500)
+        if ($version < 1060300)
         {
             $requireIndexing['report'] = true;
         }
