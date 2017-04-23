@@ -367,6 +367,7 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
             {
                 $constraints['is_report'] = false;
             }
+
             if (isset($constraints["include_report_contents"]) && $constraints["include_report_contents"])
             {
                 $constraints["content"][] = "report";
