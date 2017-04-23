@@ -259,7 +259,7 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
 
     public function getSearchContentTypes()
     {
-        return array('report_comment');//, 'report');
+        return array('report_comment');
     }
 
     public function getGroupByType()
@@ -393,11 +393,6 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
                         )
                     );
                 }
-            // case 'include_report_contents':
-            //     return array(
-            //             'metadata' => array('content', array("report")),
-            //             'query' => array('search_index', 'content_type', '=', "report")
-            //         );
         }
 
         return false;
