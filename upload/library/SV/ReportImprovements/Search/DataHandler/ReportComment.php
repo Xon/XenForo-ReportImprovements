@@ -424,22 +424,31 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         }
 
         $params = $input->filterSingle('c', XenForo_Input::ARRAY_SIMPLE);
-
+        // round-trip is_report
         if (!isset($params['is_report']))
         {
             $viewParams['search']['include_user_reports'] = true;
             $viewParams['search']['include_report_comments'] = true;
+            $viewParams['search']['include_report_contents'] = true;
         }
-        else if (!$params['is_report'])
+        else if (!is_array($params['is_report']))
         {
-
-            $viewParams['search']['include_user_reports'] = false;
-            $viewParams['search']['include_report_comments'] = true;
+            if (!$params['is_report'])
+            {
+                $viewParams['search']['include_user_reports'] = false;
+                $viewParams['search']['include_report_comments'] = true;
+            }
+            else
+            {
+                $viewParams['search']['include_user_reports'] = true;
+                $viewParams['search']['include_report_comments'] = false;
+            }
         }
-        else if ($params['is_report'])
+        else 
         {
-            $viewParams['search']['include_user_reports'] = true;
-            $viewParams['search']['include_report_comments'] = false;
+            $viewParams['search']['include_user_reports'] = in_array('1', $params['is_report']);
+            $viewParams['search']['include_report_comments'] = in_array('0', $params['is_report']);
+            $viewParams['search']['include_report_contents'] = in_array('2', $params['is_report']);
         }
 
         if (isset($params['warning_points'][0]))
@@ -450,8 +459,6 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         {
             $viewParams['search']['warning_points']['upper'] = $params['warning_points'][1];
         }
-
-        $viewParams['search']['include_report_contents'] = true;
 
         $viewParams['search']['range_query'] = class_exists('XFCP_SV_SearchImprovements_XenES_Search_SourceHandler_ElasticSearch', false);
 

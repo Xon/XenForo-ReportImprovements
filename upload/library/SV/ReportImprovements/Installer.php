@@ -186,11 +186,6 @@ class SV_ReportImprovements_Installer
             }
         }
 
-        if ($version < 1060300)
-        {
-            $requireIndexing['report'] = true;
-        }
-
         if ($version <= 1040002)
         {
             $moderatorModel = XenForo_Model::create('XenForo_Model_Moderator');
@@ -285,6 +280,12 @@ class SV_ReportImprovements_Installer
                     $dw->save();
                 }
             }
+        }
+
+        if ($version < 1060600)
+        {
+            $requireIndexing['report_comment'] = true;
+            $requireIndexing['report'] = true;
         }
 
         // if Elastic Search is installed, determine if we need to push optimized mappings for the search types
