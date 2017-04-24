@@ -321,6 +321,8 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
             $constraints["is_report"][] = 2;
         }
 
+        $constraints["thread_id"] = $input->filterSingle('thread_id', XenForo_Input::UINT);
+
         $warningPoints = $input->filterSingle('warning_points', XenForo_Input::ARRAY_SIMPLE);
 
         if (isset($warningPoints['lower']) && $warningPoints['lower'] !== '')
@@ -358,6 +360,11 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
             $constraints['is_report'] = array_diff($constraints["is_report"], array(1));
         }
 
+        if ($constraints["thread_id"] == null)
+        {
+            unset($constraints["thread_id"]);
+        }
+
         return $constraints;
     }
 
@@ -388,6 +395,11 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
                                                isset($constraintInfo[1]) ? array('<=', intval($constraintInfo[1])) : array()
                         )
                     );
+                }
+            case "thread_id":
+                if (isset($constraintInfo))
+                {
+                    return array("metadata" => array("thread_id", $constraintInfo));
                 }
         }
 

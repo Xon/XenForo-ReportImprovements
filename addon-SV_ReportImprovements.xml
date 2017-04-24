@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.6.6" version_id="1060600" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.6.7" version_id="1060700" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -147,6 +147,8 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <phrase title="search_include_report_comments" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Include report comments]]></phrase>
     <phrase title="search_include_report_contents" version_id="1050200" version_string="1.5.2"><![CDATA[Include reported content]]></phrase>
     <phrase title="search_include_user_reports" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Include user reports]]></phrase>
+    <phrase title="search_reports_by_user" version_id="1060600" version_string="1.6.6"><![CDATA[All reports against user]]></phrase>
+    <phrase title="search_reports_by_user_and_thread" version_id="1060600" version_string="1.6.6"><![CDATA[All reports against user in thread]]></phrase>
     <phrase title="search_reports_only" version_id="1050200" version_string="1.5.2"><![CDATA[Search Reports Only]]></phrase>
     <phrase title="search_report_comments" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Search Report Comments]]></phrase>
     <phrase title="someone_likes_one_of_your_report_comment" version_id="1020100" version_string="1.2.1"><![CDATA[Someone likes one of your report comments]]></phrase>
@@ -357,6 +359,46 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <template title="report_list_item_report_node" version_id="8" version_string="0.0.8"><![CDATA[<xen:if is="{$report.extraContent.node_title} AND {$report.extraContent.node_id}">
 , <a href="{xen:link forums, $report.extraContent}" class="forumLink">{$report.extraContent.node_title}</a>
 </xen:if>]]></template>
+    <template title="report_search_button.css" version_id="1060600" version_string="1.6.6"><![CDATA[input.buttonLink {
+    background: none;
+    border: none;
+    cursor: pointer;
+    {xen:property link};
+}
+
+input.buttonLink:hover {
+    {xen:property linkHover};
+}
+
+form.inlineSearchLink {
+    margin: 0px;
+}]]></template>
+    <template title="report_search_by_user" version_id="1060600" version_string="1.6.6"><![CDATA[<xen:require css="report_search_button.css" />
+
+<form action="{xen:link 'search/search'}" method="post" class="xenForm AutoValidator inlineSearchLink" data-optInOut="optIn" data-redirect="true">
+    <input type="hidden" name="users" value="{$report.username}" />
+    <input type="hidden" name="include_report_contents" value="1"/>
+    <input type="hidden" name="order" value="date" />
+
+    <input type="hidden" name="type" value="report_comment" />
+    <input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
+
+    <input type="submit" value="{xen:phrase search_reports_by_user}" accesskey="s" class="buttonLink" />
+</form>
+
+<form action="{xen:link 'search/search'}" method="post" class="xenForm AutoValidator inlineSearchLink" data-optInOut="optIn" data-redirect="true">
+    <input type="hidden" name="users" value="{$report.username}" />
+    <input type="hidden" name="thread_id" value="{$report.extraContent.thread_id}" />
+    <input type="hidden" name="include_report_contents" value="1"/>
+    <input type="hidden" name="order" value="date" />
+
+    <input type="hidden" name="type" value="report_comment" />
+    <input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
+
+    <input type="submit" value="{xen:phrase search_reports_by_user_and_thread}" accesskey="s" class="buttonLink">
+</form>
+
+]]></template>
     <template title="report_view_attachments_all" version_id="1050100" version_string="1.5.1"><![CDATA[<xen:if is="{$content.attachments_count}">
 <xen:include template="attached_files">
 	<xen:map from="$content" to="$post" />
@@ -871,6 +913,11 @@ $0
 <dl class="pairsRows">
 $1
 </div>]]></replace>
+    </modification>
+    <modification template="report_view_attachments_summary" modification_key="sv_report_improvements_report_post_content_search" description="Adds links to search user's reports" execution_order="12" enabled="1" action="preg_replace">
+      <find><![CDATA[/^(.*)$/is]]></find>
+      <replace><![CDATA[$0
+<xen:include template="report_search_by_user" />]]></replace>
     </modification>
     <modification template="thread_reply_bans" modification_key="sv_report_improvements_thread_reply_bans" description="Show resolve options for reports &amp; warnings" execution_order="10" enabled="1" action="preg_replace">
       <find><![CDATA[#(\s*)(<dl class="ctrlUnit submitUnit")#msi]]></find>
