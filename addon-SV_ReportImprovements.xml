@@ -359,44 +359,19 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <template title="report_list_item_report_node" version_id="8" version_string="0.0.8"><![CDATA[<xen:if is="{$report.extraContent.node_title} AND {$report.extraContent.node_id}">
 , <a href="{xen:link forums, $report.extraContent}" class="forumLink">{$report.extraContent.node_title}</a>
 </xen:if>]]></template>
-    <template title="report_search_button.css" version_id="1060600" version_string="1.6.6"><![CDATA[input.buttonLink {
-    background: none;
-    border: none;
-    cursor: pointer;
-    {xen:property link};
-}
+    <template title="report_search_by_user" version_id="1060700" version_string="1.6.7"><![CDATA[<dl class="pairsRows">
+<dt></dt>
+<dd>
+<a href="{xen:link 'search/search', '', 'order=date', 'type=report_comment', 'include_report_contents=1', 'users={$report.username}'}">{xen:phrase search_reports_by_user}</a>
+</dd>
+</dl>
+<dl class="pairsRows">
+<dt></dt>
+<dd>
+<a href="{xen:link 'search/search', '', 'order=date', 'type=report_comment', 'include_report_contents=1', 'users={$report.username}', 'thread_id={$report.extraContent.thread_id}' }">{xen:phrase search_reports_by_user_and_thread}</a>
+</dd>
+</dl>
 
-input.buttonLink:hover {
-    {xen:property linkHover};
-}
-
-form.inlineSearchLink {
-    margin: 0px;
-}]]></template>
-    <template title="report_search_by_user" version_id="1060600" version_string="1.6.6"><![CDATA[<xen:require css="report_search_button.css" />
-
-<form action="{xen:link 'search/search'}" method="post" class="xenForm AutoValidator inlineSearchLink" data-optInOut="optIn" data-redirect="true">
-    <input type="hidden" name="users" value="{$report.username}" />
-    <input type="hidden" name="include_report_contents" value="1"/>
-    <input type="hidden" name="order" value="date" />
-
-    <input type="hidden" name="type" value="report_comment" />
-    <input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
-
-    <input type="submit" value="{xen:phrase search_reports_by_user}" accesskey="s" class="buttonLink" />
-</form>
-
-<form action="{xen:link 'search/search'}" method="post" class="xenForm AutoValidator inlineSearchLink" data-optInOut="optIn" data-redirect="true">
-    <input type="hidden" name="users" value="{$report.username}" />
-    <input type="hidden" name="thread_id" value="{$report.extraContent.thread_id}" />
-    <input type="hidden" name="include_report_contents" value="1"/>
-    <input type="hidden" name="order" value="date" />
-
-    <input type="hidden" name="type" value="report_comment" />
-    <input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
-
-    <input type="submit" value="{xen:phrase search_reports_by_user_and_thread}" accesskey="s" class="buttonLink">
-</form>
 
 ]]></template>
     <template title="report_view_attachments_all" version_id="1050100" version_string="1.5.1"><![CDATA[<xen:if is="{$content.attachments_count}">
