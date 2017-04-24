@@ -61,7 +61,10 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
         $title = (string)$title;
 
         $metadata["is_report"] = 2;
-        $metadata["thread_id"] = @$contentInfo["thread_id"];
+        if (!empty($contentInfo["thread_id"]))
+        {
+            $metadata["thread_id"] = $contentInfo["thread_id"];
+        }
 
         $metadata['report_state'] = $reportModel->mapReportState($data['report_state']);
         if ($metadata['report_state'] === null)
