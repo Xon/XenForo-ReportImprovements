@@ -51,7 +51,7 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         {
             unset($metadata['state_change']);
         }
-        $metadata['is_report'] = $data['is_report'] ? true : false;
+        $metadata['is_report'] = $data['is_report'] ? 1 : 0;
 
         $title = '';
         $text = $data['message'];
@@ -259,7 +259,7 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
 
     public function getSearchContentTypes()
     {
-        return array('report_comment');
+        return array('report_comment', 'report');
     }
 
     public function getGroupByType()
@@ -297,32 +297,29 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         {
             return array();
         }
+
         $constraints = array();
 
         $includeUserReports = $input->filterSingle('include_user_reports', XenForo_Input::UINT);
         $includeReportComments = $input->filterSingle('include_report_comments', XenForo_Input::UINT);
-
-        if ($includeUserReports || $includeReportComments)
-        {
-            if (!$includeUserReports || !$includeReportComments)
-            {
-                if ($includeUserReports)
-                {
-                    $constraints['is_report'] = true;
-                }
-                else if ($includeReportComments)
-                {
-                    $constraints['is_report'] = false;
-                }
-            }
-        }
-        else
-        {
-            $constraints["report_contents_only"] = true;
-        }
-
         $includeReportContents = $input->filterSingle('include_report_contents', XenForo_Input::UINT);
-        $constraints["include_report_contents"] = boolval($includeReportContents);
+
+        $constraints["is_report"] = array();
+
+        if ($includeUserReports)
+        {
+            $constraints["is_report"][] = 1;
+        }
+
+        if ($includeReportComments)
+        {
+            $constraints["is_report"][] = 0;
+        }
+
+        if ($includeReportContents)
+        {
+            $constraints["is_report"][] = 2;
+        }
 
         $warningPoints = $input->filterSingle('warning_points', XenForo_Input::ARRAY_SIMPLE);
 
@@ -356,22 +353,9 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
     {
         $constraints = parent::filterConstraints($sourceHandler, $constraints);
 
-        if (isset($constraints['report_contents_only']))
+        if (!$this->_getReportModel()->canViewReporterUsername())
         {
-           // only search reports (and thus reported users)
-            $constraints["content"] = array("report");
-        }
-        else 
-        {
-            if (!$this->_getReportModel()->canViewReporterUsername())
-            {
-                $constraints['is_report'] = false;
-            }
-
-            if (isset($constraints["include_report_contents"]) && $constraints["include_report_contents"])
-            {
-                $constraints["content"][] = "report";
-            }
+            $constraints['is_report'] = array_diff($constraints["is_report"], array(1));
         }
 
         return $constraints;
