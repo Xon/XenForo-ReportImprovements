@@ -147,7 +147,7 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <phrase title="search_include_report_comments" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Include report comments]]></phrase>
     <phrase title="search_include_report_contents" version_id="1050200" version_string="1.5.2"><![CDATA[Include reported content]]></phrase>
     <phrase title="search_include_user_reports" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Include user reports]]></phrase>
-    <phrase title="search_reports_by_thread" version_id="1060700" version_string="1.6.7"><![CDATA[All reports against in thread]]></phrase>
+    <phrase title="search_reports_by_thread" version_id="1060700" version_string="1.6.7"><![CDATA[All reports against a thread]]></phrase>
     <phrase title="search_reports_by_user" version_id="1060600" version_string="1.6.6"><![CDATA[All reports against user]]></phrase>
     <phrase title="search_reports_by_user_and_thread" version_id="1060600" version_string="1.6.6"><![CDATA[All reports against user in thread]]></phrase>
     <phrase title="search_reports_only" version_id="1050200" version_string="1.5.2"><![CDATA[Search Reports Only]]></phrase>
