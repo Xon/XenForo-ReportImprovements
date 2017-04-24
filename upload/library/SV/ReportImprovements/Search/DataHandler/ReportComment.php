@@ -434,8 +434,8 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         }
         else 
         {
-            $viewParams['search']['include_user_reports'] = in_array('0', $params['is_report']);
-            $viewParams['search']['include_report_comments'] = in_array('1', $params['is_report']);
+            $viewParams['search']['include_user_reports'] = in_array('1', $params['is_report']);
+            $viewParams['search']['include_report_comments'] = in_array('0', $params['is_report']);
             $viewParams['search']['include_report_contents'] = in_array('2', $params['is_report']);
         }
 
