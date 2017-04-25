@@ -382,6 +382,11 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
             $constraints['content'] = array_diff($constraints["content"], array('report_comment'));
         }
 
+        if (empty($constraints["is_report"]))
+        {
+            unset($constraints["is_report"]);
+        }
+
         return $constraints;
     }
 
