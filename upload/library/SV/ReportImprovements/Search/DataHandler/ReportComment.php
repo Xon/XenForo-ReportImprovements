@@ -358,22 +358,28 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
     public function filterConstraints(XenForo_Search_SourceHandler_Abstract $sourceHandler, array $constraints)
     {
         $constraints = parent::filterConstraints($sourceHandler, $constraints);
+        if (!isset($constraints["is_report"]))
+        {
+            $constraints["is_report"] = array();
+        }
 
         if (!$this->_getReportModel()->canViewReporterUsername())
         {
             $constraints['is_report'] = array_diff($constraints["is_report"], array(1));
+            if (empty($constraints['is_report']))
+            {
+                $constraints['is_report'][] = 0;
+                $constraints['is_report'][] = 2;
+            }
         }
 
-        if (isset($constraints['is_report']))
+        if (!in_array(2, $constraints['is_report']))
         {
-            if (!in_array(2, $constraints['is_report']))
-            {
-                $constraints['content'] = array_diff($constraints["content"], array('report'));
-            }
-            else if (!in_array(0, $constraints['is_report']) && !in_array(1, $constraints['is_report']))
-            {
-                $constraints['content'] = array_diff($constraints["content"], array('report_comment'));
-            }
+            $constraints['content'] = array_diff($constraints["content"], array('report'));
+        }
+        else if (!in_array(0, $constraints['is_report']) && !in_array(1, $constraints['is_report']))
+        {
+            $constraints['content'] = array_diff($constraints["content"], array('report_comment'));
         }
 
         return $constraints;
