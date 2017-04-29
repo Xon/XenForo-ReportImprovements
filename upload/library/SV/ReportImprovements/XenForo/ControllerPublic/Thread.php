@@ -2,6 +2,19 @@
 
 class SV_ReportImprovements_XenForo_ControllerPublic_Thread extends XFCP_SV_ReportImprovements_XenForo_ControllerPublic_Thread
 {
+    public function actionIndex()
+    {
+        $response = parent::actionIndex();
+
+        if ($response instanceof XenForo_ControllerResponse_View)
+        {
+            $canViewReports = $this->_getReportModel()->canViewReports();
+            $canSearch = XenForo_Visitor::getInstance()->canSearch();
+            $response->params['canSearchReports'] = $canViewReports && $canSearch;
+        }
+        return $response;
+    }
+
     public function actionReplyBans()
     {
         $canViewReports = $this->_getReportModel()->canResolveReplyBanReports();
