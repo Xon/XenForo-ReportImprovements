@@ -839,6 +839,13 @@ $2$3$2</xen:if>]]></replace>
 </xen:if>
 $3]]></replace>
     </modification>
+    <modification template="thread_view" modification_key="reportImprovements_thread_view_controls" description="Add search reports by thread to thread tools" execution_order="10" enabled="1" action="preg_replace">
+      <find><![CDATA[#(\s*?)(<xen:hook name="thread_view_tools_links")#i]]></find>
+      <replace><![CDATA[<xen:if is="{$visitor.is_moderator}">
+    $1<a href="{xen:link 'search/search', '', 'order=date', 'type=report_comment', 'include_report_contents=1', 'thread_id={$thread.thread_id}' }">{xen:phrase search_reports_by_thread}</a>
+</xen:if>
+$1$2]]></replace>
+    </modification>
     <modification template="member_warn" modification_key="sv_integrated_report_member_warn_ir_options" description="Inject more options" execution_order="4345" enabled="1" action="preg_replace">
       <find><![CDATA[#(<fieldset>.*?{xen:phrase notes}.*?</fieldset>)#s]]></find>
       <replace><![CDATA[$1
