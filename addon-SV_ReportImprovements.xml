@@ -360,23 +360,23 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <template title="report_list_item_report_node" version_id="8" version_string="0.0.8"><![CDATA[<xen:if is="{$report.extraContent.node_title} AND {$report.extraContent.node_id}">
 , <a href="{xen:link forums, $report.extraContent}" class="forumLink">{$report.extraContent.node_title}</a>
 </xen:if>]]></template>
-    <template title="report_search_by_user" version_id="1060700" version_string="1.6.7"><![CDATA[<dl class="pairsRows">
+    <template title="report_search_by_user" version_id="1060800" version_string="1.6.8"><![CDATA[<dl class="pairsRows">
 <dt></dt>
 <dd>
-<a href="{xen:link 'search/search', '', 'order=date', 'type=report_comment', 'include_report_contents=1', 'users={$report.username}'}">{xen:phrase search_reports_by_user}</a>
+<a href="{xen:link 'search/search', '', 'keywords=*', 'order=date', 'type=report_comment', 'include_report_contents=1', 'users={$report.username}'}">{xen:phrase search_reports_by_user}</a>
 </dd>
 </dl>
 <xen:if is="{$report.extraContent.thread_id}">
 <dl class="pairsRows">
 <dt></dt>
 <dd>
-<a href="{xen:link 'search/search', '', 'order=date', 'type=report_comment', 'include_report_contents=1', 'users={$report.username}', 'thread_id={$report.extraContent.thread_id}' }">{xen:phrase search_reports_by_user_and_thread}</a>
+<a href="{xen:link 'search/search', '', 'keywords=*', 'order=date', 'type=report_comment', 'include_report_contents=1', 'users={$report.username}', 'thread_id={$report.extraContent.thread_id}' }">{xen:phrase search_reports_by_user_and_thread}</a>
 </dd>
 </dl>
 <dl class="pairsRows">
 <dt></dt>
 <dd>
-<a href="{xen:link 'search/search', '', 'order=date', 'type=report_comment', 'include_report_contents=1', 'thread_id={$report.extraContent.thread_id}' }">{xen:phrase search_reports_by_thread}</a>
+<a href="{xen:link 'search/search', '', 'keywords=*', 'order=date', 'type=report_comment', 'include_report_contents=1', 'thread_id={$report.extraContent.thread_id}' }">{xen:phrase search_reports_by_thread}</a>
 </dd>
 </dl>
 </xen:if>
@@ -842,7 +842,7 @@ $3]]></replace>
     <modification template="thread_view" modification_key="reportImprovements_thread_view_controls" description="Add search reports by thread to thread tools" execution_order="10" enabled="1" action="preg_replace">
       <find><![CDATA[#(\s*?)(<xen:hook name="thread_view_tools_links")#i]]></find>
       <replace><![CDATA[<xen:if is="{$visitor.is_moderator}">
-    $1<a href="{xen:link 'search/search', '', 'order=date', 'type=report_comment', 'include_report_contents=1', 'thread_id={$thread.thread_id}' }">{xen:phrase search_reports_by_thread}</a>
+    $1<a href="{xen:link 'search/search', '', 'keywords=*', 'order=date', 'type=report_comment', 'include_report_contents=1', 'thread_id={$thread.thread_id}' }">{xen:phrase search_reports_by_thread}</a>
 </xen:if>
 $1$2]]></replace>
     </modification>
