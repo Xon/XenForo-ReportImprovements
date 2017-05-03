@@ -362,12 +362,17 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         {
             $constraints["is_report"] = array();
         }
+        else if (!is_array($constraints["is_report"]))
+        {
+            $constraints["is_report"] = array($constraints["is_report"]);
+        }
 
         if (!$this->_getReportModel()->canViewReporterUsername())
         {
             $constraints['is_report'] = array_diff($constraints["is_report"], array(1));
-            if (empty($constraints['is_report']))
+            if (count($constraints['is_report']) == 0)
             {
+                $constraints["is_report"] = array();
                 $constraints['is_report'][] = 0;
                 $constraints['is_report'][] = 2;
             }
@@ -382,9 +387,13 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
             $constraints['content'] = array_diff($constraints["content"], array('report_comment'));
         }
 
-        if (empty($constraints["is_report"]))
+        if (count($constraints["is_report"]) == 0)
         {
             unset($constraints["is_report"]);
+        }
+        else if (count($constraints["is_report"]) == 1)
+        {
+            $constraints["is_report"] = reset($constraints["is_report"]);
         }
 
         return $constraints;
