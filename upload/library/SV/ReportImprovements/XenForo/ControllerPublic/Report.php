@@ -50,13 +50,36 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
     {
         $response = parent::actionView();
 
-        if ($response instanceof XenForo_ControllerResponse_View && isset($response->params['report']))
+        if (
+            $response instanceof XenForo_ControllerResponse_View &&
+            isset($response->params['report'])
+        )
         {
+            $viewParams = &$response->params;
+
+            $report = $viewParams['report'];
+            $comments = $viewParams['comments'];
+
             $reportModel = $this->_getReportModel();
-            $report = $response->params['report'];
-            $response->params['canCommentReport'] = $reportModel->canCommentReport($report);
-            $response->params['comments'] = $reportModel->getReplyBansForReportComments($report, $response->params['comments']);
-            $response->params['canSearchReports'] = XenForo_Visitor::getInstance()->canSearch();
+
+            $canCommentReport = $reportModel->canCommentReport($report);
+            $canSearchReports = XenForo_Visitor::getInstance()->canSearch();
+
+            $comments = $reportModel->getReplyBansForReportComments(
+                $report,
+                $comments
+            );
+
+            $reverseCommentOrder = XenForo_Application::getOptions()
+                ->sv_reverse_report_comment_order;
+            if ($reverseCommentOrder)
+            {
+                $comments = array_reverse($comments);
+            }
+
+            $viewParams['canCommentReport'] = $canCommentReport;
+            $viewParams['canSearchReports'] = $canSearchReports;
+            $viewParams['comments'] = $comments;
         }
 
         return $response;

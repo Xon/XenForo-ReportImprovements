@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.6.10" version_id="1061000" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.6.11" version_id="1061100" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -59,7 +59,7 @@
       <default_value>1</default_value>
       <edit_format_params></edit_format_params>
       <sub_options></sub_options>
-      <relation group_id="sv_report_improvements" display_order="210"/>
+      <relation group_id="sv_report_improvements" display_order="215"/>
     </option>
     <option option_id="sv_report_alert_mode" edit_format="select" data_type="string" can_backup="1">
       <default_value>watchers</default_value>
@@ -74,6 +74,12 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
       <edit_format_params></edit_format_params>
       <sub_options></sub_options>
       <relation group_id="sv_report_improvements" display_order="100"/>
+    </option>
+    <option option_id="sv_reverse_report_comment_order" edit_format="onoff" data_type="boolean" can_backup="1">
+      <default_value>0</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="sv_report_improvements" display_order="210"/>
     </option>
     <option option_id="sv_ri_log_to_report_natural_warning_expire" edit_format="onoff" data_type="boolean" can_backup="1">
       <default_value>0</default_value>
@@ -123,6 +129,8 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <phrase title="option_sv_report_alert_mode_explain" version_id="1010100" version_string="1.1.1"><![CDATA[Changes the selection criteria for alerts when a report comment is created.]]></phrase>
     <phrase title="option_sv_report_new_warnings" version_id="3" version_string="0.0.3b"><![CDATA[Report New Warnings]]></phrase>
     <phrase title="option_sv_report_new_warnings_explain" version_id="3" version_string="0.0.3b"><![CDATA[Automatically create Reports for Warnings on content without an associated report]]></phrase>
+    <phrase title="option_sv_reverse_report_comment_order" version_id="1061100" version_string="1.6.11"><![CDATA[Reverse Report Comment Order]]></phrase>
+    <phrase title="option_sv_reverse_report_comment_order_explain" version_id="1061100" version_string="1.6.11"><![CDATA[If enabled, report comments will be displayed in reverse order (from newest to oldest).]]></phrase>
     <phrase title="option_sv_ri_log_to_report_natural_warning_expire" version_id="2" version_string="0.0.2"><![CDATA[Log Automatically Expiring Warning to Report]]></phrase>
     <phrase title="option_sv_ri_log_to_report_natural_warning_expire_explain" version_id="2" version_string="0.0.2"><![CDATA[]]></phrase>
     <phrase title="option_sv_ri_user_id" version_id="1" version_string="0.0.1"><![CDATA[Reporter]]></phrase>
@@ -641,6 +649,24 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 	</dd>
 </dl>
 </xen:if>]]></template>
+    <template title="sv_reportimprovements_report_comment_input" version_id="1061100" version_string="1.6.11"><![CDATA[<li class="primaryContent">
+	<form action="{xen:link reports/comment, $report}" method="post" class="reportCommentForm MultiSubmitFix">
+		<textarea name="comment" placeholder="{xen:phrase comment_noun}..." rows="3" class="textCtrl Elastic"></textarea>
+
+		<div class="submitRow">
+			<span class="reportCommentNote">{xen:phrase your_comment_will_only_be_visible_to_moderators}</span>
+			
+			<xen:if is="{$report.isClosed}">
+				<span class="reportCommentNote">{xen:phrase your_comment_will_re_open_this_report}</span>
+				<input type="hidden" name="reopen" value="1" />
+			</xen:if>
+
+			<input type="submit" value="{xen:phrase comment_verb}" class="button primary" />
+		</div>
+
+		<input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
+	</form>
+</li>]]></template>
     <template title="sv_report_comment_aftercontent" version_id="1010001" version_string="1.1.0 RC1"><![CDATA[<div class="messageMeta ToggleTriggerAnchor">
     <div class="privateControls">
     </div>
@@ -793,6 +819,12 @@ $0
       <replace><![CDATA[<xen:require css="message_simple.css" />
 $1 messageSimple $2 id="reportComment-{$comment.report_comment_id}"]]></replace>
     </modification>
+    <modification template="report_view" modification_key="SV_ReportImprovements_report_view10" description="Remove comment box from bottom of list if comments are in reverse order" execution_order="4345" enabled="1" action="preg_replace">
+      <find><![CDATA[#<li class="primaryContent">.*<form action="{xen:link reports\/comment, \$report}" method="post" class="reportCommentForm MultiSubmitFix">.*<\/li>#sU]]></find>
+      <replace><![CDATA[<xen:if is="!{$xenOptions.sv_reverse_report_comment_order}">
+$0
+</xen:if>]]></replace>
+    </modification>
     <modification template="report_view" modification_key="SV_ReportImprovements_report_view2" description="Add User Tagging support" execution_order="20" enabled="1" action="preg_replace">
       <find><![CDATA[#(<textarea name="comment" .*? class=".*?)(")#si]]></find>
       <replace><![CDATA[$1 UserTagger$2]]></replace>
@@ -834,6 +866,14 @@ $1$2$1</xen:if>]]></replace>
       <find><![CDATA[#(<div class="updateStatus">.*?)(\s*)(<textarea name="comment".*?</div>)#si]]></find>
       <replace><![CDATA[$1$2<xen:if is="{$canCommentReport}">
 $2$3$2</xen:if>]]></replace>
+    </modification>
+    <modification template="report_view" modification_key="SV_ReportImprovements_report_view9" description="Add comment box to top of list if comments are in reverse order" execution_order="4345" enabled="1" action="str_replace">
+      <find><![CDATA[<h3 class="subHeading">{xen:phrase comments}</h3>
+	<ol>]]></find>
+      <replace><![CDATA[$0
+<xen:if is="{$xenOptions.sv_reverse_report_comment_order}">
+	<xen:include template="sv_reportimprovements_report_comment_input" />
+</xen:if>]]></replace>
     </modification>
     <modification template="search_form_tabs" modification_key="SV_ReportImprovements_search_form_tabs" description="Inject Search Tab" execution_order="4345" enabled="1" action="preg_replace">
       <find><![CDATA[#(<xen\:hook name\="search_form_tabs".*?)(\s*<li{xen:if "{\$searchType}.*?)(\s*</xen\:hook>)#si]]></find>
