@@ -286,10 +286,7 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
                 XenForo_ControllerResponse_Redirect::SUCCESS,
                 XenForo_Link::buildPublicLink(
                     'conversations/message',
-                    array(
-                        'conversation_id' => $conversation['conversation_id'],
-                        'title'           => $conversation['title']
-                    ),
+                    $conversation,
                     array('message_id' => $report['content_id'])
                 )
             );
