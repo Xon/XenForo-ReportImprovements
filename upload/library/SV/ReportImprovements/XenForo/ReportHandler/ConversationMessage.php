@@ -53,6 +53,38 @@ class SV_ReportImprovements_XenForo_ReportHandler_ConversationMessage extends XF
 
         return $template;
     }
+
+    public function getContentLink(array $report, array $contentInfo)
+    {
+        if (empty($report['extraContent']['conversation'])) {
+            return '';
+        }
+
+        $conversation = $report['extraContent']['conversation'];
+
+        /** @var XenForo_Model_Conversation $conversationModel */
+        $conversationModel = XenForo_Model::create(
+            'XenForo_Model_Conversation'
+        );
+        $recipients = $conversationModel->getConversationRecipients(
+            $conversation['conversation_id']
+        );
+
+        if (array_key_exists(XenForo_Visitor::getUserId(), $recipients)) {
+            return XenForo_Link::buildPublicLink(
+                'conversations/message',
+                array(
+                    'conversation_id' => $conversation['conversation_id'],
+                    'title'           => $conversation['title']
+                ),
+                array(
+                    'message_id' => $report['content_id']
+                )
+            );
+        }
+
+        return '';
+    }
 }
 
 // ******************** FOR IDE AUTO COMPLETE ********************
