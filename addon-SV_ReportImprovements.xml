@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.6.11" version_id="1061100" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.6.12" version_id="1061200" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -97,6 +97,7 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
   <permissions>
     <permission_groups/>
     <permissions>
+      <permission permission_group_id="conversation" permission_id="joinReported" permission_type="flag" default_value="unset" interface_group_id="conversationModeratorPermissions" display_order="30"/>
       <permission permission_group_id="conversation" permission_id="viewReportConversation" permission_type="flag" default_value="unset" interface_group_id="ri_ReportCenter" display_order="400"/>
       <permission permission_group_id="forum" permission_id="viewReportPost" permission_type="flag" default_value="unset" interface_group_id="ri_ReportCenter_Forum" display_order="10"/>
       <permission permission_group_id="general" permission_id="assignReport" permission_type="flag" depend_permission_id="viewReports" default_value="unset" interface_group_id="ri_ReportCenter" display_order="50"/>
@@ -135,6 +136,7 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <phrase title="option_sv_ri_log_to_report_natural_warning_expire_explain" version_id="2" version_string="0.0.2"><![CDATA[]]></phrase>
     <phrase title="option_sv_ri_user_id" version_id="1" version_string="0.0.1"><![CDATA[Reporter]]></phrase>
     <phrase title="option_sv_ri_user_id_explain" version_id="1020003" version_string="1.2.0 Alpha 3"><![CDATA[Enter the user id of the person reporting expired warnings]]></phrase>
+    <phrase title="permission_conversation_joinReported" version_id="1061200" version_string="1.6.12"><![CDATA[Join reported conversation]]></phrase>
     <phrase title="permission_conversation_viewReportConversation" version_id="1" version_string="0.0.1"><![CDATA[View Conversation Report]]></phrase>
     <phrase title="permission_forum_viewReportPost" version_id="1" version_string="0.0.1"><![CDATA[View Post Report]]></phrase>
     <phrase title="permission_general_assignReport" version_id="1020000" version_string="1.2.0 Alpha1"><![CDATA[Assign Report]]></phrase>
@@ -166,6 +168,8 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <phrase title="someone_posts_a_new_report_comment" version_id="1020100" version_string="1.2.1"><![CDATA[Someone posts a new report comment]]></phrase>
     <phrase title="someone_tags_you_in_report_comment" version_id="1020100" version_string="1.2.1"><![CDATA[Someone mentions you in a report comment]]></phrase>
     <phrase title="sv_content_date" version_id="1050100" version_string="1.5.1"><![CDATA[Content date]]></phrase>
+    <phrase title="sv_join_conversation" version_id="1061200" version_string="1.6.12"><![CDATA[Join Conversation]]></phrase>
+    <phrase title="sv_join_conversation_x" version_id="1061200" version_string="1.6.12"><![CDATA[Join Conversation: {title}]]></phrase>
     <phrase title="sv_like_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Like report comment]]></phrase>
     <phrase title="sv_members_who_liked_this_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Members Who Liked This Report Comment]]></phrase>
     <phrase title="sv_no_one_has_liked_this_report_comment_yet" version_id="1010000" version_string="1.1.0"><![CDATA[No one has liked this report comment yet.]]></phrase>
@@ -737,6 +741,22 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     </ol>
     <div class="sectionFooter overlayOnly"><a class="button primary OverlayCloser">{xen:phrase close}</a></div>
 </div>]]></template>
+    <template title="sv_report_conversation_join" version_id="1061200" version_string="1.6.12"><![CDATA[<xen:title>{xen:phrase sv_join_conversation_x, 'title={$conversation.title}'}</xen:title>
+
+<xen:navigation>
+	<xen:breadcrumb href="{xen:link full:reports}">{xen:phrase reported_items}</xen:breadcrumb>
+	<xen:breadcrumb href="{xen:link reports, $report}">{xen:phrase reported_content}: {xen:escape $report.contentTitle, false}</xen:breadcrumb>
+</xen:navigation>
+
+<form action="{xen:link 'reports/conversation-join', $report}" method="post" class="xenForm formOverlay">
+	<dl class="ctrlUnit submitUnit">
+		<dt></dt>
+		<dd><input type="submit" value="{xen:phrase sv_join_conversation}" class="button primary" /></dd>
+	</dl>
+
+	<input type="hidden" name="_xfConfirm" value="1" />
+	<input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
+</form>]]></template>
     <template title="sv_report_view_warning" version_id="1060000" version_string="1.6.0"><![CDATA[<xen:if is="{$comment.operation_type}">
 <p class="warningLog">
 <div class="pairsJustified">
@@ -824,6 +844,13 @@ $1 messageSimple $2 id="reportComment-{$comment.report_comment_id}"]]></replace>
       <replace><![CDATA[<xen:if is="!{$xenOptions.sv_reverse_report_comment_order}">
 $0
 </xen:if>]]></replace>
+    </modification>
+    <modification template="report_view" modification_key="SV_ReportImprovements_report_view11" description="Add 'Join Conversation' button for users with permission" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[<xen:if is="{$report.contentLink}">
+		<div class="sectionFooter actionList"><a href="{$report.contentLink}" target="_blank" class="button">{xen:phrase go_to_content}</a></div>]]></find>
+      <replace><![CDATA[$0
+<xen:elseif is="({$report.content_type} == 'conversation_message') and {$canJoinConversation}" />
+	<div class="sectionFooter actionList"><a href="{xen:link reports/conversation-join, $report}" class="button OverlayTrigger">{xen:phrase sv_join_conversation}</a></div>]]></replace>
     </modification>
     <modification template="report_view" modification_key="SV_ReportImprovements_report_view2" description="Add User Tagging support" execution_order="20" enabled="1" action="preg_replace">
       <find><![CDATA[#(<textarea name="comment" .*? class=".*?)(")#si]]></find>

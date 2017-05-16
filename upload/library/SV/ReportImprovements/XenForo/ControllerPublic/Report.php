@@ -61,9 +61,14 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
             $comments = $viewParams['comments'];
 
             $reportModel = $this->_getReportModel();
+            $visitor = XenForo_Visitor::getInstance();
 
             $canCommentReport = $reportModel->canCommentReport($report);
-            $canSearchReports = XenForo_Visitor::getInstance()->canSearch();
+            $canSearchReports = $visitor->canSearch();
+            $canJoinConversation = $visitor->hasPermission(
+                'conversation',
+                'joinReported'
+            );
 
             $comments = $reportModel->getReplyBansForReportComments(
                 $report,
@@ -79,6 +84,7 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
 
             $viewParams['canCommentReport'] = $canCommentReport;
             $viewParams['canSearchReports'] = $canSearchReports;
+            $viewParams['canJoinConversation'] = $canJoinConversation;
             $viewParams['comments'] = $comments;
         }
 
@@ -226,6 +232,76 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
         }
 
         return parent::actionUpdate();
+    }
+
+    public function actionConversationJoin()
+    {
+        $reportId = $this->_input->filterSingle(
+            'report_id',
+            XenForo_Input::UINT
+        );
+        $report = $this->_getVisibleReportOrError($reportId);
+
+        if ($report['content_type'] !== 'conversation_message') {
+            return $this->responseError(
+                new XenForo_Phrase('requested_page_not_found'),
+                404
+            );
+        }
+
+        $conversation = $report['extraContent']['conversation'];
+
+        /** @var XenForo_Model_Conversation $conversationModel */
+        $conversationModel = $this->getModelFromCache(
+            'XenForo_Model_Conversation'
+        );
+
+        $conversationMaster = $conversationModel->getConversationMasterById(
+            $conversation['conversation_id']
+        );
+
+        if (!$conversationMaster) {
+            return $this->responseError(
+                new XenForo_Phrase('requested_conversation_not_found'),
+                404
+            );
+        }
+
+        $visitor = XenForo_Visitor::getInstance();
+
+        if (!$visitor->hasPermission('conversation', 'joinReported')) {
+            return $this->responseNoPermission();
+        }
+
+        if ($this->isConfirmedPost()) {
+            /** @var XenForo_DataWriter_ConversationMaster $conversationDw */
+            $conversationDw = XenForo_DataWriter::create(
+                'XenForo_DataWriter_ConversationMaster'
+            );
+            $conversationDw->setExistingData($conversationMaster, true);
+            $conversationDw->addRecipientUserIds(array($visitor['user_id']));
+            $conversationDw->save();
+
+            return $this->responseRedirect(
+                XenForo_ControllerResponse_Redirect::SUCCESS,
+                XenForo_Link::buildPublicLink(
+                    'conversations/message',
+                    $conversation,
+                    array('message_id' => $report['content_id'])
+                )
+            );
+        }
+
+        $viewParams = array(
+            'report'       => $report,
+            'conversation' => $conversationMaster
+        );
+
+        return $this->responseView(
+            'XenForo_ViewPublic_Report_ConversationJoin',
+            'sv_report_conversation_join',
+            $viewParams
+        );
     }
 
     public function _getReportCommentOrError($reportId, $commentId)
