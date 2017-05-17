@@ -65,7 +65,7 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
 
             $canCommentReport = $reportModel->canCommentReport($report);
             $canSearchReports = $visitor->canSearch();
-            $canJoinConversation = $visitor->hasPermission(
+            $canJoinConversation = ($report['content_type'] == 'conversation_message') && $visitor->hasPermission(
                 'conversation',
                 'joinReported'
             );

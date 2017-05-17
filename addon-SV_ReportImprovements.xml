@@ -846,12 +846,11 @@ $0
 </xen:if>]]></replace>
     </modification>
     <modification template="report_view" modification_key="SV_ReportImprovements_report_view11" description="Add 'Join Conversation' button for users with permission" execution_order="10" enabled="1" action="str_replace">
-      <find><![CDATA[<xen:if is="{$report.contentLink}">
-		<div class="sectionFooter actionList"><a href="{$report.contentLink}" target="_blank" class="button">{xen:phrase go_to_content}</a></div>]]></find>
-      <replace><![CDATA[<xen:if is="({$report.content_type} == 'conversation_message') and {$canJoinConversation}">
+      <find><![CDATA[{xen:raw $report.extraContentTemplate}]]></find>
+      <replace><![CDATA[$0
+<xen:if is="{$canJoinConversation}">
 	<div class="sectionFooter actionList"><a href="{xen:link reports/conversation-join, $report}" class="button OverlayTrigger">{xen:phrase sv_join_conversation}</a></div>
-<xen:elseif is="{$report.contentLink}" />
-		<div class="sectionFooter actionList"><a href="{$report.contentLink}" target="_blank" class="button">{xen:phrase go_to_content}</a></div>]]></replace>
+</xen:if>]]></replace>
     </modification>
     <modification template="report_view" modification_key="SV_ReportImprovements_report_view2" description="Add User Tagging support" execution_order="20" enabled="1" action="preg_replace">
       <find><![CDATA[#(<textarea name="comment" .*? class=".*?)(")#si]]></find>
