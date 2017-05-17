@@ -22,4 +22,6 @@ Note; when reports are sent to a forum, the warning<->report links can not be cr
 - Report Comment Likes.
 - Report Alerts are logged into Report Comments.
 - Search report comments
- - Optional ability to search report comments by associated warning points. (Requires Enhanced Search Improvements add-on)
+- Optional ability to search report comments by associated warning points. (Requires Enhanced Search Improvements add-on)
+- Reverse order of report comments.
+- Ability to join reported conversations.
