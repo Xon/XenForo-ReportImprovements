@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.7.1" version_id="1070100" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.7.2" version_id="1070200" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -924,7 +924,7 @@ $1$2]]></replace>
     </modification>
     <modification template="moderation_queue_list" modification_key="sv_integrated_report_moderation_queue_list" description="Add Spam Cleaner to moderation queue" execution_order="100" enabled="1" action="str_replace">
       <find><![CDATA[{$entry.content.user.username}</a>]]></find>
-      <replace><![CDATA[$0<a style="margin-left:30px" target="_blank" href="spam-cleaner/{$entry.content.user.user_id}/?noredirect=1">Spam Cleaner</a>]]></replace>
+      <replace><![CDATA[$0<a style="margin-left:30px" target="_blank" href="{xen:link 'spam-cleaner', {$entry.content.user}, 'noredirect=1'}">Spam Cleaner</a>]]></replace>
     </modification>
     <modification template="report_list_item" modification_key="sv_integrated_report_report_list_item2" description="Add node where relevent to the report list" execution_order="10" enabled="1" action="preg_replace">
       <find><![CDATA[#(<div class="posterDate muted">.*)(\s*)(</div>)#Usi]]></find>
