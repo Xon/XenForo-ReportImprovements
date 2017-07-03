@@ -4,6 +4,8 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
 {
     protected function _preDispatch($action)
     {
+        parent::_preDispatch($action);
+
         if (!$this->_getReportModel()->canViewReports())
         {
             throw $this->getNoPermissionResponseException();
