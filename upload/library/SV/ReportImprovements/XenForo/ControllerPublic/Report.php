@@ -4,7 +4,8 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
 {
     protected function _preDispatch($action)
     {
-        parent::_preDispatch($action);
+        // do not call parent::_preDispatch, as otherwise we can't implement permission checks sanely.
+        //parent::_preDispatch($action);
 
         if (!$this->_getReportModel()->canViewReports())
         {
