@@ -15,6 +15,7 @@ class SV_ReportImprovements_Globals
     public static $RequireWarningLogTitle        = true;
 
     public static $attachmentReportKey = null;
+    public static $disablePreDispatch = false;
 
     private function __construct() { }
 }

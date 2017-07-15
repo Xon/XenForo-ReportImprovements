@@ -16,7 +16,7 @@ class SV_ReportImprovements_Listener
 
     public static function controller_pre_dispatch(XenForo_Controller $controller, $action, $controllerName)
     {
-        if (!XenForo_Application::isRegistered('session'))
+        if (!XenForo_Application::isRegistered('session') || SV_ReportImprovements_Globals::$disablePreDispatch)
         {
             return;
         }
