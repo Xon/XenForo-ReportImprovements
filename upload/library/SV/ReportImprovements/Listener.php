@@ -44,6 +44,7 @@ class SV_ReportImprovements_Listener
         }
 
         $visitor['canViewReports'] = true;
+        $visitor['canSearchReports'] = $visitor->canSearch();
 
         if (XenForo_Application::isRegistered('reportCounts'))
         {

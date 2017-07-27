@@ -67,7 +67,6 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
             $visitor = XenForo_Visitor::getInstance();
 
             $canCommentReport = $reportModel->canCommentReport($report);
-            $canSearchReports = $visitor->canSearch();
             $canJoinConversation = ($report['content_type'] == 'conversation_message') && $visitor->hasPermission(
                 'conversation',
                 'joinReported'
@@ -86,7 +85,6 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Report extends XFCP_SV_Repo
             }
 
             $viewParams['canCommentReport'] = $canCommentReport;
-            $viewParams['canSearchReports'] = $canSearchReports;
             $viewParams['canJoinConversation'] = $canJoinConversation;
             $viewParams['comments'] = $comments;
         }
