@@ -16,14 +16,18 @@ class SV_ReportImprovements_Listener
 
     public static function controller_pre_dispatch(XenForo_Controller $controller, $action, $controllerName)
     {
-        if (!XenForo_Application::isRegistered('session') || SV_ReportImprovements_Globals::$disablePreDispatch)
+        $visitor = XenForo_Visitor::getInstance();
+        if (!XenForo_Application::isRegistered('session') || 
+            SV_ReportImprovements_Globals::$disablePreDispatch || 
+            isset($visitor['canViewReports']))
         {
             return;
         }
 
-        $visitor = XenForo_Visitor::getInstance();
-        if ($visitor['is_moderator'])
+        if (!empty($visitor['is_moderator']))
         {
+            $visitor['canViewReports'] = true;
+            $visitor['canSearchReports'] = $visitor->canSearch();
             return;
         }
 
@@ -31,8 +35,9 @@ class SV_ReportImprovements_Listener
         $reportModel = $controller->getModelFromCache('XenForo_Model_Report');
         try
         {
-            if (!$reportModel->canViewReports())
+            if (!is_callable(array($reportModel,'canViewReports')) || !$reportModel->canViewReports())
             {
+                $visitor['canViewReports'] = $visitor['canSearchReports'] = false;
                 return;
             }
         }
@@ -40,6 +45,7 @@ class SV_ReportImprovements_Listener
         {
             XenForo_Error::logException($e);
 
+            $visitor['canViewReports'] = $visitor['canSearchReports'] = false;
             return;
         }
 
