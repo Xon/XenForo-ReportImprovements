@@ -118,10 +118,11 @@
     <listener event_id="load_class_controller" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Report" description="XenForo_ControllerPublic_Report"/>
     <listener event_id="load_class_controller" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Thread" description="XenForo_ControllerPublic_Thread"/>
     <listener event_id="load_class_controller" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Post" description="XenForo_ControllerPublic_Post"/>
-    <listener event_id="load_class_datawriter" execute_order="10" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_DataWriter_DiscussionMessage_Post" description="XenForo_DataWriter_DiscussionMessage_Post"/>
+    <listener event_id="load_class_controller" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_InlineMod_Post" description="XenForo_ControllerPublic_InlineMod_Post"/>
+    <listener event_id="load_class_datawriter" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_DataWriter_DiscussionMessage_Post" description="XenForo_DataWriter_DiscussionMessage_Post"/>
     <listener event_id="load_class_datawriter" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_DataWriter_Warning" description="XenForo_DataWriter_Warning"/>
     <listener event_id="load_class_datawriter" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_DataWriter_ReportComment" description="XenForo_DataWriter_ReportComment"/>
-    <listener event_id="load_class_model" execute_order="10" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Post" description="XenForo_Model_Post"/>
+    <listener event_id="load_class_model" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Post" description="XenForo_Model_Post"/>
     <listener event_id="load_class_model" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Moderator" description="XenForo_Model_Moderator"/>
     <listener event_id="load_class_model" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenES_Model_Elasticsearch" description="XenES_Model_Elasticsearch"/>
     <listener event_id="load_class_model" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Conversation" description="XenForo_Model_Conversation"/>
@@ -1113,6 +1114,11 @@ $2$3]]></replace>
       <find><![CDATA[<xen:hook name="account_alerts_extra" />]]></find>
       <replace><![CDATA[$0
 <xen:include template="sv_reportimprovements_alert_preferences" />]]></replace>
+    </modification>
+    <modification template="inline_mod_post_delete" modification_key="sv_reportimprovements_inline_mod_post_delete1" description="Resolve option for bulk delete" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[<dl class="ctrlUnit submitUnit">]]></find>
+      <replace><![CDATA[<xen:include template="ir_resolve_report" />
+$0]]></replace>
     </modification>
     <modification template="post_delete" modification_key="sv_reportimprovements_post_delete1" description="Show Report info on deleting a post" execution_order="10" enabled="1" action="str_replace">
       <find><![CDATA[<xen:if is="{$post.isFirst}">]]></find>

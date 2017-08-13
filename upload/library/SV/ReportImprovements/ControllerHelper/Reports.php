@@ -10,7 +10,9 @@ class SV_ReportImprovements_ControllerHelper_Reports extends XenForo_ControllerH
         {
             SV_ReportImprovements_Globals::$ResolveReport = $this->_controller->getInput()->filterSingle('resolve_linked_report', XenForo_Input::BOOLEAN);
             SV_ReportImprovements_Globals::$AssignReport = SV_ReportImprovements_Globals::$ResolveReport;
+            return true;
         }
+        return false;
     }
 
     public function injectReportInfoOrResolveReport($response, $templateName, $getContentTypeId = null, $reportCommentFunc = null, $forceDefaultResolve = null, $allowReportCreate = true)
