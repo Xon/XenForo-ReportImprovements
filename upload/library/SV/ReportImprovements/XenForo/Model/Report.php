@@ -19,7 +19,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         $whereSQL = '';
         if ($days)
         {
-            $args[] = 86400 * $days;
+            $args[] = XenForo_Application::$time - 86400 * $days;
             $whereSQL .= ' and xf_report.last_modified_date > ?';
         }
 
