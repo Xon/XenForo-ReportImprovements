@@ -654,6 +654,21 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         ', $newUserId);
     }
 
+    public function resolveReportQuick(array $report, array $viewingUser = null)
+    {
+        $this->standardizeViewingUserReference($viewingUser);
+
+        $dw = XenForo_DataWriter::create('XenForo_DataWriter_ReportComment');
+        $dw->setOption(SV_ReportImprovements_XenForo_DataWriter_ReportComment::OPTION_WARNINGLOG_REPORT, $report);
+        $dw->bulkSet(array(
+                       'report_id' => $report['report_id'],
+                       'user_id' => $viewingUser['user_id'],
+                       'username' => $viewingUser['username'],
+                       'warning_log_id' => $warning['warning_log_id'],
+                   ));
+        $dw->save();
+    }
+
     /**
      * @param $reportState
      * @return int|null

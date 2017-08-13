@@ -5,6 +5,21 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Warning extends XFCP_SV_Rep
     public function actionIndex()
     {
         $response = parent::actionIndex();
+        $this->_getReportHelper()->injectReportInfo($response, 'member_warn');
+        return $response;
+    }
+
+    /**
+     * @return SV_ReportImprovements_ControllerHelper_Reports
+     */
+    protected function _getReportHelper()
+    {
+        return $this->getHelper('SV_ReportImprovements_ControllerHelper_Reports');
+    }
+    
+    public function actionIndex()
+    {
+        $response = parent::actionIndex();
 
         if ($response instanceof XenForo_ControllerResponse_View && $response->templateName == 'warning_info')
         {
@@ -21,10 +36,12 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Warning extends XFCP_SV_Rep
                     $reports = $reportModel->getVisibleReportsForUser(array($report['report_id'] => $report));
                     if (!empty($reports))
                     {
-                        $response->params['report'] = reset($reports);
+                        $report = reset($reports);
+                        $response->params['report'] = $report;
+                        $response->params['canResolveReport'] = $reportModel->canUpdateReport($report);
                     }
                 }
-                $response->params['CanCreateReport'] = $this->_getWarningLogModel()->canCreateReportFor($content_type);
+                $response->params['canCreateReport'] = $this->_getWarningLogModel()->canCreateReportFor($content_type);
                 $response->params['ContentType'] = $content_type;
             }
         }
@@ -33,23 +50,13 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Warning extends XFCP_SV_Rep
 
     public function actionExpire()
     {
-        if ($this->isConfirmedPost())
-        {
-            SV_ReportImprovements_Globals::$ResolveReport = $this->_input->filterSingle('resolve_linked_report', XenForo_Input::BOOLEAN);
-            SV_ReportImprovements_Globals::$AssignReport = SV_ReportImprovements_Globals::$ResolveReport;
-        }
-
+        $this->_getReportHelper()->setupOnPost();
         return parent::actionExpire();
     }
 
     public function actionDelete()
     {
-        if ($this->isConfirmedPost())
-        {
-            SV_ReportImprovements_Globals::$ResolveReport = $this->_input->filterSingle('resolve_linked_report', XenForo_Input::BOOLEAN);
-            SV_ReportImprovements_Globals::$AssignReport = SV_ReportImprovements_Globals::$ResolveReport;
-        }
-
+        $this->_getReportHelper()->setupOnPost();
         return parent::actionDelete();
     }
 

@@ -1105,6 +1105,16 @@ $2$3]]></replace>
       <replace><![CDATA[$0
 <xen:include template="sv_reportimprovements_alert_preferences" />]]></replace>
     </modification>
+    <modification template="post_delete" modification_key="sv_reportimprovements_post_delete1" description="Show Report info on deleting a post" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[<xen:if is="{$post.isFirst}">]]></find>
+      <replace><![CDATA[$0
+<xen:include template="ir_report_display" />]]></replace>
+    </modification>
+    <modification template="post_report" modification_key="sv_reportimprovements_post_report1" description="Show Report info on reporting a post" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[<dl class="ctrlUnit submitUnit">]]></find>
+      <replace><![CDATA[<xen:include template="ir_report_display" />
+$0]]></replace>
+    </modification>
   </public_template_modifications>
   <bb_code_media_sites/>
   <bb_codes/>
