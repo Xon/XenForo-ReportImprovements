@@ -5,7 +5,9 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Warning extends XFCP_SV_Rep
     public function actionIndex()
     {
         $response = parent::actionIndex();
-        $this->_getReportHelper()->injectReportInfo($response, 'member_warn');
+        $this->_getReportHelper()->injectReportInfo($response, 'warning_info', function($response) {
+            return array($response->params['warning']['content_type'], $response->params['warning']['content_id']);
+        });
         return $response;
     }
 
@@ -15,37 +17,6 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Warning extends XFCP_SV_Rep
     protected function _getReportHelper()
     {
         return $this->getHelper('SV_ReportImprovements_ControllerHelper_Reports');
-    }
-    
-    public function actionIndex()
-    {
-        $response = parent::actionIndex();
-
-        if ($response instanceof XenForo_ControllerResponse_View && $response->templateName == 'warning_info')
-        {
-            $reportModel = $this->_getReportModel();
-            if ($reportModel->canViewReports() && isset($response->params['warning']['content_type']) && isset($response->params['warning']['content_id']))
-            {
-                $response->params['canViewReporterUsername'] = $reportModel->canViewReporterUsername();
-                $content_type = $response->params['warning']['content_type'];
-                $content_id = $response->params['warning']['content_id'];
-
-                $report = $reportModel->getReportByContent($content_type, $content_id);
-                if ($report)
-                {
-                    $reports = $reportModel->getVisibleReportsForUser(array($report['report_id'] => $report));
-                    if (!empty($reports))
-                    {
-                        $report = reset($reports);
-                        $response->params['report'] = $report;
-                        $response->params['canResolveReport'] = $reportModel->canUpdateReport($report);
-                    }
-                }
-                $response->params['canCreateReport'] = $this->_getWarningLogModel()->canCreateReportFor($content_type);
-                $response->params['ContentType'] = $content_type;
-            }
-        }
-        return $response;
     }
 
     public function actionExpire()
