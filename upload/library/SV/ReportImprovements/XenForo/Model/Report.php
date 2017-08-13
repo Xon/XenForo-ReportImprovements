@@ -20,7 +20,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         if ($days)
         {
             $args[] = XenForo_Application::$time - 86400 * $days;
-            $whereSQL .= ' and xf_report.last_modified_date > ?';
+            $whereSQL .= ' and report_comment.comment_date > ?';
         }
 
         $db = $this->_getDb();
@@ -37,6 +37,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         $total = 0;
         foreach($reportStats as $reportStat)
         {
+            $total += $reportStat['count'];
             $stats[$reportStat['report_state']] = $reportStat['count'];
         }
         $stats[''] = $total;
