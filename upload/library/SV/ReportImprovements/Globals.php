@@ -17,5 +17,7 @@ class SV_ReportImprovements_Globals
     public static $attachmentReportKey = null;
     public static $disablePreDispatch = false;
 
+    public static $deletePostOptions = null;
+
     private function __construct() { }
 }

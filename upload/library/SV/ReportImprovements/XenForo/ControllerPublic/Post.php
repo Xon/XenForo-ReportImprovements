@@ -10,7 +10,7 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Post extends XFCP_SV_Report
 
         $response = parent::actionDelete();
 
-        $reportHelper->injectReportInfoOrResolveReport($response, 'post_delete', function($response) use ($postId) {
+        $reportHelper->injectReportInfo($response, 'post_delete', function($response) use ($postId) {
             return array('post', $postId );
         }, null, false);
 
@@ -27,7 +27,7 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Post extends XFCP_SV_Report
 
         $reportHelper->injectReportInfoOrResolveReport($response, 'post_report', function($response) use ($postId) {
             return array('post', $postId );
-        }, false);
+        }, null, false);
 
         return $response;
     }

@@ -654,19 +654,62 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         ', $newUserId);
     }
 
-    public function resolveReportQuick(array $report, array $viewingUser = null)
+    public function resolveReportForContent($contentType, $contentId, $reportCommentFunc = null, array $viewingUser = null)
+    {
+        $this->standardizeViewingUserReference($viewingUser);
+        if (!$this->canViewReports($viewingUser))
+        {
+            return false;
+        }
+
+        $report = $this->getReportByContent($contentType, $contentId);
+        if (!$report)
+        {
+            return false;
+        }
+
+        $reports = $this->getVisibleReportsForUser(array($report['report_id'] => $report));
+        if (empty($reports))
+        {
+            return false;
+        }
+
+        $report = reset($reports);
+        if ($report && $this->canUpdateReport($report, $viewingUser))
+        {
+            $this->resolveReportQuick($report, $reportCommentFunc, $viewingUser);
+            return true;
+        }
+
+        return false;
+    }
+
+    public function resolveReportQuick(array $report, $reportCommentFunc, array $viewingUser = null)
     {
         $this->standardizeViewingUserReference($viewingUser);
 
-        $dw = XenForo_DataWriter::create('XenForo_DataWriter_ReportComment');
-        $dw->setOption(SV_ReportImprovements_XenForo_DataWriter_ReportComment::OPTION_WARNINGLOG_REPORT, $report);
-        $dw->bulkSet(array(
+        XenForo_Db::beginTransaction();
+
+        $reportDw = XenForo_DataWriter::create('XenForo_DataWriter_Report');
+        $reportDw->setExistingData($report, true);
+        $reportDw->set('report_state', 'resolved');
+
+        $commentDw = XenForo_DataWriter::create('XenForo_DataWriter_ReportComment');
+        $commentDw->setOption(SV_ReportImprovements_XenForo_DataWriter_ReportComment::OPTION_WARNINGLOG_REPORT, $report);
+        $commentDw->bulkSet(array(
                        'report_id' => $report['report_id'],
                        'user_id' => $viewingUser['user_id'],
                        'username' => $viewingUser['username'],
-                       'warning_log_id' => $warning['warning_log_id'],
+                       'state_change' => 'resolved',
                    ));
-        $dw->save();
+        if ($reportCommentFunc)
+        {
+            $reportCommentFunc($reportDw, $commentDw, $viewingUser);
+        }
+        $commentDw->save();
+        $reportDw->save();
+
+        XenForo_Db::commit();
     }
 
     /**

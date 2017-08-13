@@ -13,26 +13,14 @@ class SV_ReportImprovements_ControllerHelper_Reports extends XenForo_ControllerH
         }
     }
 
-    public function injectReportInfoOrResolveReport($response, $templateName, $getContentTypeId = null, $forceDefaultResolve = null, $allowReportCreate = true)
+    public function injectReportInfoOrResolveReport($response, $templateName, $getContentTypeId = null, $reportCommentFunc = null, $forceDefaultResolve = null, $allowReportCreate = true)
     {
         if ($this->_controller->getRequest()->isPost())
         {
             if ($getContentTypeId && $response instanceof XenForo_ControllerResponse_Redirect && SV_ReportImprovements_Globals::$ResolveReport)
             {
                 list($contentType, $contentId) = $getContentTypeId($response);
-                $report = $reportModel->getReportByContent($contentType, $contentId);
-                if ($report)
-                {
-                    $reports = $reportModel->getVisibleReportsForUser(array($report['report_id'] => $report));
-                    if (!empty($reports))
-                    {
-                        $report = reset($reports);
-                        if ($reportModel->canUpdateReport($report))
-                        {
-                            $reportModel->resolveReportQuick($report);
-                        }
-                    }
-                }
+                $this->_getReportModel()->resolveReportForContent($contentType, $contentId);
             }
         }
         else
@@ -90,8 +78,6 @@ class SV_ReportImprovements_ControllerHelper_Reports extends XenForo_ControllerH
             }
         }
     }
-
-    //$threadmarksModel = $this->_controller->getModelFromCache(
 
     /**
      * @return SV_ReportImprovements_XenForo_Model_Report
