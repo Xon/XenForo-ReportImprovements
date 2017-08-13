@@ -4,10 +4,8 @@ class SV_ReportImprovements_XenForo_Model_Post extends XFCP_SV_ReportImprovement
 {
     public function deletePost($postId, $deleteType, array $options = array(), array $forum = null)
     {
-        if (SV_ReportImprovements_Globals::$ResolveReport)
-        {
-            SV_ReportImprovements_Globals::$deletePostOptions = $options;
-        }
+        SV_ReportImprovements_Globals::$deletePostOptions = $options;
+        SV_ReportImprovements_Globals::$deletePostOptions['resolve'] = SV_ReportImprovements_Globals::$ResolveReport;
         $ret = parent::deletePost($postId, $deleteType, $options, $forum);
         SV_ReportImprovements_Globals::$deletePostOptions =  null;
         return $ret;

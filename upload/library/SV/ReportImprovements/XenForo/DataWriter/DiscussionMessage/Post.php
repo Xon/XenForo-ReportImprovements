@@ -7,7 +7,18 @@ class SV_ReportImprovements_XenForo_DataWriter_DiscussionMessage_Post extends XF
         parent::_messagePostDelete();
         if (SV_ReportImprovements_Globals::$deletePostOptions !== null)
         {
-            $this->_getReportModel()->resolveReportForContent('post', $this->get('post_id'), array($this, 'resolveReportForContent'));
+            $options = SV_ReportImprovements_Globals::$deletePostOptions;
+            $resolve = $options['resolve'];
+            $reportModel = $this->_getReportModel();
+            $report = $reportModel->getReportForContent('post', $this->get('post_id'));
+            if ($report)
+            {
+                if ($resolve && !$reportModel->canUpdateReport($report))
+                {
+                    $resolve = false;
+                }
+                $reportModel->logReportForContent($report, $resolve, array($this, 'resolveReportForContent'));
+            }
         }
     }
 
@@ -16,16 +27,35 @@ class SV_ReportImprovements_XenForo_DataWriter_DiscussionMessage_Post extends XF
         parent::_messagePostSave();
         if (SV_ReportImprovements_Globals::$deletePostOptions !== null && $this->isChanged('message_state') && $this->get('message_state') == 'deleted')
         {
-            $this->_getReportModel()->resolveReportForContent('post', $this->get('post_id'), array($this, 'resolveReportForContent'));
+            $options = SV_ReportImprovements_Globals::$deletePostOptions;
+            $resolve = $options['resolve'];
+            $reportModel = $this->_getReportModel();
+            $report = $reportModel->getReportForContent('post', $this->get('post_id'));
+            if ($report)
+            {
+                if ($resolve && !$reportModel->canUpdateReport($report))
+                {
+                    $resolve = false;
+                }
+                $reportModel->logReportForContent($report, $resolve, array($this, 'resolveReportForContent'));
+            }
         }
     }
 
     public function resolveReportForContent(XenForo_DataWriter_Report $reportDw, XenForo_DataWriter_ReportComment $commentDw, array $viewingUser)
     {
         $options = SV_ReportImprovements_Globals::$deletePostOptions;
-        $commentDw->set('message', $options['reason']);
+        if ($options['reason'])
+        {
+            $commentDw->set('message', (string)new XenForo_Phrase('sv_report_delete_post', array('reason' => $options['reason'])));
+        }
         $commentDw->set('alertSent', ($this->getExisting('message_state') == 'visible') && $options['authorAlert']);
-        $commentDw->set('alertComment', $options['authorAlertReason']);
+        if ($options['authorAlertReason'])
+        {
+            $commentDw->set('alertComment', $options['authorAlertReason']);
+        }
+
+        return ($commentDw->get('message') || $commentDw->get('alertComment'));
     }
 
     /**
@@ -33,7 +63,7 @@ class SV_ReportImprovements_XenForo_DataWriter_DiscussionMessage_Post extends XF
      */
     protected function _getReportModel()
     {
-        return $this->_controller->getModelFromCache('XenForo_Model_Report');
+        return $this->getModelFromCache('XenForo_Model_Report');
     }
 }
 

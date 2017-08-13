@@ -280,6 +280,7 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <phrase title="sv_report_comment_by" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Report comment by]]></phrase>
     <phrase title="sv_report_comment_by_x" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Report comment By {username}]]></phrase>
     <phrase title="sv_report_content_by" version_id="1060200" version_string="1.6.2"><![CDATA[Reported content by]]></phrase>
+    <phrase title="sv_report_delete_post" version_id="1080000" version_string="1.8.0"><![CDATA[Reason for Post Delete: {reason}]]></phrase>
     <phrase title="sv_ri_migrating" version_id="11" version_string="0.0.11"><![CDATA[Linking Warnings and Reports]]></phrase>
     <phrase title="sv_ri_operation_type_acknowledge" version_id="1030300" version_string="1.3.3"><![CDATA[Acknowledged Warning]]></phrase>
     <phrase title="sv_ri_operation_type_delete" version_id="2" version_string="0.0.2"><![CDATA[Deleted Warning]]></phrase>
@@ -1120,7 +1121,7 @@ $0]]></replace>
     </modification>
     <modification template="post_report" modification_key="sv_reportimprovements_post_report1" description="Show Report info on reporting a post" execution_order="10" enabled="1" action="str_replace">
       <find><![CDATA[<dl class="ctrlUnit submitUnit">]]></find>
-      <replace><![CDATA[<xen:include template="member_warn_ir_options" />
+      <replace><![CDATA[<xen:include template="ir_report_display" />
 $0]]></replace>
     </modification>
   </public_template_modifications>

@@ -17,10 +17,19 @@ class SV_ReportImprovements_ControllerHelper_Reports extends XenForo_ControllerH
     {
         if ($this->_controller->getRequest()->isPost())
         {
-            if ($getContentTypeId && $response instanceof XenForo_ControllerResponse_Redirect && SV_ReportImprovements_Globals::$ResolveReport)
+            $resolve = SV_ReportImprovements_Globals::$ResolveReport;
+            if ($getContentTypeId && $response instanceof XenForo_ControllerResponse_Redirect && $resolve)
             {
                 list($contentType, $contentId) = $getContentTypeId($response);
-                $this->_getReportModel()->resolveReportForContent($contentType, $contentId);
+                $reportModel = $this->_getReportModel();
+                $report = $reportModel->getReportForContent('post', $this->get('post_id'));
+                if ($report)
+                {
+                    if ($resolve && $reportModel->canUpdateReport($report))
+                    {
+                        $reportModel->logReportForContent($report, $resolve);
+                    }
+                }
             }
         }
         else

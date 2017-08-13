@@ -25,9 +25,14 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Post extends XFCP_SV_Report
 
         $response = parent::actionReport();
 
+        $reportHelper->injectReportInfo($response, 'post_report', function($response) use ($postId) {
+            return array('post', $postId );
+        }, false);
+        /*
         $reportHelper->injectReportInfoOrResolveReport($response, 'post_report', function($response) use ($postId) {
             return array('post', $postId );
         }, null, false);
+        */
 
         return $response;
     }

@@ -654,37 +654,36 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         ', $newUserId);
     }
 
-    public function resolveReportForContent($contentType, $contentId, $reportCommentFunc = null, array $viewingUser = null)
+    public function getReportForContent($contentType, $contentId, array $viewingUser = null)
     {
         $this->standardizeViewingUserReference($viewingUser);
         if (!$this->canViewReports($viewingUser))
         {
-            return false;
+            return null;
         }
 
         $report = $this->getReportByContent($contentType, $contentId);
         if (!$report)
         {
-            return false;
+            return null;
         }
 
         $reports = $this->getVisibleReportsForUser(array($report['report_id'] => $report));
         if (empty($reports))
         {
-            return false;
+            return null;
         }
 
         $report = reset($reports);
-        if ($report && $this->canUpdateReport($report, $viewingUser))
+        if (empty($report))
         {
-            $this->resolveReportQuick($report, $reportCommentFunc, $viewingUser);
-            return true;
+            return null;
         }
 
-        return false;
+        return $report;
     }
 
-    public function resolveReportQuick(array $report, $reportCommentFunc, array $viewingUser = null)
+    public function logReportForContent(array $report, $resolve = true, $reportCommentFunc, array $viewingUser = null)
     {
         $this->standardizeViewingUserReference($viewingUser);
 
@@ -692,7 +691,6 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
 
         $reportDw = XenForo_DataWriter::create('XenForo_DataWriter_Report');
         $reportDw->setExistingData($report, true);
-        $reportDw->set('report_state', 'resolved');
 
         $commentDw = XenForo_DataWriter::create('XenForo_DataWriter_ReportComment');
         $commentDw->setOption(SV_ReportImprovements_XenForo_DataWriter_ReportComment::OPTION_WARNINGLOG_REPORT, $report);
@@ -700,14 +698,27 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
                        'report_id' => $report['report_id'],
                        'user_id' => $viewingUser['user_id'],
                        'username' => $viewingUser['username'],
-                       'state_change' => 'resolved',
                    ));
+                   
+        if ($resolve)
+        {
+            $reportDw->set('report_state', 'resolved');
+            $commentDw->set('state_change', 'resolved');
+        }
+
+        $save = true;
         if ($reportCommentFunc)
         {
-            $reportCommentFunc($reportDw, $commentDw, $viewingUser);
+            $save = call_user_func($reportCommentFunc, $reportDw, $commentDw, $viewingUser);
         }
-        $commentDw->save();
-        $reportDw->save();
+        if ($save)
+        {
+            $commentDw->save();
+            if ($reportDw->hasChanges())
+            {
+                $reportDw->save();
+            }
+        }
 
         XenForo_Db::commit();
     }
