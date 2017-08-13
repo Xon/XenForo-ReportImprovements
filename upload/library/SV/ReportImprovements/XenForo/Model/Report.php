@@ -2,6 +2,53 @@
 
 class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImprovements_XenForo_Model_Report
 {
+    protected $userReportCountCache = array();
+
+    public function countReportsByUser($userId, $days, $state = '')
+    {
+        if (isset($this->userReportCountCache[$userId][$days]))
+        {
+            if (isset($this->userReportCountCache[$userId][$days][$state]))
+            {
+                return $this->userReportCountCache[$userId][$days][$state];
+            }
+            return 0;
+        }
+
+        $args = array($userId);
+        $whereSQL = '';
+        if ($days)
+        {
+            $args[] = 86400 * $days;
+            $whereSQL .= ' and xf_report.last_modified_date > ?';
+        }
+
+        $db = $this->_getDb();
+        $reportStats = $db->fetchAll('
+            select report.report_state, count(*) as count
+            from xf_report_comment as report_comment
+            join xf_report as report on report_comment.report_id = report.report_id
+            where report_comment.is_report = 1 and report_comment.user_id = ? '.$whereSQL.'
+            group by report.report_state
+        ', $args);
+
+        // built the totals & cache array
+        $stats = array();
+        $total = 0;
+        foreach($reportStats as $reportStat)
+        {
+            $stats[$reportStat['report_state']] = $reportStat['count'];
+        }
+        $stats[''] = $total;
+        $this->userReportCountCache[$userId][$days] = $stats;
+
+        if (isset($this->userReportCountCache[$userId][$days][$state]))
+        {
+            return $this->userReportCountCache[$userId][$days][$state];
+        }
+        return 0;
+    }
+
     public function getAttachmentReportKey(array $attachment, array $viewingUser = null)
     {
         $this->standardizeViewingUserReference($viewingUser);
@@ -79,7 +126,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
             {
                 $db = $this->_getDb();
                 $replyBans = $this->fetchAllKeyed("
-                  SELECT * 
+                  SELECT *
                   FROM xf_thread_reply_ban
                   WHERE thread_id IN (" . $db->quote($threadIds) . ") AND user_id = ?
                 ", 'thread_id', array($report['content_user_id']));

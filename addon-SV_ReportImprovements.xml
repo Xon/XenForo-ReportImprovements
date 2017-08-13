@@ -1,19 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.7.5" version_id="1070500" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.8.0" version_id="1080000" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
-  <admin_templates/>
+  <admin_templates>
+    <template title="sv_reportimprovements_criteria"><![CDATA[<li><label>
+	<input type="checkbox" name="user_criteria[sv_reports_minimum][rule]" value="sv_reports_minimum" class="Disabler" id="ucrit_sv_reports_minimum" {xen:checked $userCriteria.sv_reports_minimum} />
+	{xen:phrase sv_user_has_at_least_x_reports}:</label>
+	<div class="criteriaQualifier" id="ucrit_sv_reports_minimum_Disabler">
+		<xen:spinbox name="user_criteria[sv_reports_minimum][data][reports]" value="{$userCriteria.sv_reports_minimum.reports}" size="5" min="0" step="1" />
+		{xen:phrase days}: <xen:spinbox name="user_criteria[sv_reports_minimum][data][days]" value="{$userCriteria.sv_reports_minimum.days}" size="5" min="0" step="1" />
+	</div>
+</li>
+<li><label>
+	<input type="checkbox" name="user_criteria[sv_reports_maximum][rule]" value="sv_reports_maximum" class="Disabler" id="ucrit_sv_reports_maximum" {xen:checked $userCriteria.sv_reports_maximum} />
+	{xen:phrase sv_user_has_no_more_than_x_reports}:</label>
+	<div class="criteriaQualifier" id="ucrit_sv_reports_maximum_Disabler">
+		<xen:spinbox name="user_criteria[sv_reports_maximum][data][reports]" value="{$userCriteria.sv_reports_maximum.reports}" size="5" min="0" step="1" />
+        {xen:phrase days}: <xen:spinbox name="user_criteria[sv_reports_maximum][data][days]" value="{$userCriteria.sv_reports_maximum.days}" size="5" min="0" step="1" />
+	</div>
+</li>
+<li><label>
+	<input type="checkbox" name="user_criteria[sv_reports_open][rule]" value="sv_reports_open" class="Disabler" id="ucrit_sv_reports_minimum_open" {xen:checked $userCriteria.sv_reports_minimum_open} />
+	{xen:phrase sv_user_has_at_least_x_reports_open}:</label>
+	<div class="criteriaQualifier" id="ucrit_sv_reports_minimum_open_Disabler">
+		<xen:spinbox name="user_criteria[sv_reports_minimum_open][data][reports]" value="{$userCriteria.sv_reports_minimum_open.reports}" size="5" min="0" step="1" />
+        {xen:phrase days}: <xen:spinbox name="user_criteria[sv_reports_minimum_open][data][days]" value="{$userCriteria.sv_reports_minimum_open.days}" size="5" min="0" step="1" />
+	</div>
+</li>
+<li><label>
+	<input type="checkbox" name="user_criteria[sv_reports_maximum_open][rule]" value="sv_reports_maximum_open" class="Disabler" id="ucrit_sv_reports_maximum_open" {xen:checked $userCriteria.sv_reports_maximum_open} />
+	{xen:phrase sv_user_has_no_more_than_x_reports_open}:</label>
+	<div class="criteriaQualifier" id="ucrit_sv_reports_maximum_open_Disabler">
+		<xen:spinbox name="user_criteria[sv_reports_maximum_open][data][reports]" value="{$userCriteria.sv_reports_maximum_open.reports}" size="5" min="0" step="1" />
+        {xen:phrase days}: <xen:spinbox name="user_criteria[sv_reports_maximum_open][data][days]" value="{$userCriteria.sv_reports_maximum_open.days}" size="5" min="0" step="1" />
+	</div>
+</li>
+<li><label>
+	<input type="checkbox" name="user_criteria[sv_reports_minimum_assigned][rule]" value="sv_reports_minimum_assigned" class="Disabler" id="ucrit_sv_reports_minimum_assigned" {xen:checked $userCriteria.sv_reports_minimum_assigned} />
+	{xen:phrase sv_user_has_at_least_x_reports_assigned}:</label>
+	<div class="criteriaQualifier" id="ucrit_sv_reports_minimum_assigned_Disabler">
+		<xen:spinbox name="user_criteria[sv_reports_minimum_assigned][data][reports]" value="{$userCriteria.sv_reports_minimum_assigned.reports}" size="5" min="0" step="1" />
+        {xen:phrase days}: <xen:spinbox name="user_criteria[sv_reports_minimum_assigned][data][days]" value="{$userCriteria.sv_reports_minimum_assigned.days}" size="5" min="0" step="1" />
+	</div>
+</li>
+<li><label>
+	<input type="checkbox" name="user_criteria[sv_reports_maximum_assigned][rule]" value="sv_reports_maximum_assigned" class="Disabler" id="ucrit_sv_reports_maximum_assigned" {xen:checked $userCriteria.sv_reports_maximum_assigned} />
+	{xen:phrase sv_user_has_no_more_than_x_reports_assigned}:</label>
+	<div class="criteriaQualifier" id="ucrit_sv_reports_maximum_assigned_Disabler">
+		<xen:spinbox name="user_criteria[sv_reports_maximum_assigned][data][reports]" value="{$userCriteria.sv_reports_maximum_assigned.reports}" size="5" min="0" step="1" />
+        {xen:phrase days}: <xen:spinbox name="user_criteria[sv_reports_maximum_assigned][data][days]" value="{$userCriteria.sv_reports_maximum_assigned.days}" size="5" min="0" step="1" />
+	</div>
+</li>
+<li><label>
+	<input type="checkbox" name="user_criteria[sv_reports_minimum_resolved][rule]" value="sv_reports_minimum_resolved" class="Disabler" id="ucrit_sv_reports_minimum_resolved" {xen:checked $userCriteria.sv_reports_minimum_resolved} />
+	{xen:phrase sv_user_has_at_least_x_reports_resolved}:</label>
+	<div class="criteriaQualifier" id="ucrit_sv_reports_minimum_resolved_Disabler">
+		<xen:spinbox name="user_criteria[sv_reports_minimum_resolved][data][reports]" value="{$userCriteria.sv_reports_minimum_resolved.reports}" size="5" min="0" step="1" />
+        {xen:phrase days}: <xen:spinbox name="user_criteria[sv_reports_minimum_resolved][data][days]" value="{$userCriteria.sv_reports_minimum_resolved.days}" size="5" min="0" step="1" />
+	</div>
+</li>
+<li><label>
+	<input type="checkbox" name="user_criteria[sv_reports_maximum_resolved][rule]" value="sv_reports_maximum_resolved" class="Disabler" id="ucrit_sv_reports_maximum_resolved" {xen:checked $userCriteria.sv_reports_maximum_resolved} />
+	{xen:phrase sv_user_has_no_more_than_x_reports_resolved}:</label>
+	<div class="criteriaQualifier" id="ucrit_sv_reports_maximum_resolved_Disabler">
+		<xen:spinbox name="user_criteria[sv_reports_maximum_resolved][data][reports]" value="{$userCriteria.sv_reports_maximum_resolved.reports}" size="5" min="0" step="1" />
+        {xen:phrase days}: <xen:spinbox name="user_criteria[sv_reports_maximum_resolved][data][days]" value="{$userCriteria.sv_reports_maximum_resolved.days}" size="5" min="0" step="1" />
+	</div>
+</li>
+<li><label>
+	<input type="checkbox" name="user_criteria[sv_reports_minimum_rejected][rule]" value="sv_reports_minimum_rejected" class="Disabler" id="ucrit_sv_reports_minimum_rejected" {xen:checked $userCriteria.sv_reports_minimum_rejected} />
+	{xen:phrase sv_user_has_at_least_x_reports_rejected}:</label>
+	<div class="criteriaQualifier" id="ucrit_sv_reports_minimum_rejected_Disabler">
+		<xen:spinbox name="user_criteria[sv_reports_minimum_rejected][data][reports]" value="{$userCriteria.sv_reports_minimum_rejected.reports}" size="5" min="0" step="1" />
+        {xen:phrase days}: <xen:spinbox name="user_criteria[sv_reports_minimum_rejected][data][days]" value="{$userCriteria.sv_reports_minimum_rejected.days}" size="5" min="0" step="1" />
+	</div>
+</li>
+<li><label>
+	<input type="checkbox" name="user_criteria[sv_reports_maximum_rejected][rule]" value="sv_reports_maximum_rejected" class="Disabler" id="ucrit_sv_reports_maximum_rejected" {xen:checked $userCriteria.sv_reports_maximum_rejected} />
+	{xen:phrase sv_user_has_no_more_than_x_reports_rejected}:</label>
+	<div class="criteriaQualifier" id="ucrit_sv_reports_maximum_rejected_Disabler">
+		<xen:spinbox name="user_criteria[sv_reports_maximum_rejected][data][reports]" value="{$userCriteria.sv_reports_maximum_rejected.reports}" size="5" min="0" step="1" />
+        {xen:phrase days}: <xen:spinbox name="user_criteria[sv_reports_maximum_rejected][data][days]" value="{$userCriteria.sv_reports_maximum_rejected.days}" size="5" min="0" step="1" />
+	</div>
+</li>]]></template>
+  </admin_templates>
   <admin_template_modifications>
     <modification template="user_edit" modification_key="sv_integrated_report_user_edit" description="Add Spam Cleaner" execution_order="10" enabled="1" action="str_replace">
       <find><![CDATA[<li><a href="{xen:adminlink banning/users/add, $user}" class="OverlayTrigger">{xen:phrase ban_user}</a></li>]]></find>
       <replace><![CDATA[$0
 <li><a href="{xen:link spam-cleaner, $user}" class="OverlayTrigger">{xen:phrase spam_cleaner}</a></li>]]></replace>
     </modification>
+    <modification template="helper_criteria_user" modification_key="sv_reportimprovements_helper_criteria_user" description="Add criteria for reports" execution_order="11" enabled="1" action="preg_replace">
+      <find><![CDATA[#(<xen:hook name="user_criteria_content">.*?)(\s*)(</xen:hook>)#si]]></find>
+      <replace><![CDATA[$1$2<xen:include template="sv_reportimprovements_criteria"/>$2$3]]></replace>
+    </modification>
   </admin_template_modifications>
   <code_events/>
   <code_event_listeners>
     <listener event_id="controller_pre_dispatch" execute_order="10" callback_class="SV_ReportImprovements_Listener" callback_method="controller_pre_dispatch" active="1" hint="" description="Inject Report Center session info"/>
+    <listener event_id="criteria_user" execute_order="10" callback_class="SV_ReportImprovements_Criteria" callback_method="criteriaUser" active="1" hint="" description="Add report related criteria"/>
     <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ModeratorHandler_Node" description="XenForo_ModeratorHandler_Node"/>
     <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_Post" description="XenForo_ReportHandler_Post"/>
     <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_AttachmentHandler_Post" description="XenForo_AttachmentHandler_Post"/>
@@ -33,6 +119,7 @@
     <listener event_id="load_class_controller" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Thread" description="XenForo_ControllerPublic_Thread"/>
     <listener event_id="load_class_datawriter" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_DataWriter_Warning" description="XenForo_DataWriter_Warning"/>
     <listener event_id="load_class_datawriter" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_DataWriter_ReportComment" description="XenForo_DataWriter_ReportComment"/>
+    <listener event_id="load_class_model" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Moderator" description="XenForo_Model_Moderator"/>
     <listener event_id="load_class_model" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenES_Model_Elasticsearch" description="XenES_Model_Elasticsearch"/>
     <listener event_id="load_class_model" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Conversation" description="XenForo_Model_Conversation"/>
     <listener event_id="load_class_model" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Forum" description="XenForo_Model_Forum"/>
@@ -40,7 +127,6 @@
     <listener event_id="load_class_model" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_ProfilePost" description="XenForo_Model_ProfilePost"/>
     <listener event_id="load_class_model" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Warning" description="XenForo_Model_Warning"/>
     <listener event_id="load_class_model" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Thread" description="XenForo_Model_Thread"/>
-    <listener event_id="load_class_model" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Moderator" description="XenForo_Model_Moderator"/>
     <listener event_id="load_class_route_prefix" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Route_Prefix_Attachments" description="XenForo_Route_Prefix_Attachments"/>
     <listener event_id="load_class_view" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ViewPublic_Report_View" description="XenForo_ViewPublic_Report_View"/>
   </code_event_listeners>
@@ -200,6 +286,16 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <phrase title="sv_select_this_report_by_x" version_id="1060200" version_string="1.6.2"><![CDATA[Select this report by {name}]]></phrase>
     <phrase title="sv_select_this_report_comment_by_x" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Select this report comment by {name}]]></phrase>
     <phrase title="sv_unlike_report_comment" version_id="1010000" version_string="1.1.0"><![CDATA[Unlike report comment]]></phrase>
+    <phrase title="sv_user_has_at_least_x_reports" version_id="1080000" version_string="1.8.0"><![CDATA[User has at least X reports by them]]></phrase>
+    <phrase title="sv_user_has_at_least_x_reports_assigned" version_id="1080000" version_string="1.8.0"><![CDATA[User has at least X reports by them in the assigned state]]></phrase>
+    <phrase title="sv_user_has_at_least_x_reports_open" version_id="1080000" version_string="1.8.0"><![CDATA[User has at least X reports by them in the open state]]></phrase>
+    <phrase title="sv_user_has_at_least_x_reports_rejected" version_id="1080000" version_string="1.8.0"><![CDATA[User has at least X reports by them in the rejected state]]></phrase>
+    <phrase title="sv_user_has_at_least_x_reports_resolved" version_id="1080000" version_string="1.8.0"><![CDATA[User has at least X reports by them in the resolved state]]></phrase>
+    <phrase title="sv_user_has_no_more_than_x_reports" version_id="1080000" version_string="1.8.0"><![CDATA[User has no more than X reports by them]]></phrase>
+    <phrase title="sv_user_has_no_more_than_x_reports_assigned" version_id="1080000" version_string="1.8.0"><![CDATA[User has no more than X reports by them in the assigned state]]></phrase>
+    <phrase title="sv_user_has_no_more_than_x_reports_open" version_id="1080000" version_string="1.8.0"><![CDATA[User has no more than X reports by them in the open state]]></phrase>
+    <phrase title="sv_user_has_no_more_than_x_reports_rejected" version_id="1080000" version_string="1.8.0"><![CDATA[User has no more than X reports by them in the rejected state]]></phrase>
+    <phrase title="sv_user_has_no_more_than_x_reports_resolved" version_id="1080000" version_string="1.8.0"><![CDATA[User has no more than X reports by them in the resolved state]]></phrase>
     <phrase title="sv_user_report" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[User Report]]></phrase>
     <phrase title="sv_user_report_by" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[User report by]]></phrase>
     <phrase title="sv_x_acknowledged_a_warning" version_id="1030300" version_string="1.3.3"><![CDATA[{name} acknowledged a warning issued on the report {report}.]]></phrase>
