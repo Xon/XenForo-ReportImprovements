@@ -30,7 +30,7 @@ class SV_ReportImprovements_XenForo_Model_Thread extends XFCP_SV_ReportImproveme
         if ($result)
         {
             $replyBan = $this->_getDb()->fetchRow("
-                SELECT * 
+                SELECT *
                 FROM xf_thread_reply_ban
                 WHERE thread_id = ?
                     AND user_id = ?
@@ -63,11 +63,11 @@ class SV_ReportImprovements_XenForo_Model_Thread extends XFCP_SV_ReportImproveme
     public function deleteThreadReplyBan(array $thread, array $user)
     {
         $replyBan = $this->_getDb()->fetchRow("
-			SELECT * 
-			FROM xf_thread_reply_ban
-			WHERE thread_id = ?
-				AND user_id = ?
-		", array($thread['thread_id'], $user['user_id']));
+            SELECT *
+            FROM xf_thread_reply_ban
+            WHERE thread_id = ?
+                AND user_id = ?
+        ", array($thread['thread_id'], $user['user_id']));
 
         $result = parent::deleteThreadReplyBan($thread, $user);
 
@@ -99,11 +99,11 @@ class SV_ReportImprovements_XenForo_Model_Thread extends XFCP_SV_ReportImproveme
 
         $db = $this->_getDb();
         $replyBans = $db->fetchAll("
-			SELECT xf_thread_reply_ban.*, xf_user.username 
-			FROM xf_thread_reply_ban
-			LEFT JOIN xf_user ON xf_user.user_id = xf_thread_reply_ban.user_id
-			WHERE expiry_date <= ?
-		", $expiryDate);
+            SELECT xf_thread_reply_ban.*, xf_user.username
+            FROM xf_thread_reply_ban
+            LEFT JOIN xf_user ON xf_user.user_id = xf_thread_reply_ban.user_id
+            WHERE expiry_date <= ?
+        ", $expiryDate);
         if (empty($replyBans))
         {
             return;
