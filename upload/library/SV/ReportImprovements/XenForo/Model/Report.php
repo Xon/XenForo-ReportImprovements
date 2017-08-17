@@ -683,7 +683,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         return $report;
     }
 
-    public function logReportForContent(array $report, $resolve = true, $reportCommentFunc, array $viewingUser = null)
+    public function logReportForContent(array $report, $resolve = true, array $loggingOptions = null, array $viewingUser = null)
     {
         $this->standardizeViewingUserReference($viewingUser);
 
@@ -699,7 +699,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
                        'user_id' => $viewingUser['user_id'],
                        'username' => $viewingUser['username'],
                    ));
-                   
+
         if ($resolve)
         {
             $reportDw->set('report_state', 'resolved');
@@ -707,9 +707,9 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         }
 
         $save = true;
-        if ($reportCommentFunc)
+        if ($loggingOptions)
         {
-            $save = call_user_func($reportCommentFunc, $reportDw, $commentDw, $viewingUser);
+            $save = $this->recordReportResolveOptions($reportDw, $commentDw, $loggingOptions, $viewingUser);
         }
         if ($save)
         {
@@ -721,6 +721,43 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         }
 
         XenForo_Db::commit();
+    }
+
+    protected function recordReportResolveOptions(XenForo_DataWriter_Report $reportDw, XenForo_DataWriter_ReportComment $commentDw, array $options, array $viewingUser)
+    {
+        $options = SV_ReportImprovements_Globals::$deleteContentOptions;
+        if ($options['reason'])
+        {
+            $commentDw->set('message', (string)new XenForo_Phrase('sv_report_delete_post', array('reason' => $options['reason'])));
+        }
+        $commentDw->set('alertSent', $options['authorAlert']);
+        if ($options['authorAlertReason'])
+        {
+            $commentDw->set('alertComment', $options['authorAlertReason']);
+        }
+
+        return ($commentDw->get('message') || $commentDw->get('alertComment'));
+    }
+
+    public function logContentDeleteToReport($contentType, $contentId, array $options = array(), $contentVisible = true)
+    {
+        $options = array_merge(array(
+            'reason' => '',
+            'authorAlertReason' => '',
+            'alertSent' => false,
+            'resolve' => false,
+        ), $options);
+        $options['alertSent'] = $options['alertSent'] && $contentVisible;
+        $resolve = $options['resolve'];
+        $report = $this->getReportForContent($contentType, $contentId);
+        if ($report)
+        {
+            if ($resolve && !$this->canUpdateReport($report))
+            {
+                $resolve = false;
+            }
+            $this->logReportForContent($report, $resolve, $options);
+        }
     }
 
     /**

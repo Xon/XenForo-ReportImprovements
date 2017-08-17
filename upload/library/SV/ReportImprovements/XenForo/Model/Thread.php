@@ -4,11 +4,11 @@ class SV_ReportImprovements_XenForo_Model_Thread extends XFCP_SV_ReportImproveme
 {
     public function deleteThread($threadId, $deleteType, array $options = array())
     {
-        SV_ReportImprovements_Globals::$deletePostOptions = $options;
-        SV_ReportImprovements_Globals::$deletePostOptions['resolve'] = SV_ReportImprovements_Globals::$ResolveReport;
+        SV_ReportImprovements_Globals::$deleteContentOptions = $options;
+        SV_ReportImprovements_Globals::$deleteContentOptions['resolve'] = SV_ReportImprovements_Globals::$ResolveReport;
 
         $ret = parent::deleteThread($threadId, $deleteType, $options);
-        SV_ReportImprovements_Globals::$deletePostOptions =  null;
+        SV_ReportImprovements_Globals::$deleteContentOptions = array();
         return $ret;
     }
 
