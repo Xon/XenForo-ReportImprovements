@@ -23,7 +23,6 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Thread extends XFCP_SV_Repo
 
     public function actionDelete()
     {
-        $postId = $this->_input->filterSingle('post_id', XenForo_Input::UINT);
         $reportHelper = $this->_getReportHelper();
         $canSee = $reportHelper->setupOnPost();
 

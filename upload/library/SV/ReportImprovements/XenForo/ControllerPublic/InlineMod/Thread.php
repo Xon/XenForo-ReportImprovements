@@ -4,7 +4,6 @@ class SV_ReportImprovements_XenForo_ControllerPublic_InlineMod_Thread extends XF
 {
     public function actionDelete()
     {
-        $postId = $this->_input->filterSingle('post_id', XenForo_Input::UINT);
         $reportHelper = $this->_getReportHelper();
         $canSee = $reportHelper->setupOnPost();
 
