@@ -179,6 +179,13 @@ temporary={xen:phrase temporary}</edit_format_params>
       <sub_options></sub_options>
       <relation group_id="sv_report_improvements" display_order="120"/>
     </option>
+    <option option_id="sv_replyban_on_warning_len" edit_format="template" data_type="array" can_backup="1">
+      <default_value>a:2:{s:5:"value";i:8;s:4:"unit";s:5:"hours";}</default_value>
+      <edit_format_params>option_sv_warning_replyban</edit_format_params>
+      <sub_options>value
+unit</sub_options>
+      <relation group_id="sv_report_improvements" display_order="120"/>
+    </option>
     <option option_id="sv_report_alert_mode" edit_format="select" data_type="string" can_backup="1">
       <default_value>watchers</default_value>
       <edit_format_params>always_alert={xen:phrase sv_reports_alert_moderators_always}
@@ -248,6 +255,8 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <phrase title="option_sv_replyban_alert_default_explain" version_id="1080400" version_string="1.8.4"><![CDATA[Send alerts by default when a user is reply-banned from a warning]]></phrase>
     <phrase title="option_sv_replyban_on_warning" version_id="1080400" version_string="1.8.4"><![CDATA[Reply Ban on Post Warning]]></phrase>
     <phrase title="option_sv_replyban_on_warning_explain" version_id="1080400" version_string="1.8.4"><![CDATA[Default settings for triggering a reply ban when a user is warned from a post]]></phrase>
+    <phrase title="option_sv_replyban_on_warning_len" version_id="1080400" version_string="1.8.4"><![CDATA[Reply Ban on Post Warning Length]]></phrase>
+    <phrase title="option_sv_replyban_on_warning_len_explain" version_id="1080400" version_string="1.8.4"><![CDATA[Default length when a reply-ban is issued from a warning]]></phrase>
     <phrase title="option_sv_report_alert_mode" version_id="1010100" version_string="1.1.1"><![CDATA[Report Alerting Mode]]></phrase>
     <phrase title="option_sv_report_alert_mode_explain" version_id="1010100" version_string="1.1.1"><![CDATA[Changes the selection criteria for alerts when a report comment is created.]]></phrase>
     <phrase title="option_sv_report_new_warnings" version_id="3" version_string="0.0.3b"><![CDATA[Report New Warnings]]></phrase>
