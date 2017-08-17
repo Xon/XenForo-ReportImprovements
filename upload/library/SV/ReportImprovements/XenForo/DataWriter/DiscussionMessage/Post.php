@@ -5,40 +5,42 @@ class SV_ReportImprovements_XenForo_DataWriter_DiscussionMessage_Post extends XF
     protected function _messagePostDelete()
     {
         parent::_messagePostDelete();
-        if (SV_ReportImprovements_Globals::$deletePostOptions !== null)
-        {
-            $options = SV_ReportImprovements_Globals::$deletePostOptions;
-            $resolve = $options['resolve'];
-            $reportModel = $this->_getReportModel();
-            $report = $reportModel->getReportForContent('post', $this->get('post_id'));
-            if ($report)
-            {
-                if ($resolve && !$reportModel->canUpdateReport($report))
-                {
-                    $resolve = false;
-                }
-                $reportModel->logReportForContent($report, $resolve, array($this, 'resolveReportForContent'));
-            }
-        }
+        $this->logContentDeleteToReport();
     }
 
     protected function _messagePostSave()
     {
         parent::_messagePostSave();
-        if (SV_ReportImprovements_Globals::$deletePostOptions !== null && $this->isChanged('message_state') && $this->get('message_state') == 'deleted')
+        if ($this->isChanged('message_state') && $this->get('message_state') == 'deleted')
+        {
+            $this->logContentDeleteToReport();
+        }
+    }
+
+    public function logContentDeleteToReport()
+    {
+        if (SV_ReportImprovements_Globals::$deletePostOptions !== null)
         {
             $options = SV_ReportImprovements_Globals::$deletePostOptions;
-            $resolve = $options['resolve'];
-            $reportModel = $this->_getReportModel();
-            $report = $reportModel->getReportForContent('post', $this->get('post_id'));
-            if ($report)
+        }
+        else
+        {
+            $options = array(
+                'reason' => '',
+                'authorAlertReason' => '',
+                'alertSent' => false,
+            );
+        }
+        $resolve = $options['resolve'];
+        $reportModel = $this->_getReportModel();
+        $report = $reportModel->getReportForContent('post', $this->get('post_id'));
+        if ($report)
+        {
+            if ($resolve && !$reportModel->canUpdateReport($report))
             {
-                if ($resolve && !$reportModel->canUpdateReport($report))
-                {
-                    $resolve = false;
-                }
-                $reportModel->logReportForContent($report, $resolve, array($this, 'resolveReportForContent'));
+                $resolve = false;
             }
+            $reportModel->logReportForContent($report, $resolve, array($this, 'resolveReportForContent'));
         }
     }
 

@@ -50,5 +50,5 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Post extends XFCP_SV_Report
 // ******************** FOR IDE AUTO COMPLETE ********************
 if (false)
 {
-    class XFCP_SV_ReportImprovements_XenForo_ControllerPublic_Warning extends XenForo_ControllerPublic_Warning {}
+    class XFCP_SV_ReportImprovements_XenForo_ControllerPublic_Post extends XenForo_ControllerPublic_Post {}
 }
