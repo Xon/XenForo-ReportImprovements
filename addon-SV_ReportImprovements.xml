@@ -4,6 +4,16 @@
   <admin_permissions/>
   <admin_style_properties/>
   <admin_templates>
+    <template title="option_sv_warning_replyban"><![CDATA[<xen:controlunit label="{$preparedOption.title}">
+	<input type="text" size="5" name="{$fieldPrefix}[{$preparedOption.option_id}][value]" value="{$preparedOption.option_value.value}" class="textCtrl autoSize" />
+	<select name="{$fieldPrefix}[{$preparedOption.option_id}][unit]" class="textCtrl autoSize">
+					<option value="hours"  {xen:selected "{$preparedOption.option_value.unit} == 'hours'"}>{xen:phrase hours}</option>
+					<option value="days"   {xen:selected "{$preparedOption.option_value.unit} == 'days'"}>{xen:phrase days}</option>
+					<option value="weeks"  {xen:selected "{$preparedOption.option_value.unit} == 'weeks'"}>{xen:phrase weeks}</option>
+					<option value="months" {xen:selected "{$preparedOption.option_value.unit} == 'months'"}>{xen:phrase months}</option>
+	</select>
+	{xen:raw $editLink}
+</xen:controlunit>]]></template>
     <template title="sv_reportimprovements_criteria"><![CDATA[<li><label>
 	<input type="checkbox" name="user_criteria[sv_reports_minimum][rule]" value="sv_reports_minimum" class="Disabler" id="ucrit_sv_reports_minimum" {xen:checked $userCriteria.sv_reports_minimum} />
 	{xen:phrase sv_user_has_at_least_x_reports}:</label>
@@ -155,6 +165,14 @@
       <sub_options></sub_options>
       <relation group_id="sv_report_improvements" display_order="215"/>
     </option>
+    <option option_id="sv_replyban_on_warning" edit_format="radio" data_type="string" can_backup="1">
+      <default_value>none</default_value>
+      <edit_format_params>none={xen:phrase none}
+permanent={xen:phrase permanent}
+temporary={xen:phrase temporary}</edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="sv_report_improvements" display_order="120"/>
+    </option>
     <option option_id="sv_report_alert_mode" edit_format="select" data_type="string" can_backup="1">
       <default_value>watchers</default_value>
       <edit_format_params>always_alert={xen:phrase sv_reports_alert_moderators_always}
@@ -220,6 +238,8 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <phrase title="option_sv_default_resolve_report_on_warning_explain" version_id="4" version_string="0.0.4"><![CDATA[By default, resolve an contents report when creating a warning.]]></phrase>
     <phrase title="option_sv_moderators_respect_view_node" version_id="8" version_string="0.0.8"><![CDATA[Reports respect view-node permission]]></phrase>
     <phrase title="option_sv_moderators_respect_view_node_explain" version_id="8" version_string="0.0.8"><![CDATA[Only allow moderators to see reports from forums they can see]]></phrase>
+    <phrase title="option_sv_replyban_on_warning" version_id="1080400" version_string="1.8.4"><![CDATA[Reply Ban on Post Warning]]></phrase>
+    <phrase title="option_sv_replyban_on_warning_explain" version_id="1080400" version_string="1.8.4"><![CDATA[Default settings for triggering a reply ban when a user is warned from a post]]></phrase>
     <phrase title="option_sv_report_alert_mode" version_id="1010100" version_string="1.1.1"><![CDATA[Report Alerting Mode]]></phrase>
     <phrase title="option_sv_report_alert_mode_explain" version_id="1010100" version_string="1.1.1"><![CDATA[Changes the selection criteria for alerts when a report comment is created.]]></phrase>
     <phrase title="option_sv_report_new_warnings" version_id="3" version_string="0.0.3b"><![CDATA[Report New Warnings]]></phrase>
@@ -307,6 +327,7 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <phrase title="sv_user_has_no_more_than_x_reports_resolved" version_id="1080000" version_string="1.8.0"><![CDATA[User has no more than X reports by them in the resolved state]]></phrase>
     <phrase title="sv_user_report" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[User Report]]></phrase>
     <phrase title="sv_user_report_by" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[User report by]]></phrase>
+    <phrase title="sv_warning_reply_ban" version_id="1080400" version_string="1.8.4"><![CDATA[Reply Ban length]]></phrase>
     <phrase title="sv_x_acknowledged_a_warning" version_id="1030300" version_string="1.3.3"><![CDATA[{name} acknowledged a warning issued on the report {report}.]]></phrase>
     <phrase title="sv_x_commented_on_report" version_id="1010000" version_string="1.1.0"><![CDATA[{name} commented on the report {report}.]]></phrase>
     <phrase title="sv_x_issued_a_warning_on_report" version_id="1010000" version_string="1.1.0"><![CDATA[{name} issued a warning on the report {report}.]]></phrase>
@@ -459,6 +480,41 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 </fieldset>
 </xen:if>
 <xen:include template="ir_report_display" />]]></template>
+    <template title="member_warn_threadban" version_id="1080400" version_string="1.8.4"><![CDATA[<li>
+<label>{xen:phrase sv_warning_reply_ban}:</label>
+<ul>
+	<li><label><input type="radio" name="ban_length" value="none"  {xen:checked "{$xenOptions.sv_replyban_on_warning} == 'none'"}/> {xen:phrase none}</label></li>
+	<li><label><input type="radio" name="ban_length" value="permanent" {xen:checked "{$xenOptions.sv_replyban_on_warning} == 'permanent'"} /> {xen:phrase permanent}</label></li>
+	<li><label><input type="radio" name="ban_length" value="temporary" {xen:checked "{$xenOptions.sv_replyban_on_warning} == 'temporary'"} id="ctrl_ban_length_temporary" class="Disabler" /> {xen:phrase temporary}:</label>
+		<ul id="ctrl_ban_length_temporary_Disabler">
+			<li>
+				<input type="text" size="5" name="ban_length_value" value="{$xenOptions.sv_replyban_on_warning_len.value}" class="textCtrl autoSize" />
+				<select name="ban_length_unit" class="textCtrl autoSize">
+					<option value="hours"  {xen:selected "{$xenOptions.sv_replyban_on_warning_len.unit} == 'hours'"}>{xen:phrase hours}</option>
+					<option value="days"   {xen:selected "{$xenOptions.sv_replyban_on_warning_len.unit} == 'days'"}>{xen:phrase days}</option>
+					<option value="weeks"  {xen:selected "{$xenOptions.sv_replyban_on_warning_len.unit} == 'weeks'"}>{xen:phrase weeks}</option>
+					<option value="months" {xen:selected "{$xenOptions.sv_replyban_on_warning_len.unit} == 'months'"}>{xen:phrase months}</option>
+				</select>
+			</li>
+		</ul>
+	</li>
+</ul>
+
+<label>{xen:phrase reason}:</label>
+<ul>
+	<li>
+		<input type="text" name="reason_reply_ban" class="textCtrl" maxlength="100" />
+		<p class="explain">{xen:phrase this_will_be_shown_to_user_if_you_choose_to_notify_them}</p>
+	</li>
+	<li>
+		<label><input type="checkbox" name="send_alert_reply_ban" value="1" /> {xen:phrase notify_user_of_this_action}</label>
+	</li>
+</ul>
+
+			
+
+
+</li>]]></template>
     <template title="news_feed_item_report_comment_like" version_id="1020008" version_string="1.2.0 RC6"><![CDATA[<h3 class="description">
 
     <xen:if is="{$content.user_id} == {$visitor.user_id}">
@@ -1127,6 +1183,12 @@ $0]]></replace>
       <find><![CDATA[<dl class="ctrlUnit submitUnit">]]></find>
       <replace><![CDATA[<xen:include template="ir_resolve_report" />
 $0]]></replace>
+    </modification>
+    <modification template="member_warn" modification_key="sv_reportimprovements_member_warn2" description="Reply ban options for posts/threads" execution_order="11" enabled="1" action="preg_replace">
+      <find><![CDATA[#(<dt>{xen:phrase content_action}:</dt>.*?)(\s*</xen:contentcheck>)#si]]></find>
+      <replace><![CDATA[$1
+<xen:if is="{$contentType} == 'post' && {$canReplyBan}"><xen:include template="member_warn_threadban" /></xen:if>
+$2]]></replace>
     </modification>
     <modification template="post_delete" modification_key="sv_reportimprovements_post_delete1" description="Show Report info on deleting a post" execution_order="10" enabled="1" action="str_replace">
       <find><![CDATA[<xen:if is="{$post.isFirst}">]]></find>

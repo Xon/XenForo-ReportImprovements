@@ -2,6 +2,37 @@
 
 class SV_ReportImprovements_XenForo_DataWriter_Warning extends XFCP_SV_ReportImprovements_XenForo_DataWriter_Warning
 {
+    protected $replyBanUser = null;
+    protected $replyBanThread = null;
+    protected $replyBanOptions = null;
+
+    protected function _preSave()
+    {
+        parent::_preSave();
+
+        if (SV_ReportImprovements_Globals::$replyBanOptions && $this->get('content_type') == 'post')
+        {
+            $user = $this->_getUserModel()->getUserById($this->get('user_id'));
+
+            $postId = $this->get('content_id');
+            $post = $this->_getPostModel()->getPostById($postId, array(
+                'join' => XenForo_Model_Post::FETCH_THREAD | XenForo_Model_Post::FETCH_FORUM,
+                'skip_wordcount' => true,
+            ));
+
+            if (!empty($post['thread_id']) && $user && $this->_getThreadModel()->canReplyBanUserFromThread($user, $post, $post, $errorPhraseKey))
+            {
+                $this->replyBanUser = $user;
+                $this->replyBanThread = $post;
+                $this->replyBanOptions = SV_ReportImprovements_Globals::$replyBanOptions;
+            }
+            else
+            {
+                $this->error($errorPhraseKey, 'ban_length');
+            }
+        }
+    }
+
     protected function _postDelete()
     {
         $operationType = SV_ReportImprovements_Model_WarningLog::Operation_DeleteWarning;
@@ -13,6 +44,25 @@ class SV_ReportImprovements_XenForo_DataWriter_Warning extends XFCP_SV_ReportImp
     {
         $operationType = $this->getOperationType();
         $this->_logOperation($operationType);
+
+        if ($this->replyBanOptions)
+        {
+            if ($this->replyBanOptions['ban_length'] == 'permanent')
+            {
+                $expiryDate = null;
+            }
+            else
+            {
+                $expiryDate = min(
+                    pow(2,32) - 1,
+                    strtotime("+{$this->replyBanOptions['ban_length_value']} {$this->replyBanOptions['ban_length_unit']}")
+                );
+            }
+
+            $this->_getThreadModel()->insertThreadReplyBan($this->replyBanThread, $this->replyBanUser, $expiryDate, $this->replyBanOptions['reason_reply_ban'], $this->replyBanOptions['send_alert_reply_ban']);
+
+        }
+
         parent::_postSave();
     }
 
@@ -70,6 +120,22 @@ class SV_ReportImprovements_XenForo_DataWriter_Warning extends XFCP_SV_ReportImp
             XenForo_Error::logException($e);
             throw $e;
         }
+    }
+
+    /**
+     * @return SV_ReportImprovements_XenForo_Model_Post
+     */
+    protected function _getPostModel()
+    {
+        return $this->getModelFromCache('XenForo_Model_Post');
+    }
+
+    /**
+     * @return SV_ReportImprovements_XenForo_Model_Thread
+     */
+    protected function _getThreadModel()
+    {
+        return $this->getModelFromCache('XenForo_Model_Thread');
     }
 
     /**

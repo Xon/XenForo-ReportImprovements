@@ -18,6 +18,7 @@ class SV_ReportImprovements_Globals
     public static $disablePreDispatch = false;
 
     public static $deleteContentOptions = array();
+    public static $replyBanOptions = array();
 
     private function __construct() { }
 }
