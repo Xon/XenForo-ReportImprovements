@@ -683,7 +683,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         return $report;
     }
 
-    public function logReportForContent(array $report, $resolve = true, array $loggingOptions = null, array $viewingUser = null)
+    public function logReportForContent(array $report, $resolve = true, array $loggingOptions = array(), array $viewingUser = null)
     {
         $this->standardizeViewingUserReference($viewingUser);
 
@@ -725,7 +725,6 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
 
     protected function recordReportResolveOptions(XenForo_DataWriter_Report $reportDw, XenForo_DataWriter_ReportComment $commentDw, array $options, array $viewingUser)
     {
-        $options = SV_ReportImprovements_Globals::$deleteContentOptions;
         if ($options['reason'])
         {
             $commentDw->set('message', (string)new XenForo_Phrase('sv_report_delete_post', array('reason' => $options['reason'])));
@@ -744,10 +743,10 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         $options = array_merge(array(
             'reason' => '',
             'authorAlertReason' => '',
-            'alertSent' => false,
+            'authorAlert' => false,
             'resolve' => false,
         ), $options);
-        $options['alertSent'] = $options['alertSent'] && $contentVisible;
+        $options['authorAlert'] = $options['authorAlert'] && $contentVisible;
         $resolve = $options['resolve'];
         $report = $this->getReportForContent($contentType, $contentId);
         if ($report)
