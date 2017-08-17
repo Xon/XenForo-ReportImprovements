@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.8.3" version_id="1080300" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.8.4" version_id="1080400" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -1100,7 +1100,7 @@ $1
     </modification>
     <modification template="thread_reply_bans" modification_key="sv_report_improvements_thread_reply_bans" description="Show resolve options for reports &amp; warnings" execution_order="10" enabled="1" action="preg_replace">
       <find><![CDATA[#(\s*)(<dl class="ctrlUnit submitUnit")#msi]]></find>
-      <replace><![CDATA[$1<xen:if is="{$showResolveOptions}"><xen:include template="ir_resolve_report" /></xen:if>
+      <replace><![CDATA[$1<xen:include template="ir_resolve_report" />
 $1$2]]></replace>
     </modification>
     <modification template="warning_info" modification_key="sv_report_improvements_warning_info1" description="Show Report info on warning" execution_order="5" enabled="1" action="str_replace">

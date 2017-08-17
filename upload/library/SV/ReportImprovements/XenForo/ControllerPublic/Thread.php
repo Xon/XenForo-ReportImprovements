@@ -4,20 +4,13 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Thread extends XFCP_SV_Repo
 {
     public function actionReplyBans()
     {
-        $canViewReports = $this->_getReportModel()->canResolveReplyBanReports();
-        if ($canViewReports && $this->isConfirmedPost())
-        {
-            SV_ReportImprovements_Globals::$ResolveReport = $this->_input->filterSingle('resolve_linked_report', XenForo_Input::BOOLEAN);
-            SV_ReportImprovements_Globals::$AssignReport = SV_ReportImprovements_Globals::$ResolveReport;
-        }
+        $reportHelper = $this->_getReportHelper();
+        $canSee = $reportHelper->setupOnPost();
 
         $response = parent::actionReplyBans();
 
-        if ($response instanceof XenForo_ControllerResponse_View)
-        {
-            $response->params['CanCreateReport'] = true;
-            $response->params['showResolveOptions'] = $canViewReports;
-        }
+        $reportHelper->injectReportInfoForBulk($canSee, $response);
+
         return $response;
     }
 
