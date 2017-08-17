@@ -165,6 +165,12 @@
       <sub_options></sub_options>
       <relation group_id="sv_report_improvements" display_order="215"/>
     </option>
+    <option option_id="sv_replyban_alert_default" edit_format="onoff" data_type="boolean" can_backup="1">
+      <default_value>1</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="sv_report_improvements" display_order="130"/>
+    </option>
     <option option_id="sv_replyban_on_warning" edit_format="radio" data_type="string" can_backup="1">
       <default_value>none</default_value>
       <edit_format_params>none={xen:phrase none}
@@ -238,6 +244,8 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <phrase title="option_sv_default_resolve_report_on_warning_explain" version_id="4" version_string="0.0.4"><![CDATA[By default, resolve an contents report when creating a warning.]]></phrase>
     <phrase title="option_sv_moderators_respect_view_node" version_id="8" version_string="0.0.8"><![CDATA[Reports respect view-node permission]]></phrase>
     <phrase title="option_sv_moderators_respect_view_node_explain" version_id="8" version_string="0.0.8"><![CDATA[Only allow moderators to see reports from forums they can see]]></phrase>
+    <phrase title="option_sv_replyban_alert_default" version_id="1080400" version_string="1.8.4"><![CDATA[Warning Reply Ban - Alerts]]></phrase>
+    <phrase title="option_sv_replyban_alert_default_explain" version_id="1080400" version_string="1.8.4"><![CDATA[Send alerts by default when a user is reply-banned from a warning]]></phrase>
     <phrase title="option_sv_replyban_on_warning" version_id="1080400" version_string="1.8.4"><![CDATA[Reply Ban on Post Warning]]></phrase>
     <phrase title="option_sv_replyban_on_warning_explain" version_id="1080400" version_string="1.8.4"><![CDATA[Default settings for triggering a reply ban when a user is warned from a post]]></phrase>
     <phrase title="option_sv_report_alert_mode" version_id="1010100" version_string="1.1.1"><![CDATA[Report Alerting Mode]]></phrase>
@@ -507,7 +515,7 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 		<p class="explain">{xen:phrase this_will_be_shown_to_user_if_you_choose_to_notify_them}</p>
 	</li>
 	<li>
-		<label><input type="checkbox" name="send_alert_reply_ban" value="1" /> {xen:phrase notify_user_of_this_action}</label>
+		<label><input type="checkbox" name="send_alert_reply_ban" value="1" {xen:checked "{$xenOptions.sv_replyban_alert_default}"} /> {xen:phrase notify_user_of_this_action}</label>
 	</li>
 </ul>
 
