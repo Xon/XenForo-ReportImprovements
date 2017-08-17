@@ -9,12 +9,7 @@ class SV_ReportImprovements_XenForo_ControllerPublic_InlineMod_Post extends XFCP
 
         $response = parent::actionDelete();
 
-        if ($canSee && $response instanceof XenForo_ControllerResponse_View)
-        {
-            $response->params['canResolveReport'] = true;
-            $response->params['canCreateReport'] = true;
-            $response->params['report'] = true;
-        }
+        $reportHelper->injectReportInfoForBulk($canSee, $response);
 
         return $response;
     }

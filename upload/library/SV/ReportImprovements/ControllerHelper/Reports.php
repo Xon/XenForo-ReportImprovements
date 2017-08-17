@@ -42,6 +42,24 @@ class SV_ReportImprovements_ControllerHelper_Reports extends XenForo_ControllerH
         }
     }
 
+    public function injectReportInfoForBulk($canSee, $response, $forceDefaultResolve = null)
+    {
+        if ($canSee && $response instanceof XenForo_ControllerResponse_View)
+        {
+            $response->params['canResolveReport'] = true;
+            $response->params['canCreateReport'] = true;
+            $response->params['report'] = true;
+            if ($forceDefaultResolve !== null)
+            {
+                $response->params['defaultResolveReports'] = $forceDefaultResolve;
+            }
+            else
+            {
+                $response->params['defaultResolveReports'] = XenForo_Application::getOptions()->sv_default_resolve_report_on_warning;
+            }
+        }
+    }
+
     public function injectReportInfo($response, $templateName, $getContentTypeId = null, $forceDefaultResolve = null, $allowReportCreate = true)
     {
         if ($response instanceof XenForo_ControllerResponse_View && $response->templateName == $templateName)
