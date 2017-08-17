@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.8.2" version_id="1080200" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.8.3" version_id="1080300" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -119,6 +119,7 @@
     <listener event_id="load_class_controller" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Thread" description="XenForo_ControllerPublic_Thread"/>
     <listener event_id="load_class_controller" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Post" description="XenForo_ControllerPublic_Post"/>
     <listener event_id="load_class_controller" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_InlineMod_Post" description="XenForo_ControllerPublic_InlineMod_Post"/>
+    <listener event_id="load_class_controller" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_InlineMod_Thread" description="XenForo_ControllerPublic_InlineMod_Thread"/>
     <listener event_id="load_class_datawriter" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_DataWriter_DiscussionMessage_Post" description="XenForo_DataWriter_DiscussionMessage_Post"/>
     <listener event_id="load_class_datawriter" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_DataWriter_Warning" description="XenForo_DataWriter_Warning"/>
     <listener event_id="load_class_datawriter" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_DataWriter_ReportComment" description="XenForo_DataWriter_ReportComment"/>
@@ -132,6 +133,7 @@
     <listener event_id="load_class_model" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Warning" description="XenForo_Model_Warning"/>
     <listener event_id="load_class_model" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Thread" description="XenForo_Model_Thread"/>
     <listener event_id="load_class_model" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_InlineMod_Post" description="XenForo_Model_InlineMod_Post"/>
+    <listener event_id="load_class_model" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_InlineMod_Thread" description="XenForo_Model_InlineMod_Thread"/>
     <listener event_id="load_class_route_prefix" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Route_Prefix_Attachments" description="XenForo_Route_Prefix_Attachments"/>
     <listener event_id="load_class_view" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ViewPublic_Report_View" description="XenForo_ViewPublic_Report_View"/>
   </code_event_listeners>
@@ -1120,6 +1122,11 @@ $2$3]]></replace>
       <replace><![CDATA[<xen:include template="ir_resolve_report" />
 $0]]></replace>
     </modification>
+    <modification template="inline_mod_thread_delete" modification_key="sv_reportimprovements_inline_mod_thread_delete1" description="Resolve option for bulk delete" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[<dl class="ctrlUnit submitUnit">]]></find>
+      <replace><![CDATA[<xen:include template="ir_resolve_report" />
+$0]]></replace>
+    </modification>
     <modification template="post_delete" modification_key="sv_reportimprovements_post_delete1" description="Show Report info on deleting a post" execution_order="10" enabled="1" action="str_replace">
       <find><![CDATA[<xen:if is="{$post.isFirst}">]]></find>
       <replace><![CDATA[<xen:include template="member_warn_ir_options" />
@@ -1128,6 +1135,11 @@ $0]]></replace>
     <modification template="post_report" modification_key="sv_reportimprovements_post_report1" description="Show Report info on reporting a post" execution_order="10" enabled="1" action="str_replace">
       <find><![CDATA[<dl class="ctrlUnit submitUnit">]]></find>
       <replace><![CDATA[<xen:include template="ir_report_display" />
+$0]]></replace>
+    </modification>
+    <modification template="thread_delete" modification_key="sv_reportimprovements_thread_delete1" description="Resolve option for bulk delete" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[<dl class="ctrlUnit submitUnit">]]></find>
+      <replace><![CDATA[<xen:include template="ir_resolve_report" />
 $0]]></replace>
     </modification>
   </public_template_modifications>

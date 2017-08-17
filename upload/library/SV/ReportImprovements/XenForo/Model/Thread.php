@@ -2,6 +2,16 @@
 
 class SV_ReportImprovements_XenForo_Model_Thread extends XFCP_SV_ReportImprovements_XenForo_Model_Thread
 {
+    public function deleteThread($threadId, $deleteType, array $options = array())
+    {
+        SV_ReportImprovements_Globals::$deletePostOptions = $options;
+        SV_ReportImprovements_Globals::$deletePostOptions['resolve'] = SV_ReportImprovements_Globals::$ResolveReport;
+
+        $ret = parent::deleteThread($threadId, $deleteType, $options);
+        SV_ReportImprovements_Globals::$deletePostOptions =  null;
+        return $ret;
+    }
+
     public function _getReplyBanLogData(array $thread, array $replyBan, $expired = false)
     {
         $link = XenForo_Link::buildPublicLink('full:threads', array_merge($thread, array('title' => '')));
