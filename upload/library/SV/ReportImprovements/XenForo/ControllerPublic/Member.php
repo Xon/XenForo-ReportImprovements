@@ -34,7 +34,7 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Member extends XFCP_SV_Repo
             /* var SV_ReportImprovements_XenForo_Model_Thread $threadModel */
             $threadModel = $this->getModelFromCache('XenForo_Model_Thread');
 
-            $thread = null;
+            $post = null;
             $user = $response->params['user'];
             if ($response->params['contentType'] == 'post')
             {
