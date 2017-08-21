@@ -431,7 +431,7 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     'name={xen:helper username, $user, 'subject'}',
     'report=<a href="{xen:link reports/comment, $content.report, 'report_comment_id={$content.report_comment_id}'}" class="PopupItemLink">{xen:raw $content.report.contentTitle}</a>'
 }]]></template>
-    <template title="ir_report_display" version_id="1020005" version_string="1.2.0 RC2"><![CDATA[<xen:if is="{$report}">
+    <template title="ir_report_display" version_id="1080600" version_string="1.8.6"><![CDATA[<xen:if is="{$report.report_id}">
     <xen:require css="ir_report_overlay.css" />
     <div class="discussionList section">
         <dl class="sectionHeaders">
@@ -491,11 +491,9 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <template title="member_view_report_improvements" version_id="1070500" version_string="1.7.5"><![CDATA[<xen:if is="{$visitor.canSearchReports}">
     <li><a href="{xen:link 'search/search', '', 'keywords=*', 'order=date', 'type=report_comment', 'include_report_contents=1', 'users={$user.username}'}">{xen:phrase search_reports_by_user}</a></li>
 </xen:if>]]></template>
-    <template title="member_warn_ir_options" version_id="1080000" version_string="1.8.0"><![CDATA[<xen:if is="{$report}">
-<fieldset>
+    <template title="member_warn_ir_options" version_id="1080600" version_string="1.8.6"><![CDATA[<fieldset>
 <xen:include template="ir_resolve_report" />
 </fieldset>
-</xen:if>
 <xen:include template="ir_report_display" />]]></template>
     <template title="member_warn_threadban" version_id="1080400" version_string="1.8.4"><![CDATA[<li>
 <label>{xen:phrase sv_warning_reply_ban}:</label>
@@ -556,6 +554,12 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 <p class="snippet">{xen:helper snippet, $content.message, $xenOptions.newsFeedMessageSnippetLength, {xen:array 'stripQuote=1'}}</p>
 
 <xen:include template="news_feed_attached_images" />]]></template>
+    <template title="post_delete_ir_options" version_id="1080600" version_string="1.8.6"><![CDATA[<xen:if is="{$report}">
+<fieldset>
+<xen:include template="ir_resolve_report" />
+</fieldset>
+</xen:if>
+<xen:include template="ir_report_display" />]]></template>
     <template title="report_list_item_report_node" version_id="8" version_string="0.0.8"><![CDATA[<xen:if is="{$report.extraContent.node_title} AND {$report.extraContent.node_id}">
 , <a href="{xen:link forums, $report.extraContent}" class="forumLink">{$report.extraContent.node_title}</a>
 </xen:if>]]></template>
@@ -1209,7 +1213,7 @@ $2]]></replace>
     </modification>
     <modification template="post_delete" modification_key="sv_reportimprovements_post_delete1" description="Show Report info on deleting a post" execution_order="10" enabled="1" action="str_replace">
       <find><![CDATA[<xen:if is="{$post.isFirst}">]]></find>
-      <replace><![CDATA[<xen:include template="member_warn_ir_options" />
+      <replace><![CDATA[<xen:include template="post_delete_ir_options" />
 $0]]></replace>
     </modification>
     <modification template="post_report" modification_key="sv_reportimprovements_post_report1" description="Show Report info on reporting a post" execution_order="10" enabled="1" action="str_replace">
