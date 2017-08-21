@@ -75,6 +75,10 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         {
             $metadata['reply_ban_thread'] = $data['reply_ban_thread_id'];
         }
+        if (!empty($data['reply_ban_post_id']))
+        {
+            $metadata['reply_ban_post'] = $data['reply_ban_post_id'];
+        }
         if (!empty($data['warning_log_id']))
         {
             $metadata['points'] = $data['points'];

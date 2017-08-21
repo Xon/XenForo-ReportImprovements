@@ -32,6 +32,7 @@ class SV_ReportImprovements_Installer
                   `is_expired` TINYINT(3) UNSIGNED NOT NULL,
                   `extra_user_group_ids` VARBINARY(255) NOT NULL,
                   `reply_ban_thread_id` INT(10) UNSIGNED DEFAULT 0,
+                  `reply_ban_post_id` INT(10) UNSIGNED DEFAULT 0,
                   PRIMARY KEY (`warning_log_id`),
                   KEY (`warning_id`),
                   KEY `content_type_id` (`content_type`,`content_id`),
@@ -44,6 +45,7 @@ class SV_ReportImprovements_Installer
         }
 
         SV_Utils_Install::addColumn('xf_sv_warning_log', 'reply_ban_thread_id', 'INT(10) UNSIGNED DEFAULT 0');
+        SV_Utils_Install::addColumn('xf_sv_warning_log', 'reply_ban_post_id', 'INT(10) UNSIGNED DEFAULT 0');
         SV_Utils_Install::addColumn('xf_report_comment', 'warning_log_id', 'int unsigned default 0');
 
         SV_Utils_Install::addColumn('xf_report_comment', 'likes', 'INT UNSIGNED NOT NULL DEFAULT 0');

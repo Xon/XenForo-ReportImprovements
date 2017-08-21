@@ -94,6 +94,16 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
     public function getReplyBansForReportComments(array $report, array $comments)
     {
         $threadIds = array_filter(XenForo_Application::arrayColumn($comments, 'reply_ban_thread_id'));
+        $postIds = array_filter(XenForo_Application::arrayColumn($comments, 'reply_ban_post_id'));
+        $threads = array();
+        $posts = array();
+        if ($postIds)
+        {
+            $postModel = $this->_getPostModel();
+            $posts = $postModel->getPostsByIds($postIds);
+            $threadIds = array_unique(array_merge($threadIds, XenForo_Application::arrayColumn($posts, 'thread_id')));
+        }
+
         if ($threadIds)
         {
             $visitor = XenForo_Visitor::getInstance()->toArray();
@@ -138,6 +148,11 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
                 if (empty($comment['reply_ban_thread_id']))
                 {
                     continue;
+                }
+
+                if (isset($posts[$comment['reply_ban_post_id']]))
+                {
+                    $comment['reply_ban_post'] = $posts[$comment['reply_ban_post_id']];
                 }
 
                 if (isset($threads[$comment['reply_ban_thread_id']]))
@@ -781,6 +796,14 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
                 return null;
         }
     }
+
+	/**
+	 * @return XenForo_Model_Post
+	 */
+	protected function _getPostModel()
+	{
+		return XenForo_Model::create('XenForo_Model_Post');
+	}
 
     /**
      * @return SV_ReportImprovements_XenForo_Model_User

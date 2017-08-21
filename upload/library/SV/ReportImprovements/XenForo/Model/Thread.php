@@ -15,16 +15,19 @@ class SV_ReportImprovements_XenForo_Model_Thread extends XFCP_SV_ReportImproveme
     public function _getReplyBanLogData(array $thread, array $replyBan, $expired = false)
     {
         $link = XenForo_Link::buildPublicLink('full:threads', array_merge($thread, array('title' => '')));
+        $postId = isset($thread['post_id']) ? $thread['post_id'] : 0;
+        $title = $postId ? new XenForo_Phrase('post_in_thread_x', array('title' => $thread['title'])) : $replyBan['username'];
 
         return array(
-            'content_type' => 'user',
-            'content_id' => $replyBan['user_id'],
-            'content_title' => $replyBan['username'],
+            'content_type' => $postId ? 'post' : 'user',
+            'content_id' => $postId ? $postId : $replyBan['user_id'],
+            'content_title' => $title,
             'user_id' => $replyBan['user_id'],
             'warning_date' => $replyBan['ban_date'],
             'warning_user_id' => $replyBan['ban_user_id'],
             'title' => (string)new XenForo_Phrase('SV_Reply_Banned_From_Thread_title', array('thread' => $thread['title'])),
             'reply_ban_thread_id' => $thread['thread_id'],
+            'reply_ban_post_id' => $postId,
             'notes' => (string)new XenForo_Phrase('SV_Reply_Banned_notes', array('link' => $link, 'reason' => $replyBan['reason'])),
             'points' => 0,
             'expiry_date' => $replyBan['expiry_date'],
@@ -133,6 +136,14 @@ class SV_ReportImprovements_XenForo_Model_Thread extends XFCP_SV_ReportImproveme
             $db->query("DELETE FROM xf_thread_reply_ban WHERE thread_reply_ban_id = ?", $replyBan['thread_reply_ban_id']);
             XenForo_Db::commit();
         }
+    }
+
+    /**
+     * @return SV_ReportImprovements_XenForo_Model_Warning
+     */
+    protected function _getWarningModel()
+    {
+        return $this->getModelFromCache('XenForo_Model_Warning');
     }
 
     /**

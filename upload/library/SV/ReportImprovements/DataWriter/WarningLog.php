@@ -39,6 +39,7 @@ class SV_ReportImprovements_DataWriter_WarningLog extends XenForo_DataWriter
                                                 'verification' => array('XenForo_DataWriter_Helper_User', 'verifyExtraUserGroupIds')
                 ),
                 'reply_ban_thread_id' => array('type' => self::TYPE_UINT, 'default' => 0),
+                'reply_ban_post_id' => array('type' => self::TYPE_UINT, 'default' => 0),
             )
         );
     }
