@@ -160,6 +160,12 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
                     $comment['reply_ban_thread'] = $threads[$comment['reply_ban_thread_id']];
                 }
 
+                if (isset($comment['reply_ban_post']) && isset($comment['reply_ban_thread']))
+                {
+                    $page = floor($comment['reply_ban_post']['position'] / XenForo_Application::get('options')->messagesPerPage) + 1;
+                    $comment['reply_ban_link'] = XenForo_Link::buildPublicLink('threads', $thread, array('page' => $page)) . '#post-' . $comment['reply_ban_post']['post_id'];
+                }
+
                 if (isset($replyBans[$comment['reply_ban_thread_id']]))
                 {
                     $comment['reply_ban'] = $replyBans[$comment['reply_ban_thread_id']];

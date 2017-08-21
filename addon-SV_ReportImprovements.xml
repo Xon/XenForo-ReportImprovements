@@ -946,7 +946,7 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 	<input type="hidden" name="_xfConfirm" value="1" />
 	<input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
 </form>]]></template>
-    <template title="sv_report_view_warning" version_id="1060000" version_string="1.6.0"><![CDATA[<xen:if is="{$comment.operation_type}">
+    <template title="sv_report_view_warning" version_id="1080600" version_string="1.8.6"><![CDATA[<xen:if is="{$comment.operation_type}">
 <p class="warningLog">
 <div class="pairsJustified">
 <dl><dt>{xen:phrase warning_log_operation_type}</dt>
@@ -986,7 +986,7 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
 <dl><dt>{xen:phrase warning}</dt><dd><a href="{xen:link warnings, $comment}" class="OverlayTrigger secondaryContent">{xen:phrase view}</a></dd></dl>
 </xen:if>
 <xen:if is="{$comment.reply_ban_thread}">
-<dl><dt>{xen:phrase sv_reply_ban_thread}</dt><dd><a href="{xen:link 'threads', $comment.reply_ban_thread}" class="secondaryContent">{xen:phrase view}</a></dd></dl>
+<dl><dt>{xen:phrase sv_reply_ban_thread}</dt><dd><a href="{xen:if '{$comment.reply_ban_link}', '{$comment.reply_ban_link}', '{xen:link 'threads', $comment.reply_ban_thread}'}" class="secondaryContent">{xen:phrase view}</a></dd></dl>
 </xen:if>
 <xen:if is="{$comment.reply_ban}">
 <dl><dt>{xen:phrase sv_reply_ban}</dt><dd><a href="{xen:link 'threads/reply-bans', $comment.reply_ban_thread}" class="OverlayTrigger secondaryContent">{xen:phrase edit}</a></dd></dl>
