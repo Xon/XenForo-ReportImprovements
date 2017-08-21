@@ -89,7 +89,11 @@ class SV_ReportImprovements_ControllerHelper_Reports extends XenForo_ControllerH
                     {
                         $report = reset($reports);
                         $response->params['report'] = $report;
+
+                        $oldReportState = $report['report_state'];
+                        $report['report_state'] = 'open';
                         $response->params['canResolveReport'] = $reportModel->canUpdateReport($report);
+                        $report['report_state'] = $oldReportState;
                     }
 
                 }
