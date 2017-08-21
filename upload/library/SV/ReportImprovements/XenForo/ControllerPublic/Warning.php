@@ -7,7 +7,7 @@ class SV_ReportImprovements_XenForo_ControllerPublic_Warning extends XFCP_SV_Rep
         $response = parent::actionIndex();
         $this->_getReportHelper()->injectReportInfo($response, 'warning_info', function($response) {
             return array($response->params['warning']['content_type'], $response->params['warning']['content_id']);
-        });
+        }, null, false);
         return $response;
     }
 
