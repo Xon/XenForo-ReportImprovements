@@ -97,9 +97,9 @@ class SV_ReportImprovements_ControllerHelper_Reports extends XenForo_ControllerH
                     }
 
                 }
-                else if (!$allowReportCreate)
+                else if ($allowReportCreate)
                 {
-                    $response->params['canResolveReport'] = false;
+                    $response->params['canResolveReport'] = true;
                 }
 
                 if ($forceDefaultResolve !== null)
