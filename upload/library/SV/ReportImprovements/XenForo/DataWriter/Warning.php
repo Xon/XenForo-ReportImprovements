@@ -59,8 +59,12 @@ class SV_ReportImprovements_XenForo_DataWriter_Warning extends XFCP_SV_ReportImp
                 );
             }
 
-            $this->_getThreadModel()->insertThreadReplyBan($this->replyBanThread, $this->replyBanUser, $expiryDate, $this->replyBanOptions['reason_reply_ban'], $this->replyBanOptions['send_alert_reply_ban']);
+            if (empty($this->replyBanOptions['reason_reply_ban']))
+            {
+                $this->replyBanOptions['reason_reply_ban'] = $this->get('title');
+            }
 
+            $this->_getThreadModel()->insertThreadReplyBan($this->replyBanThread, $this->replyBanUser, $expiryDate, $this->replyBanOptions['reason_reply_ban'], $this->replyBanOptions['send_alert_reply_ban']);
         }
 
         parent::_postSave();
