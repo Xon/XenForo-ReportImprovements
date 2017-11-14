@@ -485,12 +485,8 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         $comment = parent::prepareReportComment($comment);
 
         $this->standardizeViewingUserReference($viewingUser);
-
         $comment['canLike'] = $this->canLikeReportComment($comment, $null, $viewingUser);
-        if (!empty($comment['likes']))
-        {
-            $comment['likeUsers'] = @unserialize($comment['like_users']);
-        }
+        $comment['likeUsers'] = empty($comment['likes']) ? array() : @unserialize($comment['like_users']);
         $comment['canViewReporterUsername'] = $this->canViewReporterUsername($comment, $viewingUser);
         if (empty($comment['canViewReporterUsername']))
         {
