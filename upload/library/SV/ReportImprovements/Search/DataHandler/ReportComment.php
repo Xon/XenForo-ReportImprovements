@@ -15,7 +15,7 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
     {
         $mapping['properties']['report'] = array("type" => "long");
         $mapping['properties']['state_change'] = array("type" => "long");
-        $mapping['properties']['is_report'] = array("type" => "boolean");
+        $mapping['properties']['is_report'] = array("type" => "long");
         $mapping['properties']['points'] = array("type" => "long");
         $mapping['properties']['expiry_date'] = array("type" => "long");
         $mapping['properties']['reply_ban_thread'] = array("type" => "long");
@@ -51,7 +51,7 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         {
             unset($metadata['state_change']);
         }
-        $metadata['is_report'] = $data['is_report'] ? true : false;
+        $metadata['is_report'] = $data['is_report'] ? 1 : 0;
 
         $title = '';
         $text = $data['message'];

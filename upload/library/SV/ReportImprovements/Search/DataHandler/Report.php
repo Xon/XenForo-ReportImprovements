@@ -15,6 +15,7 @@ class SV_ReportImprovements_Search_DataHandler_Report extends XenForo_Search_Dat
     {
         $mapping['properties']['report'] = array("type" => "long");
         $mapping['properties']['report_state'] = array("type" => "long");
+        $mapping['properties']['is_report'] = array("type" => "long");
 
         return $mapping;
     }
