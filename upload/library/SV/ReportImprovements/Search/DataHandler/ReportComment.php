@@ -51,7 +51,7 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         {
             unset($metadata['state_change']);
         }
-        $metadata['is_report'] = $data['is_report'] ? 1 : 0;
+        $metadata['is_report'] = $data['is_report'] ? true : false;
 
         $title = '';
         $text = $data['message'];
