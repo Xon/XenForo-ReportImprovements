@@ -43,7 +43,7 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         if (empty($report))
         {
             $report = $this->_getReportModel()->getReportById($this->get('report_id'));
-            $this->getOption(self::OPTION_WARNINGLOG_REPORT, $report);
+            $this->setOption(self::OPTION_WARNINGLOG_REPORT, $report);
         }
 
         return $report;
