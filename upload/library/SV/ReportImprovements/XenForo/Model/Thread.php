@@ -139,7 +139,7 @@ class SV_ReportImprovements_XenForo_Model_Thread extends XFCP_SV_ReportImproveme
     }
 
     /**
-     * @return SV_ReportImprovements_XenForo_Model_Warning
+     * @return SV_ReportImprovements_XenForo_Model_Warning|XenForo_Model
      */
     protected function _getWarningModel()
     {
