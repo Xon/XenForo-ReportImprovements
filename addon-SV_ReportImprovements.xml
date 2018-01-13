@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.8.8" version_id="1080800" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.8.9" version_id="1080900" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -1022,6 +1022,10 @@ $0
     <modification template="report_search" modification_key="SV_ReportImprovements_report_search1" description="Inject Search bar" execution_order="10" enabled="1" action="preg_replace">
       <find><![CDATA[#$#]]></find>
       <replace><![CDATA[<xen:container var="$searchBar.reports"><xen:include template="search_bar_reports_only" /></xen:container>]]></replace>
+    </modification>
+    <modification template="report_view" modification_key="SV_ReportImprovements_report_view" description="Output html comments" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[{xen:helper bodyText, $comment.message}]]></find>
+      <replace><![CDATA[{xen:raw $comment.messageHtml}]]></replace>
     </modification>
     <modification template="report_view" modification_key="SV_ReportImprovements_report_view1" description="Add anchor tags" execution_order="10" enabled="1" action="preg_replace">
       <find><![CDATA[#(<li class="primaryContent reportComment)([^"]+")#si]]></find>
