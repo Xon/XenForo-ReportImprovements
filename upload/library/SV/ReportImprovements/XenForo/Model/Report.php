@@ -4,6 +4,16 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
 {
     protected $userReportCountCache = array();
 
+    public function getReportsToResolve($days = 30)
+    {
+        return $this->_getDb()->fetchAll('
+			SELECT report.*
+            FROM xf_report AS report
+            WHERE report_state = \'open\'
+                AND last_modified_date <= ' . intval(time() - (60 * 60 * 24 * $days)) .'
+		');
+    }
+
     public function countReportsByUser($userId, $days, $state = '')
     {
         if (isset($this->userReportCountCache[$userId][$days]))
