@@ -80,7 +80,7 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         $taggingModel = $this->getModelFromCache('XenForo_Model_UserTagging');
 
         $this->_taggedUsers = $taggingModel->getTaggedUsersInMessage(
-            $this->get('message'), $newMessage, 'text'
+            $this->get('message'), $newMessage, 'bb'
         );
         $this->set('message', $newMessage);
 
