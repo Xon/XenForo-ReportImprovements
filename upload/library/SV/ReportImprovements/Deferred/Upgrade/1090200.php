@@ -37,6 +37,7 @@ class SV_ReportImprovements_Deferred_Upgrade_1090200 extends XenForo_Deferred_Ab
 
         $lastCommentId = false;
         $comments = $commentQuery->fetchAll();
+        $s = microtime(true);
 
         if (!empty($comments))
         {
@@ -54,6 +55,11 @@ class SV_ReportImprovements_Deferred_Upgrade_1090200 extends XenForo_Deferred_Ab
                     );
                 }
                 $lastCommentId = $comment['report_comment_id'];
+
+                if ($targetRunTime && microtime(true) - $s > $targetRunTime)
+                {
+                    break;
+                }
             }
         }
 
