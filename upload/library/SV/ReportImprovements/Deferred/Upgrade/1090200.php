@@ -13,7 +13,7 @@ class SV_ReportImprovements_Deferred_Upgrade_1090200 extends XenForo_Deferred_Ab
             "
             SELECT MAX(report_comment_id) AS max_report_comment_id
             FROM xf_report_comment 
-            WHERE message LIKE '%http%'
+            WHERE message LIKE '%http%' and message NOT LIKE '%[URL=%http%'
             AND report_comment_id > ?
         ", [$minCommentId]
         );
@@ -28,7 +28,7 @@ class SV_ReportImprovements_Deferred_Upgrade_1090200 extends XenForo_Deferred_Ab
             "
             SELECT report_comment_id, message
             FROM xf_report_comment 
-            WHERE message LIKE '%http%'
+            WHERE message LIKE '%http%' and message NOT LIKE '%[URL=%http%'
             AND report_comment_id > ?
             ORDER BY report_comment_id
             LIMIT ?
