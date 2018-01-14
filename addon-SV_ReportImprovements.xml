@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.8.8" version_id="1080800" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.8.9" version_id="1080900" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -148,7 +148,9 @@
     <listener event_id="load_class_route_prefix" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Route_Prefix_Attachments" description="XenForo_Route_Prefix_Attachments"/>
     <listener event_id="load_class_view" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ViewPublic_Report_View" description="XenForo_ViewPublic_Report_View"/>
   </code_event_listeners>
-  <cron/>
+  <cron>
+    <entry entry_id="svReportResolve" cron_class="SV_ReportImprovements_CronEntry_ResolveReport" cron_method="run" active="1"><![CDATA[{"day_type":"dom","dom":["-1"],"hours":["-1"],"minutes":["20"]}]]></entry>
+  </cron>
   <email_templates/>
   <email_template_modifications/>
   <optiongroups>
@@ -206,6 +208,12 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
       <sub_options></sub_options>
       <relation group_id="sv_report_improvements" display_order="210"/>
     </option>
+    <option option_id="sv_ri_expiry_days" edit_format="spinbox" data_type="unsigned_integer" can_backup="1">
+      <default_value>0</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="sv_report_improvements" display_order="135"/>
+    </option>
     <option option_id="sv_ri_log_to_report_natural_warning_expire" edit_format="onoff" data_type="boolean" can_backup="1">
       <default_value>0</default_value>
       <edit_format_params></edit_format_params>
@@ -243,6 +251,7 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
   <phrases>
     <phrase title="a_report_can_not_be_created" version_id="4" version_string="0.0.4"><![CDATA[A report can not be created for the content type: {content_type}.]]></phrase>
     <phrase title="a_report_will_be_created" version_id="4" version_string="0.0.4"><![CDATA[A report will be created.]]></phrase>
+    <phrase title="cron_entry_svReportResolve" version_id="1080900" version_string="1.8.9"><![CDATA[Reports: Resolve Outstanding]]></phrase>
     <phrase title="likes_your_report_comment" version_id="1020100" version_string="1.2.1"><![CDATA[Likes your report comment]]></phrase>
     <phrase title="new_report_comment" version_id="1020100" version_string="1.2.1"><![CDATA[New report comment]]></phrase>
     <phrase title="option_group_sv_report_improvements" version_id="3" version_string="0.0.3b"><![CDATA[Report Improvements]]></phrase>
@@ -263,6 +272,8 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <phrase title="option_sv_report_new_warnings_explain" version_id="3" version_string="0.0.3b"><![CDATA[Automatically create Reports for Warnings on content without an associated report]]></phrase>
     <phrase title="option_sv_reverse_report_comment_order" version_id="1061100" version_string="1.6.11"><![CDATA[Reverse Report Comment Order]]></phrase>
     <phrase title="option_sv_reverse_report_comment_order_explain" version_id="1061100" version_string="1.6.11"><![CDATA[If enabled, report comments will be displayed in reverse order (from newest to oldest).]]></phrase>
+    <phrase title="option_sv_ri_expiry_days" version_id="1080900" version_string="1.8.9"><![CDATA[Days Until Auto Resolve]]></phrase>
+    <phrase title="option_sv_ri_expiry_days_explain" version_id="1080900" version_string="1.8.9"><![CDATA[Reports will be automatically resolved if they have not received a comment after this many days. Set this to 0 to disable.]]></phrase>
     <phrase title="option_sv_ri_log_to_report_natural_warning_expire" version_id="2" version_string="0.0.2"><![CDATA[Log Automatically Expiring Warning to Report]]></phrase>
     <phrase title="option_sv_ri_log_to_report_natural_warning_expire_explain" version_id="2" version_string="0.0.2"><![CDATA[]]></phrase>
     <phrase title="option_sv_ri_user_id" version_id="1" version_string="0.0.1"><![CDATA[Reporter]]></phrase>
@@ -1022,6 +1033,10 @@ $0
     <modification template="report_search" modification_key="SV_ReportImprovements_report_search1" description="Inject Search bar" execution_order="10" enabled="1" action="preg_replace">
       <find><![CDATA[#$#]]></find>
       <replace><![CDATA[<xen:container var="$searchBar.reports"><xen:include template="search_bar_reports_only" /></xen:container>]]></replace>
+    </modification>
+    <modification template="report_view" modification_key="SV_ReportImprovements_report_view" description="Output html comments" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[{xen:helper bodyText, $comment.message}]]></find>
+      <replace><![CDATA[{xen:raw $comment.messageHtml}]]></replace>
     </modification>
     <modification template="report_view" modification_key="SV_ReportImprovements_report_view1" description="Add anchor tags" execution_order="10" enabled="1" action="preg_replace">
       <find><![CDATA[#(<li class="primaryContent reportComment)([^"]+")#si]]></find>

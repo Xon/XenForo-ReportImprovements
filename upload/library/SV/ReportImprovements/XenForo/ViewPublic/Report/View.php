@@ -4,6 +4,10 @@ class SV_ReportImprovements_XenForo_ViewPublic_Report_View extends XFCP_SV_Repor
 {
     public function renderHtml()
     {
+        $bbCodeParser = XenForo_BbCode_Parser::create(XenForo_BbCode_Formatter_Base::create('Base', array('view' => $this)));
+
+        XenForo_ViewPublic_Helper_Message::bbCodeWrapMessages($this->_params['comments'], $bbCodeParser, []);
+
         $ret = parent::renderHtml();
         $report =& $this->_params['report'];
         if (isset($report['extraContentTemplate']) && 
