@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.8.9" version_id="1080900" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.9.0" version_id="1090000" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -208,6 +208,13 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
       <sub_options></sub_options>
       <relation group_id="sv_report_improvements" display_order="210"/>
     </option>
+    <option option_id="sv_ri_expiry_action" edit_format="radio" data_type="string" can_backup="1">
+      <default_value>resolved</default_value>
+      <edit_format_params>resolved={xen:phrase resolved}
+rejected={xen:phrase rejected}</edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="sv_report_improvements" display_order="140"/>
+    </option>
     <option option_id="sv_ri_expiry_days" edit_format="spinbox" data_type="unsigned_integer" can_backup="1">
       <default_value>0</default_value>
       <edit_format_params></edit_format_params>
@@ -272,6 +279,8 @@ watchers={xen:phrase sv_reports_alert_watchers}</edit_format_params>
     <phrase title="option_sv_report_new_warnings_explain" version_id="3" version_string="0.0.3b"><![CDATA[Automatically create Reports for Warnings on content without an associated report]]></phrase>
     <phrase title="option_sv_reverse_report_comment_order" version_id="1061100" version_string="1.6.11"><![CDATA[Reverse Report Comment Order]]></phrase>
     <phrase title="option_sv_reverse_report_comment_order_explain" version_id="1061100" version_string="1.6.11"><![CDATA[If enabled, report comments will be displayed in reverse order (from newest to oldest).]]></phrase>
+    <phrase title="option_sv_ri_expiry_action" version_id="1090000" version_string="1.9.0"><![CDATA[Auto Resolve Action]]></phrase>
+    <phrase title="option_sv_ri_expiry_action_explain" version_id="1090000" version_string="1.9.0"><![CDATA[]]></phrase>
     <phrase title="option_sv_ri_expiry_days" version_id="1080900" version_string="1.8.9"><![CDATA[Days Until Auto Resolve]]></phrase>
     <phrase title="option_sv_ri_expiry_days_explain" version_id="1080900" version_string="1.8.9"><![CDATA[Reports will be automatically resolved if they have not received a comment after this many days. Set this to 0 to disable.]]></phrase>
     <phrase title="option_sv_ri_log_to_report_natural_warning_expire" version_id="2" version_string="0.0.2"><![CDATA[Log Automatically Expiring Warning to Report]]></phrase>

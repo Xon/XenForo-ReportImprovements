@@ -127,7 +127,7 @@ class SV_ReportImprovements_XenForo_DataWriter_Warning extends XFCP_SV_ReportImp
     }
 
     /**
-     * @return SV_ReportImprovements_XenForo_Model_Post
+     * @return SV_ReportImprovements_XenForo_Model_Post|XenForo_Model
      */
     protected function _getPostModel()
     {
@@ -135,7 +135,7 @@ class SV_ReportImprovements_XenForo_DataWriter_Warning extends XFCP_SV_ReportImp
     }
 
     /**
-     * @return SV_ReportImprovements_XenForo_Model_Thread
+     * @return SV_ReportImprovements_XenForo_Model_Thread|XenForo_Model
      */
     protected function _getThreadModel()
     {
@@ -143,7 +143,7 @@ class SV_ReportImprovements_XenForo_DataWriter_Warning extends XFCP_SV_ReportImp
     }
 
     /**
-     * @return SV_ReportImprovements_Model_WarningLog
+     * @return SV_ReportImprovements_Model_WarningLog|XenForo_Model
      */
     protected function _getWarningLogModel()
     {
