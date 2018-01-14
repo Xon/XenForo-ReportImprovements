@@ -27,6 +27,7 @@ class SV_ReportImprovements_Deferred_Upgrade_1090100 extends XenForo_Deferred_Ab
             FROM xf_report_comment 
             WHERE message LIKE '%@[%:%]%'
             AND report_comment_id > ?
+            ORDER BY report_comment_id
             LIMIT ?
         ",[$minCommentId, $increment]);
 
