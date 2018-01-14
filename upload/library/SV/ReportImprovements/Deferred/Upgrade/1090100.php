@@ -51,8 +51,6 @@ class SV_ReportImprovements_Deferred_Upgrade_1090100 extends XenForo_Deferred_Ab
             }
         }
 
-        XenForo_Db::commit($db);
-
         if (empty($lastCommentId))
         {
             return false;
