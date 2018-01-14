@@ -299,6 +299,11 @@ class SV_ReportImprovements_Installer
             XenForo_Application::defer(self::AddonNameSpace . '_Deferred_Upgrade_1090100', ['comment_id' => -1]);
         }
 
+        if ($version < 1090200)
+        {
+            XenForo_Application::defer(self::AddonNameSpace . '_Deferred_Upgrade_1090200', ['comment_id' => -1]);
+        }
+
         // if Elastic Search is installed, determine if we need to push optimized mappings for the search types
         // requires overriding XenES_Model_Elasticsearch
         SV_Utils_Deferred_Search::SchemaUpdates($requireIndexing);

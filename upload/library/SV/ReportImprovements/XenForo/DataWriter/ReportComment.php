@@ -76,11 +76,14 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
             }
         }
 
+        $message = $this->get('message');
+        $message = XenForo_Helper_String::autoLinkBbCode($message, false);
+
         /** @var XenForo_Model_UserTagging $taggingModel */
         $taggingModel = $this->getModelFromCache('XenForo_Model_UserTagging');
 
         $this->_taggedUsers = $taggingModel->getTaggedUsersInMessage(
-            $this->get('message'), $newMessage, 'bb'
+            $message, $newMessage, 'bb'
         );
         $this->set('message', $newMessage);
 
