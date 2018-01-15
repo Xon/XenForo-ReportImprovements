@@ -218,11 +218,43 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
         return $alertedUserIds;
     }
 
+    /**
+     * @param array  $report
+     * @param array  $reportComment
+     * @param string $fromUsername
+     * @param int    $fromUserId
+     * @param string $alertType
+     * @param array  $senderUser
+     * @return bool
+     */
+    protected function _alertWatcher(array $report, array $reportComment, $fromUsername, $fromUserId, $alertType, $senderUser)
+    {
+        if (XenForo_Model_Alert::userReceivesAlert($senderUser, 'report_comment', $alertType))
+        {
+            XenForo_Model_Alert::alert(
+                $senderUser['user_id'],
+                $fromUserId,
+                $fromUsername,
+                'report_comment',
+                $reportComment['report_comment_id'],
+                $alertType);
+
+            return true;
+        }
+        return false;
+    }
+    /**
+     * @param XenForo_ReportHandler_Abstract $handler
+     * @param array                          $alertedUserIds
+     * @param array                          $report
+     * @param array                          $reportComment
+     * @return array
+     */
     protected function _alertWatchers(XenForo_ReportHandler_Abstract $handler, array $alertedUserIds, array $report, array $reportComment)
     {
         // alert users interacting with this report
         $reportModel = $this->_getReportModel();
-        $otherCommenters = $reportModel->getUsersForReportCommentAlerts($report);
+        $otherCommenters = $reportModel->getUsersForReportCommentAlerts($report, $reportComment);
         $alertType = 'insert';
 
         $db = XenForo_Application::getDb();
@@ -271,27 +303,16 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
                 {
                     if ($reportModel->canViewReporterUsername($reportComment, $otherCommenter))
                     {
-                        $user_id = $reportComment['user_id'];
+                        $userId = $reportComment['user_id'];
                         $username = $reportComment['username'];
                     }
                     else
                     {
-                        $user_id = 0;
+                        $userId = 0;
                         $username = 'Guest';
                     }
 
-                    if (XenForo_Model_Alert::userReceivesAlert($otherCommenter, 'report_comment', $alertType))
-                    {
-                        XenForo_Model_Alert::alert(
-                            $otherCommenter['user_id'],
-                            $user_id,
-                            $username,
-                            'report_comment',
-                            $reportComment['report_comment_id'],
-                            $alertType);
-
-                        $alertedUserIds[$otherCommenter['user_id']] = true;
-                    }
+                    $alertedUserIds[$otherCommenter['user_id']] = $this->_alertWatcher($report, $reportComment, $username, $userId, $alertType, $otherCommenter);
                 }
             }
         }

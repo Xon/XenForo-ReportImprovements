@@ -385,9 +385,11 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
 
     /**
      * @param array $report
+     * @param array $reportComment
      * @return array
      */
-    public function getUsersForReportCommentAlerts(array $report)
+
+    public function getUsersForReportCommentAlerts(/** @noinspection PhpUnusedParameterInspection */ array $report, $reportComment)
     {
         $alert_mode = XenForo_Application::getOptions()->sv_report_alert_mode;
         $users = array();
