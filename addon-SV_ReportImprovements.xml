@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.9.3" version_id="1090300" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.9.4" version_id="1090400" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -622,7 +622,7 @@ rejected={xen:phrase rejected}</edit_format_params>
 <dt>{xen:phrase attachments}:</dt> <dd>{$content.attachments_count}</dd>
 </dl>
 </xen:if>]]></template>
-    <template title="search_bar_reports_only" version_id="1060500" version_string="1.6.5"><![CDATA[<label title="{xen:phrase search_reports_only}"><input type="checkbox" name="type" value="report_comment" id="search_bar_reports" class="Disabler AutoChecker" checked="checked" /> {xen:phrase search_reports_only}</label>
+    <template title="search_bar_reports_only" version_id="1090300" version_string="1.9.3"><![CDATA[<label title="{xen:phrase search_reports_only}"><input type="checkbox" name="type" value="report_comment" id="search_bar_reports" class="Disabler AutoChecker" checked="checked" /> {xen:phrase search_reports_only}</label>
     <ul id="search_bar_reports_Disabler">
         <span>
             <li><label><input type="checkbox" name="type[report_comment][include_report_contents]" value="1" checked="checked"
@@ -862,7 +862,7 @@ rejected={xen:phrase rejected}</edit_format_params>
 	</dd>
 </dl>
 </xen:if>]]></template>
-    <template title="sv_reportimprovements_report_comment_input" version_id="1061100" version_string="1.6.11"><![CDATA[<li class="primaryContent">
+    <template title="sv_reportimprovements_report_comment_input" version_id="1090300" version_string="1.9.3"><![CDATA[<li class="primaryContent">
 	<form action="{xen:link reports/comment, $report}" method="post" class="reportCommentForm MultiSubmitFix">
 		<textarea name="comment" placeholder="{xen:phrase comment_noun}..." rows="3" class="textCtrl Elastic"></textarea>
 
@@ -1195,6 +1195,11 @@ $1
 </div>]]></replace>
     </modification>
     <modification template="report_view_attachments_summary" modification_key="sv_report_improvements_report_post_content_search" description="Adds links to search user's reports" execution_order="12" enabled="1" action="preg_replace">
+      <find><![CDATA[/^(.*)$/is]]></find>
+      <replace><![CDATA[$0
+<xen:include template="report_search_by_user" />]]></replace>
+    </modification>
+    <modification template="report_profile_post_content" modification_key="sv_report_improvements_report_profile_post_content" description="Injects report search for profile post reports" execution_order="10" enabled="1" action="preg_replace">
       <find><![CDATA[/^(.*)$/is]]></find>
       <replace><![CDATA[$0
 <xen:include template="report_search_by_user" />]]></replace>
