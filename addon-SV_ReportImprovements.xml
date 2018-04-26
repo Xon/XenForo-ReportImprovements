@@ -509,8 +509,9 @@ rejected={xen:phrase rejected}</edit_format_params>
     </xen:if>
 </dl>
 </xen:if>]]></template>
-    <template title="member_view_report_improvements" version_id="1070500" version_string="1.7.5"><![CDATA[<xen:if is="{$visitor.canSearchReports}">
+    <template title="member_view_report_improvements" version_id="1100000" version_string="1.10.0"><![CDATA[<xen:if is="{$visitor.canSearchReports}">
     <li><a href="{xen:link 'search/search', '', 'keywords=*', 'order=date', 'type=report_comment', 'include_report_contents=1', 'users={$user.username}'}">{xen:phrase search_reports_by_user}</a></li>
+    <li><a href="{xen:link 'search/search', '', 'keywords=*', 'order=date', 'type=report_comment', 'warning_points.lower=0', 'warned_user={$user.username}'}">{xen:phrase search_reports_by_user_for_warnings}</a></i>
 </xen:if>]]></template>
     <template title="member_warn_ir_options" version_id="1080600" version_string="1.8.6"><![CDATA[<fieldset>
 <xen:include template="ir_resolve_report" />
