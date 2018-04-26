@@ -17,8 +17,8 @@ class SV_ReportImprovements_Listener
     public static function controller_pre_dispatch(XenForo_Controller $controller, $action, $controllerName)
     {
         $visitor = XenForo_Visitor::getInstance();
-        if (!XenForo_Application::isRegistered('session') || 
-            SV_ReportImprovements_Globals::$disablePreDispatch || 
+        if (!XenForo_Application::isRegistered('session') ||
+            SV_ReportImprovements_Globals::$disablePreDispatch ||
             isset($visitor['canViewReports']))
         {
             return;
@@ -31,7 +31,7 @@ class SV_ReportImprovements_Listener
             return;
         }
 
-        /** @var XenForo_Model_Report $reportModel */
+        /** @var SV_ReportImprovements_XenForo_Model_Report $reportModel */
         $reportModel = $controller->getModelFromCache('XenForo_Model_Report');
         try
         {

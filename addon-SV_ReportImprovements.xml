@@ -110,6 +110,7 @@
   <code_event_listeners>
     <listener event_id="controller_pre_dispatch" execute_order="10" callback_class="SV_ReportImprovements_Listener" callback_method="controller_pre_dispatch" active="1" hint="" description="Inject Report Center session info"/>
     <listener event_id="criteria_user" execute_order="10" callback_class="SV_ReportImprovements_Criteria" callback_method="criteriaUser" active="1" hint="" description="Add report related criteria"/>
+    <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ModerationQueueHandler_Thread" description="XenForo_ModerationQueueHandler_Thread"/>
     <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ModeratorHandler_Node" description="XenForo_ModeratorHandler_Node"/>
     <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_Post" description="XenForo_ReportHandler_Post"/>
     <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_AttachmentHandler_Post" description="XenForo_AttachmentHandler_Post"/>
@@ -122,6 +123,7 @@
     <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Report" description="XenForo_Model_Report"/>
     <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class_patch" active="0" hint="XenForo_Model_Report" description="XenForo_Model_Report"/>
     <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_Search_SourceHandler_MySqlFt" description="XenForo_Search_SourceHandler_MySqlFt"/>
+    <listener event_id="load_class_controller" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_ModerationQueue" description="XenForo_ControllerPublic_ModerationQueue"/>
     <listener event_id="load_class_controller" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Attachment" description="XenForo_ControllerPublic_Attachment"/>
     <listener event_id="load_class_controller" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Member" description="XenForo_ControllerPublic_Member"/>
     <listener event_id="load_class_controller" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ControllerPublic_Warning" description="XenForo_ControllerPublic_Warning"/>
@@ -552,6 +554,9 @@ rejected={xen:phrase rejected}</edit_format_params>
 
 
 </li>]]></template>
+    <template title="moderation_queue_list_report" version_id="1100000" version_string="1.10.0"><![CDATA[<xen:include template="ir_report_display">
+  <xen:map from="$entry.report" to="$report" />
+</xen:include>]]></template>
     <template title="news_feed_item_report_comment_like" version_id="1020008" version_string="1.2.0 RC6"><![CDATA[<h3 class="description">
 
     <xen:if is="{$content.user_id} == {$visitor.user_id}">
@@ -1146,6 +1151,13 @@ $1$2]]></replace>
     <modification template="moderation_queue_list" modification_key="sv_integrated_report_moderation_queue_list" description="Add Spam Cleaner to moderation queue" execution_order="100" enabled="1" action="str_replace">
       <find><![CDATA[{$entry.content.user.username}</a>]]></find>
       <replace><![CDATA[$0<a style="margin-left:30px" target="_blank" href="{xen:link 'spam-cleaner', {$entry.content.user}, 'noredirect=1'}">Spam Cleaner</a>]]></replace>
+    </modification>
+    <modification template="moderation_queue_list" modification_key="sv_integrated_report_moderation_queue_list2" description="Inject report link for content" execution_order="10" enabled="1" action="preg_replace">
+      <find><![CDATA[#[\t ]*<dl class="ctrlUnit">\s*<dt>{xen:phrase action}:</dt>#si]]></find>
+      <replace><![CDATA[<xen:include template="ir_report_display">
+  <xen:map from="$entry.report" to="$report" />
+</xen:include>
+$0]]></replace>
     </modification>
     <modification template="report_list_item" modification_key="sv_integrated_report_report_list_item2" description="Add node where relevent to the report list" execution_order="10" enabled="1" action="preg_replace">
       <find><![CDATA[#(<div class="posterDate muted">.*)(\s*)(</div>)#Usi]]></find>

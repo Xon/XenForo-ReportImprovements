@@ -811,8 +811,47 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
         }
     }
 
+    /**
+     * @param array $grouped
+     * @return array
+     */
+    public function getReportsForGroupedContent(array $grouped)
+    {
+        if (!$grouped)
+        {
+            return [];
+        }
+
+        $db = XenForo_Application::getDb();
+        $reports = [];
+        foreach ($grouped AS $contentType => $typeQueue)
+        {
+            $contentIds = array_keys($typeQueue);
+            if ($contentIds)
+            {
+                $reports[] = "( report.content_type = " . $db->quote($contentType) . " AND report.content_id IN (" . $db->quote($contentIds) . "))";
+            }
+        }
+
+        $reports = join(' OR ', $reports);
+        if (!$reports)
+        {
+            return [];
+        }
+
+        return $this->fetchAllKeyed('
+			SELECT report.*,
+				user.*,
+				assigned.username AS assigned_username
+			FROM xf_report AS report
+			LEFT JOIN xf_user AS assigned ON (assigned.user_id = report.assigned_user_id)
+			LEFT JOIN xf_user AS user ON (user.user_id = report.content_user_id)
+			WHERE ' . $reports
+		, 'report_id');
+    }
+
 	/**
-	 * @return XenForo_Model_Post
+	 * @return XenForo_Model|XenForo_Model_Post
 	 */
 	protected function _getPostModel()
 	{
@@ -820,7 +859,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
 	}
 
     /**
-     * @return SV_ReportImprovements_XenForo_Model_User
+     * @return XenForo_Model|XenForo_Model_User|SV_ReportImprovements_XenForo_Model_User
      */
     protected function _getUserModel()
     {
@@ -828,7 +867,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
     }
 
     /**
-     * @return SV_ReportImprovements_XenForo_Model_Thread
+     * @return XenForo_Model|XenForo_Model_Thread|SV_ReportImprovements_XenForo_Model_Thread
      */
     protected function _getThreadModel()
     {
