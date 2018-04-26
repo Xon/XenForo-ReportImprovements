@@ -7,6 +7,7 @@ Note; when reports are sent to a forum, the warning<->report links can not be cr
 - Smilies (and bbcode) in report comments.
 - User tagging in report comments.
 - Adds Spam Cleaner links in AdminCP (under actions) and to the Moderation Queue front-end.
+- Add Report for content to the Moderation Queue front-end. 
 - Sends an Alert to moderators who have commented/reported on a report.
   - Only sends an alert if the previous alert hasn't been viewed.
   - Report Alerts link to the actual comments for longer reports.
@@ -23,6 +24,6 @@ Note; when reports are sent to a forum, the warning<->report links can not be cr
 - Report Comment Likes.
 - Report Alerts are logged into Report Comments.
 - Search report comments
-- Optional ability to search report comments by associated warning points. (Requires Enhanced Search Improvements add-on)
+- Optional ability to search report comments by associated warning points, and warned user. (Requires Enhanced Search Improvements add-on)
 - Reverse order of report comments.
 - Ability to join reported conversations.
