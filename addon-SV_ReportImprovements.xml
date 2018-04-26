@@ -511,7 +511,7 @@ rejected={xen:phrase rejected}</edit_format_params>
 </xen:if>]]></template>
     <template title="member_view_report_improvements" version_id="1100000" version_string="1.10.0"><![CDATA[<xen:if is="{$visitor.canSearchReports}">
     <li><a href="{xen:link 'search/search', '', 'keywords=*', 'order=date', 'type=report_comment', 'include_report_contents=1', 'users={$user.username}'}">{xen:phrase search_reports_by_user}</a></li>
-    <li><a href="{xen:link 'search/search', '', 'keywords=*', 'order=date', 'type=report_comment', 'warning_points.lower=0', 'warned_user={$user.username}'}">{xen:phrase search_reports_by_user_for_warnings}</a></i>
+    <li><a href="{xen:link 'search/search', '', 'keywords=*', 'order=date', 'type=report_comment', 'warned_user={$user.username}'}">{xen:phrase search_reports_by_user_for_warnings}</a></i>
 </xen:if>]]></template>
     <template title="member_warn_ir_options" version_id="1080600" version_string="1.8.6"><![CDATA[<fieldset>
 <xen:include template="ir_resolve_report" />
@@ -585,7 +585,7 @@ rejected={xen:phrase rejected}</edit_format_params>
     <template title="report_list_item_report_node" version_id="8" version_string="0.0.8"><![CDATA[<xen:if is="{$report.extraContent.node_title} AND {$report.extraContent.node_id}">
 , <a href="{xen:link forums, $report.extraContent}" class="forumLink">{$report.extraContent.node_title}</a>
 </xen:if>]]></template>
-    <template title="report_search_by_user" version_id="1090500" version_string="1.9.5"><![CDATA[<xen:if is="{$visitor.canSearchReports}">
+    <template title="report_search_by_user" version_id="1100000" version_string="1.10.0"><![CDATA[<xen:if is="{$visitor.canSearchReports}">
 <dl class="pairsRows">
 <dt></dt>
 <dd>
@@ -595,7 +595,7 @@ rejected={xen:phrase rejected}</edit_format_params>
 <dl class="pairsRows">
 <dt></dt>
 <dd>
-<a href="{xen:link 'search/search', '', 'keywords=*', 'order=date', 'type=report_comment', 'warning_points.lower=0', 'warned_user={$report.username}'}">{xen:phrase search_reports_by_user_for_warnings}</a>
+<a href="{xen:link 'search/search', '', 'keywords=*', 'order=date', 'type=report_comment', 'warned_user={$report.username}'}">{xen:phrase search_reports_by_user_for_warnings}</a>
 </dd>
 </dl>
 <xen:if is="{$report.extraContent.thread_id}">
