@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.9.4" version_id="1090500" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.10.0" version_id="1100000" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -313,6 +313,7 @@ rejected={xen:phrase rejected}</edit_format_params>
     <phrase title="search_reports_by_thread" version_id="1060700" version_string="1.6.7"><![CDATA[All reports against the thread]]></phrase>
     <phrase title="search_reports_by_user" version_id="1060600" version_string="1.6.6"><![CDATA[All reports against user]]></phrase>
     <phrase title="search_reports_by_user_and_thread" version_id="1060600" version_string="1.6.6"><![CDATA[All reports against user in thread]]></phrase>
+    <phrase title="search_reports_by_user_for_warnings" version_id="1090500" version_string="1.9.5"><![CDATA[All logged warnings against user]]></phrase>
     <phrase title="search_reports_only" version_id="1050200" version_string="1.5.2"><![CDATA[Search Reports Only]]></phrase>
     <phrase title="search_report_comments" version_id="1010002" version_string="1.1.0 RC2"><![CDATA[Search Report Comments]]></phrase>
     <phrase title="someone_likes_one_of_your_report_comment" version_id="1020100" version_string="1.2.1"><![CDATA[Someone likes one of your report comments]]></phrase>
@@ -486,7 +487,7 @@ rejected={xen:phrase rejected}</edit_format_params>
 }
 
 ]]></template>
-    <template title="ir_resolve_report" version_id="1080000" version_string="1.8.0"><![CDATA[<xen:if is="{$canResolveReport}">
+    <template title="ir_resolve_report" version_id="1090400" version_string="1.9.4"><![CDATA[<xen:if is="{$canResolveReport}">
 <dl class="ctrlUnit">
     <xen:if is="{$canCreateReport}">
         <dt>{xen:phrase report_options}:</dt>
@@ -515,7 +516,7 @@ rejected={xen:phrase rejected}</edit_format_params>
 <xen:include template="ir_resolve_report" />
 </fieldset>
 <xen:include template="ir_report_display" />]]></template>
-    <template title="member_warn_threadban" version_id="1080400" version_string="1.8.4"><![CDATA[<li>
+    <template title="member_warn_threadban" version_id="1090400" version_string="1.9.4"><![CDATA[<li>
 <label>{xen:phrase sv_warning_reply_ban}:</label>
 <ul>
 	<li><label><input type="radio" name="ban_length" value="none"  {xen:checked "{$xenOptions.sv_replyban_on_warning} == 'none'"}/> {xen:phrase none}</label></li>
@@ -583,11 +584,17 @@ rejected={xen:phrase rejected}</edit_format_params>
     <template title="report_list_item_report_node" version_id="8" version_string="0.0.8"><![CDATA[<xen:if is="{$report.extraContent.node_title} AND {$report.extraContent.node_id}">
 , <a href="{xen:link forums, $report.extraContent}" class="forumLink">{$report.extraContent.node_title}</a>
 </xen:if>]]></template>
-    <template title="report_search_by_user" version_id="1070301" version_string="1.7.3"><![CDATA[<xen:if is="{$visitor.canSearchReports}">
+    <template title="report_search_by_user" version_id="1090500" version_string="1.9.5"><![CDATA[<xen:if is="{$visitor.canSearchReports}">
 <dl class="pairsRows">
 <dt></dt>
 <dd>
 <a href="{xen:link 'search/search', '', 'keywords=*', 'order=date', 'type=report_comment', 'include_report_contents=1', 'users={$report.username}'}">{xen:phrase search_reports_by_user}</a>
+</dd>
+</dl>
+<dl class="pairsRows">
+<dt></dt>
+<dd>
+<a href="{xen:link 'search/search', '', 'keywords=*', 'order=date', 'type=report_comment', 'warning_points.lower=0', 'warned_user={$report.username}'}">{xen:phrase search_reports_by_user_for_warnings}</a>
 </dd>
 </dl>
 <xen:if is="{$report.extraContent.thread_id}">

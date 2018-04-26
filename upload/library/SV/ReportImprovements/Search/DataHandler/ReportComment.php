@@ -16,6 +16,7 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         $mapping['properties']['report'] = array("type" => "long");
         $mapping['properties']['state_change'] = array("type" => "long");
         $mapping['properties']['is_report'] = array("type" => "long");
+        $mapping['properties']['warned_user'] = array("type" => "long");
         $mapping['properties']['points'] = array("type" => "long");
         $mapping['properties']['expiry_date'] = array("type" => "long");
         $mapping['properties']['reply_ban_thread'] = array("type" => "long");
@@ -83,6 +84,10 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
         {
             $metadata['points'] = $data['points'];
             $metadata['expiry_date'] = $data['expiry_date'];
+            if (isset($data['warned_user_id']))
+            {
+                $metadata['warned_user'] = $data['warned_user_id'];
+            }
         }
 
         if (!empty($data['alertComment']))
@@ -331,6 +336,31 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
             $constraints["thread_id"] = $threadId;
         }
 
+
+        $warnedUser = $input->filterSingle('warned_user', XenForo_Input::STRING);
+        if ($warnedUser)
+        {
+            $userModel = $this->_getUserModel();
+            $usernames = explode(',', $warnedUser);
+            $users = $userModel->getUsersByNames($usernames, [], $notFound);
+
+            if ($notFound)
+            {
+                $errors[] = new XenForo_Phrase('following_members_not_found_x', ['members' => implode(', ', $notFound)]);
+            }
+
+            $constraints['warned_user'] = array_keys($users);
+
+            if ($constraints['warned_user'] && !$warnedUser)
+            {
+                $constraints['warned_user'] = $warnedUser;
+            }
+            if (is_array($constraints['warned_user']) && count($constraints['warned_user']) == 1)
+            {
+                $constraints['warned_user'] = reset($constraints['warned_user']);
+            }
+        }
+
         $warningPoints = $input->filterSingle('warning_points', XenForo_Input::ARRAY_SIMPLE);
 
         if (isset($warningPoints['lower']) && $warningPoints['lower'] !== '')
@@ -421,6 +451,7 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
                 {
                     return array('metadata' => array('is_report', $constraintInfo));
                 }
+                break;
             case 'warning_points':
                 if (isset($constraintInfo))
                 {
@@ -431,11 +462,19 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
                         )
                     );
                 }
+                break;
             case "thread_id":
                 if (isset($constraintInfo))
                 {
                     return array("metadata" => array("thread_id", $constraintInfo));
                 }
+                break;
+            case 'warned_user':
+                if (isset($constraintInfo))
+                {
+                    return array("metadata" => array("warned_user", $constraintInfo));
+                }
+                break;
         }
 
         return false;
@@ -486,6 +525,15 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
             $viewParams['search']['include_report_contents'] = in_array('2', $params['is_report']);
         }
 
+        if (!empty($params['warned_user']))
+        {
+            $user = $this->_getUserModel()->getUserById($params['warned_user']);
+            if (isset($user['username']))
+            {
+                $viewParams['search']['warned_user'] = $user['username'];
+            }
+        }
+
         if (isset($params['warning_points'][0]))
         {
             $viewParams['search']['warning_points']['lower'] = $params['warning_points'][0];
@@ -510,7 +558,7 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
     }
 
     /**
-     * @return SV_ReportImprovements_XenForo_Model_Report
+     * @return SV_ReportImprovements_XenForo_Model_Report|XenForo_Model
      */
     protected function _getReportModel()
     {
@@ -523,7 +571,7 @@ class SV_ReportImprovements_Search_DataHandler_ReportComment extends XenForo_Sea
     }
 
     /**
-     * @return SV_ReportImprovements_XenForo_Model_User
+     * @return SV_ReportImprovements_XenForo_Model_User|XenForo_Model
      */
     protected function _getUserModel()
     {

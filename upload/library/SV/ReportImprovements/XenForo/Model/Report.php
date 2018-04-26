@@ -192,7 +192,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
 
         return $this->fetchAllKeyed("
             SELECT report_comment.*,
-                warning.warning_id, warningLog.*, warning.is_expired,
+                warning.warning_id, warningLog.*, warningLog.user_id as warned_user_id, warning.is_expired,
                 liked_content.like_date,
                 user.*, IF(user.username IS NULL, report_comment.username, user.username) AS username
             FROM xf_report_comment AS report_comment
@@ -215,7 +215,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
     {
         return $this->_getDb()->fetchRow('
             SELECT report_comment.*,
-                warning.warning_id, warningLog.*, warning.is_expired,
+                warning.warning_id, warningLog.*, warningLog.user_id as warned_user_id, warning.is_expired,
                 user.*, IF(user.username IS NULL, report_comment.username, user.username) AS username
             FROM xf_report_comment AS report_comment
             LEFT JOIN xf_user AS user ON (user.user_id = report_comment.user_id)
@@ -238,7 +238,7 @@ class SV_ReportImprovements_XenForo_Model_Report extends XFCP_SV_ReportImproveme
 
         return $this->fetchAllKeyed('
             SELECT report_comment.*,
-                warning.warning_id, warningLog.*, warning.is_expired,
+                warning.warning_id, warningLog.*, warningLog.user_id as warned_user_id, warning.is_expired,
                 user.*, IF(user.username IS NULL, report_comment.username, user.username) AS username
             FROM xf_report_comment AS report_comment
             LEFT JOIN xf_user AS user ON (user.user_id = report_comment.user_id)

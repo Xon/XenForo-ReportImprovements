@@ -320,7 +320,7 @@ class SV_ReportImprovements_Installer
             }
         }
 
-        if ($version < 1060600)
+        if ($version < 1090500)
         {
             $requireIndexing['report_comment'] = true;
         }
