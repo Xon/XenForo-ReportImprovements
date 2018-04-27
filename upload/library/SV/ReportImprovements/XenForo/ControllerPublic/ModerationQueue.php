@@ -66,7 +66,11 @@ class SV_ReportImprovements_XenForo_ControllerPublic_ModerationQueue extends XFC
                 }
                 break;
             case 'unc':
-                return ['user', $entry['user']['user_id']];
+                if (empty($entry['content']['user']['user_id']))
+                {
+                    break;
+                }
+                return ['user', $entry['content']['user']['user_id']];
             case 'avf_cm_message':
                 return ['conversation_message', $contentId];
         }
