@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.10.1" version_id="1100100" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.10.2" version_id="1100200" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -1274,6 +1274,11 @@ $0]]></replace>
       <find><![CDATA[<dl class="ctrlUnit submitUnit">]]></find>
       <replace><![CDATA[<xen:include template="ir_resolve_report" />
 $0]]></replace>
+    </modification>
+    <modification template="report_profile_post_comment_content" modification_key="sv_ri_report_profile_post_comment_content" description="Injects report search for profile post comment reports" execution_order="10" enabled="1" action="preg_replace">
+      <find><![CDATA[/$/is]]></find>
+      <replace><![CDATA[$0
+<xen:include template="report_search_by_user" />]]></replace>
     </modification>
   </public_template_modifications>
   <bb_code_media_sites/>
