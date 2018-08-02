@@ -1219,10 +1219,18 @@ $1
       <replace><![CDATA[$0
 <xen:include template="report_search_by_user" />]]></replace>
     </modification>
-    <modification template="report_profile_post_content" modification_key="sv_report_improvements_report_profile_post_content" description="Injects report search for profile post reports" execution_order="10" enabled="1" action="preg_replace">
-      <find><![CDATA[/^(.*)$/is]]></find>
-      <replace><![CDATA[$0
-<xen:include template="report_search_by_user" />]]></replace>
+    <modification template="report_profile_post_content" modification_key="sv_report_improvements_report_profile_post_conten1" description="CSS fixup" execution_order="10" enabled="1" action="preg_replace">
+      <find><![CDATA[#<dl class="secondaryContent pairsInline">(.*</dl>)#si]]></find>
+      <replace><![CDATA[<div class="secondaryContent">
+<dl class="pairsRows">
+$1
+</div>]]></replace>
+    </modification>
+    <modification template="report_profile_post_content" modification_key="sv_report_improvements_report_profile_post_content" description="Injects report search for profile post reports" execution_order="11" enabled="1" action="preg_replace">
+      <find><![CDATA[#</div>$#]]></find>
+      <replace><![CDATA[<xen:include template="report_view_attachments_summary" />
+$0
+<xen:include template="report_view_attachments_all" />]]></replace>
     </modification>
     <modification template="thread_reply_bans" modification_key="sv_report_improvements_thread_reply_bans" description="Show resolve options for reports &amp; warnings" execution_order="10" enabled="1" action="preg_replace">
       <find><![CDATA[#(\s*)(<dl class="ctrlUnit submitUnit")#msi]]></find>
@@ -1275,10 +1283,18 @@ $0]]></replace>
       <replace><![CDATA[<xen:include template="ir_resolve_report" />
 $0]]></replace>
     </modification>
-    <modification template="report_profile_post_comment_content" modification_key="sv_ri_report_profile_post_comment_content" description="Injects report search for profile post comment reports" execution_order="10" enabled="1" action="preg_replace">
-      <find><![CDATA[/$/is]]></find>
-      <replace><![CDATA[$0
-<xen:include template="report_search_by_user" />]]></replace>
+    <modification template="report_profile_post_comment_content" modification_key="sv_ri_report_profile_post_comment_content" description="Injects report search for profile post comment reports" execution_order="11" enabled="1" action="preg_replace">
+      <find><![CDATA[#</div>$#]]></find>
+      <replace><![CDATA[<xen:include template="report_view_attachments_summary" />
+$0
+<xen:include template="report_view_attachments_all" />]]></replace>
+    </modification>
+    <modification template="report_profile_post_comment_content" modification_key="sv_ri_report_profile_post_comment_content1" description="CSS fixup" execution_order="10" enabled="1" action="preg_replace">
+      <find><![CDATA[#<dl class="secondaryContent pairsInline">(.*</dl>)#si]]></find>
+      <replace><![CDATA[<div class="secondaryContent">
+<dl class="pairsRows">
+$1
+</div>]]></replace>
     </modification>
   </public_template_modifications>
   <bb_code_media_sites/>

@@ -34,6 +34,22 @@ class SV_ReportImprovements_XenForo_ReportHandler_ProfilePostComment extends XFC
         return $reports;
     }
 
+    public function viewCallback(XenForo_View $view, array &$report, array &$contentInfo)
+    {
+        $userProfileModel = $this->_getProfilePostModel();
+
+        $message = $userProfileModel->getProfilePostCommentById($report['content_id']);
+
+        if (isset($message['comment_date']))
+        {
+            $contentInfo['content_date'] = $message['comment_date'];
+        }
+
+        $template = parent::viewCallback($view, $report, $contentInfo);
+
+        return $template;
+    }
+
     protected $_userModel = null;
 
     /**
