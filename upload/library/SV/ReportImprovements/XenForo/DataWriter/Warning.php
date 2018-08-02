@@ -8,6 +8,12 @@ class SV_ReportImprovements_XenForo_DataWriter_Warning extends XFCP_SV_ReportImp
 
     protected function _preSave()
     {
+        // cap expiry time due to expiry_date calc bug
+        if ($this->isInsert() && $this->get('expiry_date') >= 4294967295)
+        {
+             $this->set('expiry_date', 0);
+        }
+
         parent::_preSave();
 
         if (SV_ReportImprovements_Globals::$replyBanOptions && $this->get('content_type') == 'post')
