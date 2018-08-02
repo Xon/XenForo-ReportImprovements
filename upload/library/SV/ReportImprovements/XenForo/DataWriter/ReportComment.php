@@ -10,17 +10,25 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
     const OPTION_WARNINGLOG_WARNING = 'warningLog_warning';
     const OPTION_WARNINGLOG_REPORT  = 'warningLog_report';
     const OPTION_SEND_ALERTS        = 'sendAlerts';
+    const OPTION_MAX_MESSAGE_LENGTH = 'maxMessageLength';
+    const OPTION_MAX_IMAGES = 'maxImages';
+    const OPTION_MAX_MEDIA = 'maxMedia';
 
     protected $_taggedUsers = array();
 
     protected function _getDefaultOptions()
     {
+        $options = XenForo_Application::getOptions();
+
         $defaultOptions = parent::_getDefaultOptions();
         $defaultOptions[self::OPTION_MAX_TAGGED_USERS] = SV_ReportImprovements_Globals::$Report_MaxAlertCount;
         $defaultOptions[self::OPTION_INDEX_FOR_SEARCH] = true;
         $defaultOptions[self::OPTION_WARNINGLOG_WARNING] = false;
         $defaultOptions[self::OPTION_WARNINGLOG_REPORT] = false;
         $defaultOptions[self::OPTION_SEND_ALERTS] = true;
+        $defaultOptions[self::OPTION_MAX_MESSAGE_LENGTH] = $options->messageMaxLength;
+        $defaultOptions[self::OPTION_MAX_IMAGES] = $options->messageMaxImages;
+        $defaultOptions[self::OPTION_MAX_MEDIA] = $options->messageMaxMedia;
 
         return $defaultOptions;
     }
@@ -76,18 +84,55 @@ class SV_ReportImprovements_XenForo_DataWriter_ReportComment extends XFCP_SV_Rep
             }
         }
 
-        $message = $this->get('message');
-        $message = XenForo_Helper_String::autoLinkBbCode($message, false);
+        if ($this->isChanged('message'))
+        {
+            $this->_checkMessageValidity();
 
-        /** @var XenForo_Model_UserTagging $taggingModel */
-        $taggingModel = $this->getModelFromCache('XenForo_Model_UserTagging');
+            $message = $this->get('message');
+            $message = XenForo_Helper_String::autoLinkBbCode($message, false);
 
-        $this->_taggedUsers = $taggingModel->getTaggedUsersInMessage(
-            $message, $newMessage, 'bb'
-        );
-        $this->set('message', $newMessage);
+            /** @var XenForo_Model_UserTagging $taggingModel */
+            $taggingModel = $this->getModelFromCache('XenForo_Model_UserTagging');
+
+            $this->_taggedUsers = $taggingModel->getTaggedUsersInMessage(
+                $message, $newMessage, 'bb'
+            );
+            $this->set('message', $newMessage);
+        }
 
         parent::_preSave();
+    }
+
+    protected function _checkMessageValidity()
+    {
+        $message = $this->get('message');
+
+        $maxLength = $this->getOption(self::OPTION_MAX_MESSAGE_LENGTH);
+        if ($maxLength && utf8_strlen($message) > $maxLength)
+        {
+            $this->error(new XenForo_Phrase('please_enter_message_with_no_more_than_x_characters', array('count' => $maxLength)), 'message');
+        }
+        else
+        {
+            $maxImages = $this->getOption(self::OPTION_MAX_IMAGES);
+            $maxMedia = $this->getOption(self::OPTION_MAX_MEDIA);
+            if ($maxImages || $maxMedia)
+            {
+                /** @var XenForo_BbCode_Formatter_ImageCount $formatter */
+                $formatter = XenForo_BbCode_Formatter_Base::create('ImageCount', false);
+                $parser = XenForo_BbCode_Parser::create($formatter);
+                $parser->render($message);
+
+                if ($maxImages && $formatter->getImageCount() > $maxImages)
+                {
+                    $this->error(new XenForo_Phrase('please_enter_message_with_no_more_than_x_images', array('count' => $maxImages)), 'message');
+                }
+                if ($maxMedia && $formatter->getMediaCount() > $maxMedia)
+                {
+                    $this->error(new XenForo_Phrase('please_enter_message_with_no_more_than_x_media', array('count' => $maxMedia)), 'message');
+                }
+            }
+        }
     }
 
     protected function sv_getNewReportState($assigned_user_id, array $warning, array $report)
