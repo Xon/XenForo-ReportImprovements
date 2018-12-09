@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.10.3" version_id="1100300" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="SV_ReportImprovements" title="Report Improvements" version_string="1.11.0" version_id="1110000" url="https://xenforo.com/community/resources/report-improvements-by-xon.4345/" install_callback_class="SV_ReportImprovements_Installer" install_callback_method="install" uninstall_callback_class="SV_ReportImprovements_Installer" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -110,6 +110,7 @@
   <code_event_listeners>
     <listener event_id="controller_pre_dispatch" execute_order="10" callback_class="SV_ReportImprovements_Listener" callback_method="controller_pre_dispatch" active="1" hint="" description="Inject Report Center session info"/>
     <listener event_id="criteria_user" execute_order="10" callback_class="SV_ReportImprovements_Criteria" callback_method="criteriaUser" active="1" hint="" description="Add report related criteria"/>
+    <listener event_id="load_class" execute_order="1" callback_class="SV_ReportImprovements_Listener2" callback_method="load_class_patch2" active="1" hint="XenForo_Model_Report" description="XenForo_Model_Report"/>
     <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ModerationQueueHandler_Thread" description="XenForo_ModerationQueueHandler_Thread"/>
     <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ModeratorHandler_Node" description="XenForo_ModeratorHandler_Node"/>
     <listener event_id="load_class" execute_order="4345" callback_class="SV_ReportImprovements_Listener" callback_method="load_class" active="1" hint="XenForo_ReportHandler_Post" description="XenForo_ReportHandler_Post"/>
@@ -157,6 +158,12 @@
   <email_template_modifications/>
   <optiongroups>
     <group group_id="sv_report_improvements" display_order="141" debug_only="0"/>
+    <option option_id="svLogToReportCentreAndForum" edit_format="callback" data_type="unsigned_integer" can_backup="1">
+      <default_value>0</default_value>
+      <edit_format_params>XenForo_Option_ForumChooser::renderOption</edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="sv_report_improvements" display_order="115"/>
+    </option>
     <option option_id="sv_default_resolve_report_on_warning" edit_format="onoff" data_type="boolean" can_backup="1">
       <default_value>1</default_value>
       <edit_format_params></edit_format_params>
@@ -265,6 +272,8 @@ rejected={xen:phrase rejected}</edit_format_params>
     <phrase title="new_report_comment" version_id="1020100" version_string="1.2.1"><![CDATA[New report comment]]></phrase>
     <phrase title="option_group_sv_report_improvements" version_id="3" version_string="0.0.3b"><![CDATA[Report Improvements]]></phrase>
     <phrase title="option_group_sv_report_improvements_description" version_id="1" version_string="0.0.1"><![CDATA[]]></phrase>
+    <phrase title="option_svLogToReportCentreAndForum" version_id="1100300" version_string="1.10.3"><![CDATA[Log to report centre and forum]]></phrase>
+    <phrase title="option_svLogToReportCentreAndForum_explain" version_id="1100300" version_string="1.10.3"><![CDATA[If a forum is selected here, a thread will be posted whenever content is reported and a report sent to the report centre.]]></phrase>
     <phrase title="option_sv_default_resolve_report_on_warning" version_id="4" version_string="0.0.4"><![CDATA[Resolve Report on Warning]]></phrase>
     <phrase title="option_sv_default_resolve_report_on_warning_explain" version_id="4" version_string="0.0.4"><![CDATA[By default, resolve an contents report when creating a warning.]]></phrase>
     <phrase title="option_sv_moderators_respect_view_node" version_id="8" version_string="0.0.8"><![CDATA[Reports respect view-node permission]]></phrase>
